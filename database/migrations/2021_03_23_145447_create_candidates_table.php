@@ -15,6 +15,7 @@ class CreateCandidatesTable extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('election_id')->constrained();
             $table->integer('candidate_number');
             $table->string('chairman_name');
             $table->string('vice_chairman_name');
