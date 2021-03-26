@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MainController as AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('admin.dashboard'));
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
