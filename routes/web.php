@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\MainController as AdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,7 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    Route::resource('elections', ElectionController::class)->except('create', 'edit');
+    Route::get('/elections/{election}/{archived}', [ElectionController::class, 'archive'])->name('elections.archive');
 });
