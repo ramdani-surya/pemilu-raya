@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\MainController as AdminController;
+use App\Http\Controllers\Admin\VoterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +25,7 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('elections', ElectionController::class)->except('create', 'edit');
     Route::get('/elections/{election}/{archived}', [ElectionController::class, 'archive'])->name('elections.archive');
+
+    Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
+    Route::get('/voters/clear', [VoterController::class, 'clear'])->name('voters.clear');
 });

@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="widgets.html">
+                            <a href="{{ route('voters.index') }}">
                                 <i class="fe-user"></i>
                                 <span> Daftar Pemilih Tetap </span>
                             </a>
