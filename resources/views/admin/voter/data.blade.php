@@ -27,6 +27,26 @@ Daftar Pemilih Tetap
                         data-overlayColor="#36404a">Tambah</a>
                     <a href="{{ route('voters.clear') }}"
                         class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('voters.import') }}" method="POST"
+                                enctype="multipart/form-data" id="form-import">
+                                @csrf
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto" style="padding-right:0px">
+                                        <input type="file" class="filestyle" data-input="false" name="file">
+                                    </div>
+                                    <div class="col-auto" style="margin-top: 12px; padding-left:0px">
+                                        <a href="{{ route('voters.download_format') }}"
+                                            class="btn btn-secondary waves-light waves-effect">Download Format</a>
+                                    </div>
+                                    @error('file')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </p>
 
@@ -235,6 +255,12 @@ Daftar Pemilih Tetap
 <!-- Datatables init -->
 <script src="{{ asset('highdmin/js/pages/datatables.init.js') }}"></script>
 
+{{-- Bootstrap FileStyle --}}
+<script src="{{ asset('highdmin/libs/bootstrap-filestyle2/bootstrap-filestyle.min.js') }}">
+</script>
+<!-- Init js-->
+<script src="{{ asset('highdmin/js/pages/form-advanced.init.js') }}"></script>
+
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
 
@@ -249,8 +275,14 @@ Daftar Pemilih Tetap
     }
 
     $(function () {
+        $('label .buttonText').text('Impor (.xlsx)');
+
         $('.form-delete').on('submit', function () {
             return confirm(`Yakin hapus pemilih tetap tersebut?`)
+        });
+
+        $('[name="file"]').change(function () {
+            $('#form-import').submit();
         });
     });
 

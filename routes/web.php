@@ -27,5 +27,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/elections/{election}/{archived}', [ElectionController::class, 'archive'])->name('elections.archive');
 
     Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
-    Route::get('/voters/clear', [VoterController::class, 'clear'])->name('voters.clear');
+    Route::prefix('voters')->group(function () {
+        Route::get('/clear', [VoterController::class, 'clear'])->name('voters.clear');
+        Route::post('/import', [VoterController::class, 'import'])->name('voters.import');
+        Route::get('/download-format', [VoterController::class, 'downloadFormat'])->name('voters.download_format');
+    });
 });

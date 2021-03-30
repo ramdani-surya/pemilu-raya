@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\VotersImport;
 use App\Models\Voter;
 use App\Models\Election;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Alert;
 
 class VoterController extends Controller
@@ -19,7 +21,7 @@ class VoterController extends Controller
      */
     public function index()
     {
-        $data['voters'] = Voter::orderByDesc('election_id')->get();
+        $data['voters'] = Voter::orderBy('nim')->get();
         $data['elections'] = Election::where('archived', 0)->orderByDesc('period')->get();
 
         return view('admin.voter.data', $data);
@@ -115,6 +117,35 @@ class VoterController extends Controller
             : Alert::error('Error', "Pemilih tetap gagal dihapus!");
 
         return redirect(route('voters.index'));
+    }
+
+    /**
+     * Import DPT dari file excel.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        Excel::import(new VotersImport, $request->file('file'))
+            ? Alert::success('Sukses', "Impor DPT berhasil.")
+            : Alert::error('Error', "Impor DPT gagal!");
+
+        return redirect(route('voters.index'));
+    }
+
+    /**
+     * Download format excel untuk impor DPT.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadFormat()
+    {
+        return response()->download('storage/DPT_Pemilu_Raya.xlsx');
     }
 
     /**
