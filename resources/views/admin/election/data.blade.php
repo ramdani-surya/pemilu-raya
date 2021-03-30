@@ -53,10 +53,12 @@ Data Pemilu
                         <tr>
                             <td>{{ $number++ }}</td>
                             <td>{{ $election->period }}</td>
-                            <td>{{ $election->total_voters }}</td>
-                            <td>{{ $election->voted_voters }}</td>
-                            <td>{{ $election->unvoted_voters }}</td>
-                            <td>{{ $election->total_candidates }}</td>
+                            <td>{{ $election->total_voters ?? count($election->voters) }}</td>
+                            <td>{{ $election->voted_voters ?? count($election->votedVoters) }}
+                                ({{ votersPercentage($election, 1) }})</td>
+                            <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
+                                ({{ votersPercentage($election, 0) }})</td>
+                            <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
                             <td>{{ $election->election_winner }}</td>
                             <td>
                                 @if($election->archived)
@@ -109,7 +111,7 @@ Data Pemilu
             <div class="form-group">
                 <div class="col-12">
                     <label for="period">Periode</label>
-                    <input class="form-control" type="text" id="period" placeholder="Contoh: 2021-2022" name="period"
+                    <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022" name="period"
                         required>
                     @error('period')
                         <span class="text-danger">{{ $message }}</span>
@@ -146,7 +148,7 @@ Data Pemilu
                     <div class="form-group">
                         <div class="col-12">
                             <label for="period">Periode</label>
-                            <input class="form-control" type="text" id="period" placeholder="Contoh: 2021-2022"
+                            <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022"
                                 name="edit_period" required>
                             @error('edit_period')
                                 <span class="text-danger">{{ $message }}</span>
