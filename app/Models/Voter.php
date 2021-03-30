@@ -27,7 +27,7 @@ class Voter extends Authenticatable
 
     public function storedByUser()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function voting()

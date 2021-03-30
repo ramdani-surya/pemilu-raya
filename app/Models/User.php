@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function storedVoters()
     {
-        return $this->hasMany(Voter::class);
+        return $this->hasMany(Voter::class, 'user_id', 'id');
     }
 }
