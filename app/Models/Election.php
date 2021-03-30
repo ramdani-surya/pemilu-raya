@@ -33,6 +33,16 @@ class Election extends Model
         return $this->hasMany(Voter::class);
     }
 
+    public function votedVoters()
+    {
+        return $this->hasMany(Voter::class)->where('voted', 1);
+    }
+
+    public function unvotedVoters()
+    {
+        return $this->hasMany(Voter::class)->where('voted', 0);
+    }
+
     public function votings()
     {
         return $this->hasMany(Voting::class);
