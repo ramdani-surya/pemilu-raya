@@ -54,9 +54,9 @@
                 <div id="sidebar-menu">
                     <ul class="metismenu" id="side-menu">
                         <li>
-                            <a href="index.html">
+                            <a href="{{ url('/') }}">
                                 <i class="fe-airplay"></i>
-                                <span> Dasbor </span>
+                                <span> Dashbor </span>
                             </a>
                         </li>
                         <li>
@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="widgets.html">
+                            <a href="{{ route('candidates.index') }}">
                                 <i class="fe-users"></i>
                                 <span> Kandidat </span>
                             </a>
@@ -81,7 +81,7 @@
                         <li class="menu-title">Lainnya</li>
 
                         <li>
-                            <a href="widgets.html">
+                            <a href="{{ route('users.index') }}">
                                 <i class="fe-settings"></i>
                                 <span> Manajemen Akun </span>
                             </a>
@@ -136,7 +136,7 @@
                             </a> --}}
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="{{ route('logout') }}" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i> <span>Logout</span>
                             </a>
                         </div>
@@ -186,7 +186,7 @@
         <!-- End Page content -->
         <!-- ============================================================== -->
     </div>
-    <!-- END wrapper -->
+    <!-- END  wrapper -->
 
     <!-- Vendor js -->
     <script src="{{ asset('highdmin/js/vendor.min.js') }}"></script>
