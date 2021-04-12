@@ -25,7 +25,8 @@ Data Pemilu
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
                         data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
                         data-overlayColor="#36404a">Tambah</a>
-                    <button type="button" class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</button>
+                    <a href="{{ route('elections.clear') }}"
+                        class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</a>
                 </div>
             </p>
 
@@ -77,7 +78,7 @@ Data Pemilu
                             <td>
                                 <div class="button-list">
                                     @if(!$election->running && !$election->archived)
-                                        <a href="{{ route('elections.archive', [$election, 1]) }}"
+                                        <a href="{{ route('elections.running', $election) }}"
                                             class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
                                         <a href="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-info btn-rounded waves-light waves-effect">Arsipkan</a>
@@ -90,8 +91,8 @@ Data Pemilu
                                     @endif
 
                                     @if($election->running && !$election->archived)
-                                        <button type="button"
-                                            class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</button>
+                                        <a href="{{ route('elections.running', [$election, 0]) }}"
+                                            class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</a>
                                     @endif
 
                                     @if(!$election->running || $election->archived)

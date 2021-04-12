@@ -32,6 +32,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::resource('elections', ElectionController::class)->except('create', 'edit');
+    Route::get('/election/clear', [ElectionController::class, 'clear'])->name('elections.clear');
+    Route::get('/elections/{election}/running/{runningStatus?}', [ElectionController::class, 'running'])->name('elections.running');
     Route::get('/elections/{election}/archive', [ElectionController::class, 'archive'])->name('elections.archive');
 
     Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');

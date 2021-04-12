@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Candidate;
 use App\Models\Election;
+use App\Models\Voter;
+use App\Models\Voting;
 use Illuminate\Http\Request;
 use Alert;
 
@@ -73,6 +76,25 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function running(Election $election, $runningStatus=1)
+    {
+        $action = ($runningStatus === 1)
+            ? 'dijalankan.'
+            : 'dihentikan.';
+
+        if (!$election->archived) {
+            $election->running = $runningStatus;
+
+            $election->save()
+                ? Alert::success('Sukses', "Pemilu berhasil $action")
+                : Alert::error('Error', "Pemilu gagal $action");
+        } else {
+            Alert::info('Info', "Pemilu tidak dapat $action");
+        }
+
+        return redirect(route('elections.index'));
+    }
+
     /**
      * Arsipkan Pemilu (Pemilu selesai).
      *
@@ -100,5 +122,25 @@ class ElectionController extends Controller
     public function destroy(Election $election)
     {
         //
+    }
+
+    /**
+     * Remove all resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function clear()
+    {
+        $elections = Election::all();
+
+        foreach ($elections as $election) {
+            Voting::destroy($election->votings);
+            Voter::destroy($election->voters);
+            Candidate::destroy($election->candidates);
+
+            $election->delete();
+        }
+
+        return redirect(route('elections.index'));
     }
 }
