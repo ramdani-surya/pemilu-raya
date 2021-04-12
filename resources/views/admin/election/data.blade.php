@@ -13,6 +13,8 @@ Data Pemilu
     type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet"
     type="text/css" />
+<link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
+    type="text/css" />
 @endsection
 
 @section('content')
@@ -25,8 +27,8 @@ Data Pemilu
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
                         data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
                         data-overlayColor="#36404a">Tambah</a>
-                    <a href="{{ route('elections.clear') }}"
-                        class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</a>
+                    <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
+                        id="sa-warning">Bersihkan</button>
                 </div>
             </p>
 
@@ -203,6 +205,9 @@ Data Pemilu
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
 
+{{-- Sweet Alert --}}
+<script src="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
 <script>
     const updateLink = $('#edit-form').attr('action');
 
@@ -210,6 +215,23 @@ Data Pemilu
         $('#edit-form').attr('action', `${updateLink}/${election.id}`);
         $('[name="edit_period"]').val(election.period);
     }
+
+    $("#sa-warning").click(function () {
+        Swal.fire({
+            title: "Bersihkan data pemilu?",
+            text: "Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan aksi ini!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href="{{ route('elections.clear') }}"
+            }
+        })
+    })
 
 </script>
 @endsection

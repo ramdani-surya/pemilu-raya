@@ -146,9 +146,11 @@ class ElectionController extends Controller
             Voting::destroy($election->votings);
             Voter::destroy($election->voters);
             Candidate::destroy($election->candidates);
-
-            $election->delete();
         }
+
+        Election::destroy($elections)
+            ? Alert::success('Sukses', 'Data pemilu berhasil dibersihkan.')
+            : Alert::error('Error', 'Data pemilu gagal dibersihkan.');
 
         return redirect(route('elections.index'));
     }
