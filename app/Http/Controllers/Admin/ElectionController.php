@@ -95,6 +95,15 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function resetVoting(Election $election)
+    {
+        Voting::destroy($election->votings)
+            ? Alert::success('Sukses', 'Hasil voting pemilu berhasil direset.')
+            : Alert::error('Error', 'Hasil voting pemilu gagal direset.');
+
+        return redirect(route('elections.index'));
+    }
+
     /**
      * Arsipkan Pemilu (Pemilu selesai).
      *

@@ -82,8 +82,8 @@ Data Pemilu
                                             class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
                                         <a href="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-info btn-rounded waves-light waves-effect">Arsipkan</a>
-                                        <button type="button"
-                                            class="btn btn-pink btn-rounded waves-light waves-effect">Reset</button>
+                                        <a href="{{ route('elections.reset_voting', $election) }}"
+                                            class="btn btn-pink btn-rounded waves-light waves-effect">Reset Voting</a>
                                         <button type="button"
                                             class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
                                             data-toggle="modal" data-target=".bs-example-modal-sm"
