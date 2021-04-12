@@ -79,14 +79,14 @@ class ElectionController extends Controller
     public function running(Election $election, $runningStatus=1)
     {
         $action = ($runningStatus === 1)
-            ? 'dijalankan.'
-            : 'dihentikan.';
+            ? 'Sekarang pemilu dapat menerima voting.'
+            : 'Sekarang pemilu tidak dapat menerima voting.';
 
         if (!$election->archived) {
             $election->running = $runningStatus;
 
             $election->save()
-                ? Alert::success('Sukses', "Pemilu berhasil $action")
+                ? Alert::info('Sukses', $action)
                 : Alert::error('Error', "Pemilu gagal $action");
         } else {
             Alert::info('Info', "Pemilu tidak dapat $action");

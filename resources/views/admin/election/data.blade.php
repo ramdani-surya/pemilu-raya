@@ -13,8 +13,6 @@ Data Pemilu
     type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet"
     type="text/css" />
-<link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
-    type="text/css" />
 @endsection
 
 @section('content')
@@ -204,9 +202,6 @@ Data Pemilu
 
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
-
-{{-- Sweet Alert --}}
-<script src="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
 <script>
     const updateLink = $('#edit-form').attr('action');
