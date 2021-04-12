@@ -82,8 +82,10 @@ Data Pemilu
                                             class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
                                         <a href="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-info btn-rounded waves-light waves-effect">Arsipkan</a>
-                                        <a href="{{ route('elections.reset_voting', $election) }}"
-                                            class="btn btn-pink btn-rounded waves-light waves-effect">Reset Voting</a>
+                                        <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
+                                            onclick="resetAlert(this)"
+                                            data-url="{{ route('elections.reset_voting', $election) }}">Reset
+                                            Voting</button>
                                         <button type="button"
                                             class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
                                             data-toggle="modal" data-target=".bs-example-modal-sm"
@@ -96,8 +98,15 @@ Data Pemilu
                                     @endif
 
                                     @if(!$election->running || $election->archived)
-                                        <button type="button"
-                                            class="btn btn-danger btn-rounded waves-light waves-effect">Hapus</button>
+                                        <form style="display: inline"
+                                            action="{{ route('elections.destroy', $election) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="button"
+                                                class="btn btn-danger btn-rounded waves-light waves-effect"
+                                                onclick="deleteAlert(this)">Hapus</button>
+                                        </form>
                                     @endif
                                 </div>
                             </td>
@@ -214,7 +223,8 @@ Data Pemilu
     $("#sa-warning").click(function () {
         Swal.fire({
             title: "Bersihkan data pemilu?",
-            text: "Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan aksi ini!",
+            text: `Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan aksi
+            ini!`,
             type: "warning",
             showCancelButton: !0,
             confirmButtonColor: "#3085d6",
@@ -223,10 +233,46 @@ Data Pemilu
             cancelButtonText: "Batal"
         }).then(function (t) {
             if (t.value) {
-                window.location.href="{{ route('elections.clear') }}"
+                window.location.href = "{{ route('elections.clear') }}"
             }
         })
-    })
+    });
+
+    function resetAlert(e) {
+        Swal.fire({
+            title: "Reset hasil voting pemilu?",
+            text: "Hasil perolehan suara akan dihapus!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, reset!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = `${e.dataset.url}`
+            }
+        })
+    }
+
+    function deleteAlert(e) {
+        Swal.fire({
+            title: "Hapus pemilu?",
+            text: `Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan
+            aksi
+            ini!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                e.parentNode.submit()
+            }
+        })
+    }
 
 </script>
 @endsection

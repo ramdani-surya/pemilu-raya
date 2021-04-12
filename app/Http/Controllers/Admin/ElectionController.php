@@ -97,7 +97,7 @@ class ElectionController extends Controller
 
     public function resetVoting(Election $election)
     {
-        Voting::destroy($election->votings)
+        $election->voters()->update(['voted' => 0]) && Voting::destroy($election->votings)
             ? Alert::success('Sukses', 'Hasil voting pemilu berhasil direset.')
             : Alert::error('Error', 'Hasil voting pemilu gagal direset.');
 
@@ -130,7 +130,15 @@ class ElectionController extends Controller
      */
     public function destroy(Election $election)
     {
-        //
+        $election->votings()->delete();
+        $election->voters()->delete();
+        $election->candidates()->delete();
+
+        $election->delete()
+            ? Alert::success('Sukses', 'Data pemilu berhasil dihapus.')
+            : Alert::error('Error', 'Data pemilu gagal dihapus.');
+
+        return redirect(route('elections.index'));
     }
 
     /**
