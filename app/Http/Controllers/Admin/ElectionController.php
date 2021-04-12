@@ -80,16 +80,13 @@ class ElectionController extends Controller
      * @param  \App\Models\Election  $election
      * @return \Illuminate\Http\Response
      */
-    public function archive(Election $election, $archived=1)
+    public function archive(Election $election)
     {
-        $successMessage = ($archived) ? 'Pemilu berhasil diarsipkan.' : 'Pemilu tidak diarsipkan.' ;
-        $errorrMessage  = ($archived) ? 'Pemilu gagal diarsipkan.' : 'Gagal membatalkan pengarsipan.' ;
+        $election->archived = 1;
 
-        $data['archived'] = $archived;
-
-        $election->update($data)
-            ? Alert::success('Sukses', $successMessage)
-            : Alert::error('Error', $errorrMessage);
+        $election->save()
+            ? Alert::success('Sukses', 'Pemilu berhasil diarsipkan.')
+            : Alert::error('Error', 'Pemilu gagal diarsipkan.');
 
         return redirect(route('elections.index'));
     }

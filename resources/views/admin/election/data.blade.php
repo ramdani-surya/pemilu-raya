@@ -40,6 +40,7 @@ Data Pemilu
                         <th>DPT Golput</th>
                         <th>Jumlah Kandidat</th>
                         <th>Kandidat Terpilih</th>
+                        <th>Berjalan</th>
                         <th>Diarsipkan</th>
                         <th>Aksi</th>
                     </tr>
@@ -58,6 +59,14 @@ Data Pemilu
                             <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
                             <td>{{ $election->election_winner }}</td>
                             <td>
+                                @if($election->running)
+                                    <button type="button"
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
+                                        <i class="fe-check-square"></i>
+                                    </button>
+                                @endif
+                            </td>
+                            <td>
                                 @if($election->archived)
                                     <button type="button"
                                         class="btn btn-icon waves-effect waves-light btn-success btn-sm">
@@ -66,24 +75,29 @@ Data Pemilu
                                 @endif
                             </td>
                             <td>
-                                <div class="button-list" style="max-width: 50%">
-                                    @if($election->archived)
-                                        <a href="{{ route('elections.archive', [$election, 0]) }}"
-                                            class="btn btn-secondary btn-rounded btn-block waves-light waves-effect">Batal
-                                            Arsipkan</a>
-                                    @else
+                                <div class="button-list">
+                                    @if(!$election->running && !$election->archived)
                                         <a href="{{ route('elections.archive', [$election, 1]) }}"
-                                            class="btn btn-primary btn-rounded btn-block waves-light waves-effect">Arsipkan</a>
+                                            class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
+                                        <a href="{{ route('elections.archive', [$election, 1]) }}"
+                                            class="btn btn-info btn-rounded waves-light waves-effect">Arsipkan</a>
                                         <button type="button"
-                                            class="btn btn-pink btn-rounded btn-block waves-light waves-effect">Reset</button>
+                                            class="btn btn-pink btn-rounded waves-light waves-effect">Reset</button>
+                                        <button type="button"
+                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm"
+                                            onclick="setEditData({{ $election }})">Edit</button>
                                     @endif
-                                    <button type="button"
-                                        class="btn btn-warning btn-rounded btn-block btn-edit waves-effect waves-light"
-                                        data-toggle="modal" data-target=".bs-example-modal-sm"
-                                        onclick="setEditData({{ $election }})" @if ($election->archived) disabled
-                                        @endif>Edit</button>
-                                    <button type="button"
-                                        class="btn btn-danger btn-rounded btn-block waves-light waves-effect">Hapus</button>
+
+                                    @if($election->running && !$election->archived)
+                                        <button type="button"
+                                            class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</button>
+                                    @endif
+
+                                    @if(!$election->running || $election->archived)
+                                        <button type="button"
+                                            class="btn btn-danger btn-rounded waves-light waves-effect">Hapus</button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
