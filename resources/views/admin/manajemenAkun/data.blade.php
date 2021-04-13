@@ -17,6 +17,7 @@ Manajemen Akun
         <div class="card-box table-responsive">
             <h4 class="header-title">Data Users</h4>
             <p class="sub-header">
+                @if(Auth::user()->role == 'admin')
                 <div class="button-list">
                     <button type="button" id="createButton"
                         class="btn btn-primary btn-sm btn-create waves-light waves-effect" data-toggle="modal"
@@ -26,6 +27,8 @@ Manajemen Akun
                         data-target=".deleteAllUsers">Bersihkan
                     </button>
                 </div>
+                @endif
+
             </p>
 
             <style>
@@ -57,7 +60,7 @@ Manajemen Akun
                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Nama</th>
                         <th>Username</th>
                         <th>Email</th>
@@ -67,11 +70,59 @@ Manajemen Akun
                 </thead>
 
                 <tbody>
+                    @if(Auth::user()->role == 'admin')
+                    <tr>
+                        <td>1<br><span class="badge badge-light font-10">me</span></td>
+                        <td>{{ Auth::user()->name }}</td>
+                        <td>{{ Auth::user()->username }}</td>
+                        <td>{{ Auth::user()->email }}</td>
+                        <td><span class="badge badge-success font-15">{{ Auth::user()->role }}</span></td>
+                        <td>
+                            <div class="button-list" style="max-width: 48%">
+                                <button type="button" data-role="{{ Auth::user()->role }}" id="{{ Auth::user()->role }}"
+                                    class="btn btn btn-info btn-rounded btn-block btn-edit waves-effect waves-light editButton"
+                                    data-toggle="modal" data-target=".editModal"
+                                    onclick="setEditData({{ Auth::user() }})">Edit
+                                </button>
+                                <button type="button"
+                                    class="btn btn-danger btn-rounded btn-block waves-light waves-effect buttonHapus mb-3"
+                                    data-toggle="modal" data-target=".deleteUser"
+                                    onclick="hapusUser({{ Auth::user() }})">Hapus
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
+                    <tr>
+                        <td>1<br><span class="badge badge-light font-10">me</span></td>
+                        <td>{{ Auth::user()->name }}</td>
+                        <td>{{ Auth::user()->username }}</td>
+                        <td>{{ Auth::user()->email }}</td>
+                        <td><span class="badge badge-success font-15">{{ Auth::user()->role }}</span></td>
+                        <td>
+                            <div class="button-list mx-auto" style="max-width: 50%">
+                                <button type="button" data-role="{{ Auth::user()->role }}" id="{{ Auth::user()->role }}"
+                                    class="btn btn-info btn-rounded btn-block btn-edit waves-effect waves-light editButton"
+                                    data-toggle="modal" data-target=".editModal"
+                                    onclick="setEditData({{ Auth::user() }})">Edit
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                     @php
-                    $increment = 1;
+                    $increment = 2;
                     @endphp
+                    @endif
 
                     @foreach($users as $user)
+                    @if(Auth::user()->role == 'panitia')
+                    @if ($user->role == 'panitia') @continue @endif
+                    @else
+                    @if ($user->role == 'admin') @continue @endif
+                    @endif
                     <tr>
                         <td>{{ $increment++ }} </td>
                         <td>{{ $user->name }}</td>
@@ -79,6 +130,7 @@ Manajemen Akun
                         <td>{{ $user->email }}</td>
                         <td><span class="badge badge-success font-15">{{ $user->role }}</span></td>
                         <td>
+                            @if(Auth::user()->role == 'admin')
                             <div class="button-list" style="max-width: 48%">
                                 <button type="button" data-role="{{ $user->role }}" id="{{ $user->role }}"
                                     class="btn btn-warning btn-rounded btn-block btn-edit waves-effect waves-light editButton"
@@ -89,6 +141,7 @@ Manajemen Akun
                                     data-toggle="modal" data-target=".deleteUser" onclick="hapusUser({{ $user }})">Hapus
                                 </button>
                             </div>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -279,7 +332,7 @@ Manajemen Akun
                         </div>
                     </div>
 
-
+                    @if(Auth::user()->role == 'admin')
                     <div class="form-group">
                         <div class="col-12">
                             <label for="role">Role</label>
@@ -295,6 +348,22 @@ Manajemen Akun
                             @enderror
                         </div>
                     </div>
+                    @else
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="role">Role</label>
+                            <select class="form-control mb-1 @error('edit_role') is-invalid @enderror" name="edit_role"
+                                id="edit_role" required>
+                                <option value="">Pilih Role</option>
+                                <option value="panitia">Panitia</option>
+                            </select>
+
+                            @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    @endif
 
 
                     <div class="form-group account-btn text-center mt-2">

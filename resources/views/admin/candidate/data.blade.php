@@ -25,18 +25,12 @@ Data Pemilu
     </div>
 </p>
 
-<!-- Increment -->
-@php
-$increment = 1;
-@endphp
-
 <!-- Content -->
-@foreach($candidates as $candidate)
 
 <!-- internal style  -->
 <style>
-    .container-wrap {
-        padding: 20px;
+    .wrap {
+        margin-top: 40px;
     }
 
     .candidateNumber {
@@ -44,9 +38,18 @@ $increment = 1;
     }
 </style>
 
-<h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}</h2>
-<div class="container-wrap d-flex justify-content-center">
-    <!-- start row -->
+
+@foreach($candidates as $candidate)
+
+<div class="wrap">
+    <div class="row text-center">
+        <div class="col-lg-3">
+            <div class="card">
+                <h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}
+                </h2>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="card-box">
@@ -61,12 +64,12 @@ $increment = 1;
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->chairman_photo))
                                 <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
+                                    style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Default Photo">
                                 @else
                                 <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
+                                    style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Chairman Photo">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -92,12 +95,12 @@ $increment = 1;
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->vice_chairman_photo))
                                 <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
+                                    style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Default Image">
                                 @else
                                 <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
+                                    style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Vice Chairman Photo">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -136,7 +139,7 @@ $increment = 1;
             </div>
         </div>
     </div>
-    <!-- end row -->
+
 </div>
 @endforeach
 
@@ -151,8 +154,8 @@ $increment = 1;
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body padding-outside">
-                <div class="card padding-inside">
+            <div class="modal-body">
+                <div class="card">
                     <div class="card-body ">
                         <h2 class="visi-and-missionText"></h2>
                     </div>

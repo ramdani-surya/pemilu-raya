@@ -18,7 +18,7 @@
 </head>
 
 <body>
-   
+
     <!-- END  wrapper -->
     @yield('content')
 

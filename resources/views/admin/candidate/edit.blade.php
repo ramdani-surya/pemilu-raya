@@ -11,7 +11,8 @@ Data Pemilu
 
 @section('content')
 <!-- start form -->
-<form action="{{ route('candidates.update', $candidate->id) }}" method="post" class="parsley-examples" enctype="multipart/form-data">
+<form action="{{ route('candidates.update', $candidate->id) }}" method="post" class="parsley-examples"
+    enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <!-- start row -->
@@ -24,7 +25,10 @@ Data Pemilu
                 </p>
                 <div class="form-group">
                     <label for="nomorKandidat">Nomor Kandidat<span class="text-danger">*</span></label>
-                    <input type="number" name="edit_candidate_number" parsley-trigger="change" placeholder="Masukkan Nomor Kandidat" class="form-control @error('edit_candidate_number') is-invalid @enderror" id="edit_candidate_number" value="{{ $candidate->candidate_number }}">
+                    <input type="number" name="edit_candidate_number" parsley-trigger="change"
+                        placeholder="Masukkan Nomor Kandidat"
+                        class="form-control @error('edit_candidate_number') is-invalid @enderror"
+                        id="edit_candidate_number" value="{{ $candidate->candidate_number }}">
                     @error('edit_candidate_number')
                     <div class="mt-1">
                         <span class="text-danger">{{ $message }}</span>
@@ -33,7 +37,10 @@ Data Pemilu
                 </div>
                 <div class="form-group">
                     <label for="namaKetua">Nama Ketua<span class="text-danger">*</span></label>
-                    <input type="text" name="edit_chairman_name" parsley-trigger="change" placeholder="Masukkan Nama Ketua" class="form-control @error('edit_chairman_name') is-invalid @enderror" id="edit_chairman_name" value="{{ $candidate->chairman_name }}">
+                    <input type="text" name="edit_chairman_name" parsley-trigger="change"
+                        placeholder="Masukkan Nama Ketua"
+                        class="form-control @error('edit_chairman_name') is-invalid @enderror" id="edit_chairman_name"
+                        value="{{ $candidate->chairman_name }}">
                     @error('edit_chairman_name')
                     <div class="mt-1">
                         <span class="text-danger">{{ $message }}</span>
@@ -42,7 +49,10 @@ Data Pemilu
                 </div>
                 <div class="form-group">
                     <label for="namaWakil">Nama Wakil<span class="text-danger">*</span></label>
-                    <input type="text" name="edit_vice_chairman_name" parsley-trigger="change" placeholder="Masukkan Nama Wakil Ketua" class="form-control @error('edit_vice_chairman_name') is-invalid @enderror" id="vice_chairman_name" value="{{ $candidate->vice_chairman_name }}">
+                    <input type="text" name="edit_vice_chairman_name" parsley-trigger="change"
+                        placeholder="Masukkan Nama Wakil Ketua"
+                        class="form-control @error('edit_vice_chairman_name') is-invalid @enderror"
+                        id="vice_chairman_name" value="{{ $candidate->vice_chairman_name }}">
                     @error('edit_vice_chairman_name')
                     <div class="mt-1">
                         <span class="text-danger">{{ $message }}</span>
@@ -68,9 +78,13 @@ Data Pemilu
                         <div class="portfolio-masonry-box">
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="defaultImage">
+                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
+                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Default Image">
                                 @else
-                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="Foto Ketua">
+                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
+                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Chairman Photo">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -103,9 +117,13 @@ Data Pemilu
                         <div class="portfolio-masonry-box">
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="defaultImage">
+                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
+                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Default Image">
                                 @else
-                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="Foto Wakil Ketua">
+                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
+                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                    alt="Vice Chairman Photo">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -139,7 +157,8 @@ Data Pemilu
             <div class="card-box">
                 <h4 class="header-title">VISI</h4>
                 <p class="sub-header">
-                    Visi adalah gambaran besar, tujuan utama dan cita-cita suatu perusahaan, instansi, pribadi atau organisasi di masa depan.
+                    Visi adalah gambaran besar, tujuan utama dan cita-cita suatu perusahaan, instansi, pribadi atau
+                    organisasi di masa depan.
                 </p>
 
                 <div class="form-group">
@@ -158,7 +177,8 @@ Data Pemilu
             <div class="card-box">
                 <h4 class="header-title">MISI</h4>
                 <p class="sub-header">
-                    Misi adalah Penjabaran atau langkah-langkah yang akan dilakukan untuk mencapai / mewujudkan visi tersebut.
+                    Misi adalah Penjabaran atau langkah-langkah yang akan dilakukan untuk mencapai / mewujudkan visi
+                    tersebut.
                 </p>
 
                 <div class="form-group">

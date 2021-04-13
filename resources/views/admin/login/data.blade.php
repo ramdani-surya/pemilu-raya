@@ -1,4 +1,4 @@
-@extends('admin.layouts.loginSystem')
+@extends('admin.layouts.login_system')
 
 @section('subtitle')
 Login User
@@ -11,7 +11,11 @@ Login User
 <body class="account-pages">
 
     <!-- Begin page -->
-    <div class="accountbg" style="background: url( {{ url('highdmin/images/bg-1.jpg') }} ); background-size: cover;background-position: center;"></div>
+    <div class="accountbg">
+        <img src="{{ asset('images/login_bg.jpg') }}"
+        style="width: 67%; height: 100vh; object-fit:cover;" class="thumb-img img-fluid"
+        alt="Default Image">
+    </div>
 
     <div class="wrapper-page account-page-full">
 
@@ -33,23 +37,27 @@ Login User
                         </div>
                         @endif
 
-                        <form action="{{ route('login') }}" method="POST">
+                        <form action="{{ route('admin.login') }}" method="POST">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-12">
                                     <label for="username">Username</label>
-                                    <input class="form-control" type="text" name="username" id="username" placeholder="Masukan username anda" required>
+                                    <input class="form-control" type="text" name="username" id="username"
+                                        placeholder="Masukan username anda" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <a href="page-recoverpw.html" class="text-muted float-right"><small>Forgot your password?</small></a>
+                                    <a href="page-recoverpw.html" class="text-muted float-right"><small>Forgot your
+                                            password?</small></a>
                                     <label for="password">Password</label>
                                     <div class="input-group">
-                                        <input class="form-control" type="password" name="password" id="passwordId" placeholder="Masukan Password Anda">
+                                        <input class="form-control" type="password" name="password" id="passwordId"
+                                            placeholder="Masukan Password Anda">
                                         <div class="input-group-append">
-                                            <button class="btn btn-secondary fas fa-eye toggle-password" type="button"></button>
+                                            <button class="btn btn-secondary fas fa-eye toggle-password"
+                                                type="button"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +77,8 @@ Login User
 
                             <div class="form-group row text-center">
                                 <div class="col-12">
-                                    <button class="btn btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
+                                    <button class="btn btn-block btn-primary waves-effect waves-light"
+                                        type="submit">Sign In</button>
                                 </div>
                             </div>
 

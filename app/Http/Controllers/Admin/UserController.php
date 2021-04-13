@@ -115,8 +115,8 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'edit_name' => 'required|string|min:3|max:35',
-            'edit_username' => 'required|string|min:3|unique:users,username,$user->id|max:35',
-            'edit_email' => 'required|string|min:3|unique:users,email,$user->id|max:35',
+            'edit_username' => 'required|string|min:3|max:35',
+            'edit_email' => 'required|email|min:3|max:35',
             'edit_role' => 'required',
         ]);
 
