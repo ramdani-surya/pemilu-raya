@@ -25,7 +25,6 @@ Route::post('login', [LoginController::class, 'login']);
 
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => ['auth']], function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
@@ -47,4 +46,3 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/download-format', [VoterController::class, 'downloadFormat'])->name('voters.download_format');
         });
     });
-});

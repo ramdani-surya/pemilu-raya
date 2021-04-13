@@ -47,7 +47,7 @@ class CandidateController extends Controller
     {
         $this->validate($request, [
             'election' => 'required',
-            'candidate_number' => "required|numeric|unique:candidates,candidate_number,$candidate->id",
+            'candidate_number' => "required|numeric|unique:candidates",
             'chairman_name' => 'required|string|min:3|max:35',
             'vice_chairman_name' => 'required|string|min:3|max:35',
             'chairman_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
