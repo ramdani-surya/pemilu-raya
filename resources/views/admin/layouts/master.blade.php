@@ -11,6 +11,10 @@
     --}}
     {{-- additional css --}}
     @yield('css')
+
+    <link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
+    type="text/css" />
+
     <!-- App css -->
     <link href="{{ asset('highdmin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('highdmin/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -185,9 +189,13 @@
 
     <!-- Vendor js -->
     <script src="{{ asset('highdmin/js/vendor.min.js') }}"></script>
+
     {{-- additional js --}}
     @yield('js')
     @include('sweetalert::alert')
+
+    <script src="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
     <!-- App js -->
     <script src="{{ asset('highdmin/js/app.min.js') }}"></script>
 </body>
