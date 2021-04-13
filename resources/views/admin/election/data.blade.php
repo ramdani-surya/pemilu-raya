@@ -25,7 +25,8 @@ Data Pemilu
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
                         data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
                         data-overlayColor="#36404a">Tambah</a>
-                    <button type="button" class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</button>
+                    <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
+                        id="sa-warning">Bersihkan</button>
                 </div>
             </p>
 
@@ -40,6 +41,7 @@ Data Pemilu
                         <th>DPT Golput</th>
                         <th>Jumlah Kandidat</th>
                         <th>Kandidat Terpilih</th>
+                        <th>Berjalan</th>
                         <th>Diarsipkan</th>
                         <th>Aksi</th>
                     </tr>
@@ -56,7 +58,16 @@ Data Pemilu
                             <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
                                 ({{ votersPercentage($election, 0) }})</td>
                             <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                            <td>{{ $election->election_winner }}</td>
+                            <td>{{ "$election->chairman - $election->vice_chairman" }}
+                            </td>
+                            <td>
+                                @if($election->running)
+                                    <button type="button"
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
+                                        <i class="fe-check-square"></i>
+                                    </button>
+                                @endif
+                            </td>
                             <td>
                                 @if($election->archived)
                                     <button type="button"
@@ -66,24 +77,40 @@ Data Pemilu
                                 @endif
                             </td>
                             <td>
-                                <div class="button-list" style="max-width: 50%">
-                                    @if($election->archived)
-                                        <a href="{{ route('elections.archive', [$election, 0]) }}"
-                                            class="btn btn-secondary btn-rounded btn-block waves-light waves-effect">Batal
-                                            Arsipkan</a>
-                                    @else
-                                        <a href="{{ route('elections.archive', [$election, 1]) }}"
-                                            class="btn btn-primary btn-rounded btn-block waves-light waves-effect">Arsipkan</a>
+                                <div class="button-list">
+                                    @if(!$election->running && !$election->archived)
+                                        <a href="{{ route('elections.running', $election) }}"
+                                            class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
                                         <button type="button"
-                                            class="btn btn-pink btn-rounded btn-block waves-light waves-effect">Reset</button>
+                                            data-url="{{ route('elections.archive', [$election, 1]) }}"
+                                            class="btn btn-info btn-rounded waves-light waves-effect"
+                                            onclick="archiveAlert(this)">Arsipkan</button>
+                                        <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
+                                            onclick="resetAlert(this)"
+                                            data-url="{{ route('elections.reset_voting', $election) }}">Reset
+                                            Voting</button>
+                                        <button type="button"
+                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm"
+                                            onclick="setEditData({{ $election }})">Edit</button>
                                     @endif
-                                    <button type="button"
-                                        class="btn btn-warning btn-rounded btn-block btn-edit waves-effect waves-light"
-                                        data-toggle="modal" data-target=".bs-example-modal-sm"
-                                        onclick="setEditData({{ $election }})" @if ($election->archived) disabled
-                                        @endif>Edit</button>
-                                    <button type="button"
-                                        class="btn btn-danger btn-rounded btn-block waves-light waves-effect">Hapus</button>
+
+                                    @if($election->running && !$election->archived)
+                                        <a href="{{ route('elections.running', [$election, 0]) }}"
+                                            class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</a>
+                                    @endif
+
+                                    @if(!$election->running || $election->archived)
+                                        <form style="display: inline"
+                                            action="{{ route('elections.destroy', $election) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="button"
+                                                class="btn btn-danger btn-rounded waves-light waves-effect"
+                                                onclick="deleteAlert(this)">Hapus</button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -194,6 +221,78 @@ Data Pemilu
     function setEditData(election) {
         $('#edit-form').attr('action', `${updateLink}/${election.id}`);
         $('[name="edit_period"]').val(election.period);
+    }
+
+    $("#sa-warning").click(function () {
+        Swal.fire({
+            title: "Bersihkan data pemilu?",
+            text: `Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan aksi
+            ini!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = "{{ route('elections.clear') }}"
+            }
+        })
+    });
+
+    function resetAlert(e) {
+        Swal.fire({
+            title: "Reset hasil voting pemilu?",
+            text: "Hasil perolehan suara akan dihapus!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, reset!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = `${e.dataset.url}`
+            }
+        })
+    }
+
+    function deleteAlert(e) {
+        Swal.fire({
+            title: "Hapus pemilu?",
+            text: `Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan
+            aksi ini!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                e.parentNode.submit()
+            }
+        })
+    }
+
+    function archiveAlert(e) {
+        Swal.fire({
+            title: "Arsipkan pemilu?",
+            text: `Hasil pemilu akan disimpan.
+                Data Kandidat dan DPT akan dibersihkan!
+                Kandidat dengan voting terbesar akan menjadi kandidat terpilih!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, arsipkan!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = `${e.dataset.url}`
+            }
+        })
     }
 
 </script>
