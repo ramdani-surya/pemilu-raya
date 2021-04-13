@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $data['users'] = User::orderBy('id')->get();
-        
+
         return view('admin.manajemenAkun.data', $data);
     }
 
@@ -29,8 +29,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        
-    
     }
 
     /**
@@ -41,16 +39,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required|string|min:3|max:35',
-            'username' => 'required|string|min:3|max:35',
-            'email' => 'required|string|min:3|max:35',
+            'username' => 'required|string|min:3|unique:users|max:35',
+            'email' => 'required|string|min:5|unique:users|max:35',
             'password' => 'required|confirmed',
             'role' => 'required',
         ]);
 
-    
-        
+
+
         $data = [
             'name' => $request->name,
             'username' => $request->username,
@@ -58,11 +56,12 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ];
-        
-        
+
+
         User::create($data)
-        ? Alert::success('Sukses', "User berhasil dihapus.")
-        : Alert::error('Error', "User gagal dihapus!");
+            ? Alert::success('Sukses', "Users berhasil ditambahkan.")
+            : Alert::error('Error', "Users gagal ditambahkan!");
+            
         return redirect(route('users.index'));
     }
 
@@ -71,7 +70,7 @@ class UserController extends Controller
         $users = User::all();
 
         foreach ($users as $user) {
-            
+
 
             $user->delete();
         }
@@ -114,21 +113,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'edit_name' => 'required|string|min:3|max:35',
-            'edit_username' => 'required|string|min:3|max:35',
-            'edit_email' => 'required|string|min:3|max:35',
-            'edit_password' => 'required',
+            'edit_username' => 'required|string|min:3|unique:users,username,$user->id|max:35',
+            'edit_email' => 'required|string|min:3|unique:users,email,$user->id|max:35',
             'edit_role' => 'required',
         ]);
 
-    
-        
+
+
         $data = [
             'name' => $request->edit_name,
             'username' => $request->edit_username,
             'email' => $request->edit_email,
-            'password' => Hash::make($request->edit_password),
             'role' => $request->edit_role,
         ];
 
@@ -147,9 +144,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $candidate->delete()
-        ? Alert::success('Sukses', "User berhasil dihapus.")
-        : Alert::error('Error', "User gagal dihapus!");
-    return redirect(route('users.index'));
+        $user->delete()
+            ? Alert::success('Sukses', "User berhasil dihapus.")
+            : Alert::error('Error', "User gagal dihapus!");
+        return redirect(route('users.index'));
     }
 }

@@ -10,9 +10,11 @@ Data Pemilu
 @endsection
 
 @section('content')
+<!-- start form -->
 <form action="{{ route('candidates.update', $candidate->id) }}" method="post" class="parsley-examples" enctype="multipart/form-data">
     @csrf
     @method('PUT')
+    <!-- start row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box">
@@ -50,8 +52,9 @@ Data Pemilu
             </div>
         </div>
     </div>
+    <!-- end row -->
 
-
+    <!-- start row -->
     <div class="row">
         <div class="col-lg-6">
             <div class="card-box">
@@ -65,9 +68,9 @@ Data Pemilu
                         <div class="portfolio-masonry-box">
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="work-thumbnail">
+                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="defaultImage">
                                 @else
-                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="work-thumbnail">
+                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="Foto Ketua">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -100,9 +103,9 @@ Data Pemilu
                         <div class="portfolio-masonry-box">
                             <div class="portfolio-masonry-img">
                                 @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="work-thumbnail">
+                                <img src="{{ asset('images/imageNoAvailable.svg') }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="defaultImage">
                                 @else
-                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="work-thumbnail">
+                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}" style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid" alt="Foto Wakil Ketua">
                                 @endif
                             </div>
                             <div class="portfolio-masonry-detail">
@@ -122,14 +125,15 @@ Data Pemilu
             </div>
         </div>
     </div>
-
+    <!-- end row -->
     <!-- CKEDITOR BORDER COLOR -->
     <style>
         .cke_chrome {
             border: 1px solid #e3eaef !important;
         }
-    </style>    
+    </style>
 
+    <!-- start row -->
     <div class="row">
         <div class="col-lg-6">
             <div class="card-box">
@@ -137,6 +141,7 @@ Data Pemilu
                 <p class="sub-header">
                     Visi adalah gambaran besar, tujuan utama dan cita-cita suatu perusahaan, instansi, pribadi atau organisasi di masa depan.
                 </p>
+
                 <div class="form-group">
                     <textarea class="ckeditor form-control" name="edit_vision">{{ $candidate->vision }}</textarea>
 
@@ -145,12 +150,9 @@ Data Pemilu
                         <span class="text-danger">{{ $message }}</span>
                     </div>
                     @enderror
-
-
                 </div>
             </div>
         </div>
-
 
         <div class="col-lg-6">
             <div class="card-box">
@@ -158,6 +160,7 @@ Data Pemilu
                 <p class="sub-header">
                     Misi adalah Penjabaran atau langkah-langkah yang akan dilakukan untuk mencapai / mewujudkan visi tersebut.
                 </p>
+
                 <div class="form-group">
                     <textarea class="ckeditor form-control" name="edit_mission">{{ $candidate->mission }}</textarea>
 
@@ -166,12 +169,13 @@ Data Pemilu
                         <span class="text-danger">{{ $message }}</span>
                     </div>
                     @enderror
-
                 </div>
             </div>
         </div>
     </div>
+    <!-- end row -->
 
+    <!-- start row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box">
@@ -186,25 +190,25 @@ Data Pemilu
             </div>
         </div>
     </div>
+    <!-- end row -->
 </form>
+<!-- end form -->
 
 @endsection
 
 @section('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-
-<script src="{{ asset('highdmin/js/vendor.min.js') }}"></script>
 <!--venobox lightbox-->
 <script src="{{ asset('highdmin/libs/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
-
 <!-- Gallery Init-->
 <script src="{{ asset('highdmin/js/pages/gallery.init.js') }}"></script>
+<!-- Filestyle js -->
 <script src="{{ asset('highdmin/libs/bootstrap-filestyle2/bootstrap-filestyle.min.js') }}"></script>
-
-<!-- Plugins js -->
+<!-- Katek js -->
 <script src="{{ asset('highdmin/libs/katex/katex.min.js') }}"></script>
+<!-- Ckeditor -->
 <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-<script type="text/javascript">
+
+<script>
     $(document).ready(function() {
         $('.ckeditor').ckeditor();
     });

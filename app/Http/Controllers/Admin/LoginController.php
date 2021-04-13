@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('admin.loginSystem.login');
+        return view('admin.login.data');
     }
 
     public function login(Request $request)
@@ -22,8 +22,7 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'])))
-        {
+        if (auth()->attempt(array('username' => $input['username'], 'password' => $input['password']))) {
             return redirect()->route('admin.dashboard');
         } else {
             return redirect()->route('login')->with('error', 'Username atau Password salah!');

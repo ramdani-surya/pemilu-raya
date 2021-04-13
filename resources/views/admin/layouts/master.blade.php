@@ -27,36 +27,32 @@
                 <div class="logo-box">
                     <a href="index.html" class="logo">
                         <span class="logo-lg">
-                            <img src="{{ asset('highdmin/images/logo-dark.png') }}" alt=""
-                                height="22">
+                            <img src="{{ asset('highdmin/images/logo-dark.png') }}" alt="" height="22">
                             <!-- <span class="logo-lg-text-light">Highdmin</span> -->
                         </span>
                         <span class="logo-sm">
                             <!-- <span class="logo-sm-text-dark">H</span> -->
-                            <img src="{{ asset('highdmin/images/logo-sm.png') }}" alt=""
-                                height="24">
+                            <img src="{{ asset('highdmin/images/logo-sm.png') }}" alt="" height="24">
                         </span>
                     </a>
                 </div>
 
                 <!-- User box -->
                 <div class="user-box">
-                    <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-img"
-                        title="Mat Helme" class="rounded-circle" height="48">
+                    <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-img" title="Mat Helme" class="rounded-circle" height="48">
                     <div class="dropdown">
-                        <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" data-toggle="dropdown">Maxine
-                            Kennedy</a>
+                        <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" data-toggle="dropdown">{{ Auth::user()->name }}</a>
                     </div>
-                    <p class="text-muted">Admin</p>
+                    <p class="text-muted text-capitalize">{{ Auth::user()->role }}</p>
                 </div>
 
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <ul class="metismenu" id="side-menu">
                         <li>
-                            <a href="{{ url('/') }}">
+                            <a href="{{ route('admin.dashboard') }}">
                                 <i class="fe-airplay"></i>
-                                <span> Dashbor </span>
+                                <span> Dashboard </span>
                             </a>
                         </li>
                         <li>
@@ -77,7 +73,7 @@
                                 <span> Daftar Pemilih Tetap </span>
                             </a>
                         </li>
-
+                        @if(Auth::user()->role == 'admin')
                         <li class="menu-title">Lainnya</li>
 
                         <li>
@@ -86,6 +82,7 @@
                                 <span> Manajemen Akun </span>
                             </a>
                         </li>
+                        @endif
                         {{-- Grafik hasil pemilu dari tiap penyelenggaraan tahun ke tahun --}}
                         {{-- <li>
                             <a href="widgets.html">
@@ -111,12 +108,10 @@
                 <ul class="list-unstyled topnav-menu float-right mb-0">
 
                     <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}"
-                                alt="user-image" class="rounded-circle">
+                        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
                             <span class="pro-user-name ml-1">
-                                Maxine K <i class="mdi mdi-chevron-down"></i>
+                                {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">

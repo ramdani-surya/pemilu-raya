@@ -47,7 +47,7 @@ class CandidateController extends Controller
     {
         $this->validate($request, [
             'election' => 'required',
-            'candidate_number' => 'required|numeric|unique:candidates',
+            'candidate_number' => "required|numeric|unique:candidates,candidate_number,$candidate->id",
             'chairman_name' => 'required|string|min:3|max:35',
             'vice_chairman_name' => 'required|string|min:3|max:35',
             'chairman_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -147,8 +147,9 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
+        
         $request->validate([
-            'edit_candidate_number' => 'required|numeric',
+            'edit_candidate_number' => "required|numeric|unique:candidates,candidate_number,$candidate->id",
             'edit_chairman_name'      => 'required|string|min:3',
             'edit_vice_chairman_name'     => 'required|string|min:3',
             'edit_chairman_photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
