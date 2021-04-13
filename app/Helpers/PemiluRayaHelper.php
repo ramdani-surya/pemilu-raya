@@ -4,9 +4,9 @@ use App\Models\Election;
 
 function votersPercentage(Election $election, $voted=1)
 {
-    $totalVoters   = count($election->voters);
-    $votedVoters   = count($election->votedVoters);
-    $unvotedVoters = count($election->unvotedVoters);
+    $totalVoters   = $election->total_voters ?? count($election->voters);
+    $votedVoters   = $election->voted_voters ?? count($election->votedVoters);
+    $unvotedVoters = $election->unvoted_voters ?? count($election->unvotedVoters);
 
     $vote = $voted ? $votedVoters  : $unvotedVoters;
 

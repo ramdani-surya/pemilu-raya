@@ -58,7 +58,8 @@ Data Pemilu
                             <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
                                 ({{ votersPercentage($election, 0) }})</td>
                             <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                            <td>{{ $election->election_winner }}</td>
+                            <td>{{ "$election->chairman - $election->vice_chairman" }}
+                            </td>
                             <td>
                                 @if($election->running)
                                     <button type="button"
@@ -80,8 +81,10 @@ Data Pemilu
                                     @if(!$election->running && !$election->archived)
                                         <a href="{{ route('elections.running', $election) }}"
                                             class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
-                                        <a href="{{ route('elections.archive', [$election, 1]) }}"
-                                            class="btn btn-info btn-rounded waves-light waves-effect">Arsipkan</a>
+                                        <button type="button"
+                                            data-url="{{ route('elections.archive', [$election, 1]) }}"
+                                            class="btn btn-info btn-rounded waves-light waves-effect"
+                                            onclick="archiveAlert(this)">Arsipkan</button>
                                         <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
                                             onclick="resetAlert(this)"
                                             data-url="{{ route('elections.reset_voting', $election) }}">Reset
@@ -259,8 +262,7 @@ Data Pemilu
         Swal.fire({
             title: "Hapus pemilu?",
             text: `Seluruh data terkait (kandidat, DPT, voting) akan ikut terhapus. Anda tidak akan dapat mengembalikan
-            aksi
-            ini!`,
+            aksi ini!`,
             type: "warning",
             showCancelButton: !0,
             confirmButtonColor: "#3085d6",
@@ -270,6 +272,25 @@ Data Pemilu
         }).then(function (t) {
             if (t.value) {
                 e.parentNode.submit()
+            }
+        })
+    }
+
+    function archiveAlert(e) {
+        Swal.fire({
+            title: "Arsipkan pemilu?",
+            text: `Hasil pemilu akan disimpan.
+                Data Kandidat dan DPT akan dibersihkan!
+                Kandidat dengan voting terbesar akan menjadi kandidat terpilih!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, arsipkan!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = `${e.dataset.url}`
             }
         })
     }
