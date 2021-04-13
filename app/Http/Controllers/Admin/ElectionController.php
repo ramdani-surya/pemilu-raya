@@ -82,15 +82,19 @@ class ElectionController extends Controller
             ? 'Sekarang pemilu dapat menerima voting.'
             : 'Sekarang pemilu tidak dapat menerima voting.';
 
-        if (!$election->archived) {
-            $election->running = $runningStatus;
+        if ($runningStatus === 1) {
+            if (Election::where('running', 1)->first()) {
+                Alert:: info('Info', "Hanya satu pemilu yang dapat berjalan.");
 
-            $election->save()
-                ? Alert::info('Sukses', $action)
-                : Alert::error('Error', "Pemilu gagal $action");
-        } else {
-            Alert::info('Info', "Pemilu tidak dapat $action");
+                return redirect(route('elections.index'));
+            }
         }
+
+        $election->running = $runningStatus;
+
+        $election->save()
+            ? Alert::success('Sukses', $action)
+            : Alert::error('Error', "Pemilu gagal $action");
 
         return redirect(route('elections.index'));
     }
