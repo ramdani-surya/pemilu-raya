@@ -32,7 +32,7 @@ class ElectionController extends Controller
      */
     public function store(Request $request)
     {
-        if (Election::where('archived', 1)->first()) {
+        if (getActiveElection()) {
             Alert::info('Info', 'Anda hanya dapat menambahkan satu pemilu baru (belum diarsipkan).');
             return back();
         }

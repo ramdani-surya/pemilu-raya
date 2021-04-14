@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Models\Voter;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Support\Str;
 
 class VotersImport implements ToModel
 {
@@ -18,10 +17,10 @@ class VotersImport implements ToModel
     {
         return new Voter([
             'user_id'     => Auth::id(),
-            'election_id' => $row[0],
-            'nim'         => $row[1],
-            'name'        => $row[2],
-            'token'       => Str::random(6),
+            'election_id' => getActiveElection()->id,
+            'nim'         => $row[0],
+            'name'        => $row[1],
+            'token'       => generateToken(),
         ]);
     }
 }

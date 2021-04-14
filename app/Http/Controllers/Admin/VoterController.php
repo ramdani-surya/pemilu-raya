@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\VotersImport;
 use App\Models\Voter;
-use App\Models\Election;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,6 +13,13 @@ use Alert;
 
 class VoterController extends Controller
 {
+    private $activeElection;
+
+    function __construct()
+    {
+        $this->activeElection = getActiveElection();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +27,8 @@ class VoterController extends Controller
      */
     public function index()
     {
-        $data['voters'] = Voter::orderBy('nim')->get();
-        $data['elections'] = Election::where('archived', 0)->orderByDesc('period')->get();
+        $data['voters']   = $this->activeElection->voters;
+        $data['election'] = $this->activeElection;
 
         return view('admin.voter.data', $data);
     }
@@ -36,21 +42,12 @@ class VoterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'election' => 'required|numeric|exists:elections,id',
-            'nim'      => 'required|string',
+            'nim'      => 'required|string|unique:voters,nim',
             'name'     => 'required|string',
-        ]);
-
-        $election = Election::find($request->election);
-
-        if ($election->voters()->where('nim', $request->nim)->first()) {
-            Alert::info('Gagal', "Pemilih tetap dengan NIM $request->nim di Pemilu $election->period telah ada!");
-
-            return back()->withInput();
-        }
+        ], config('validation_messages'));
 
         $data = [
-            'election_id' => $request->election,
+            'election_id' => $this->activeElection->id,
             'nim'         => $request->nim,
             'name'        => $request->name,
             'token'       => Str::random(6),
@@ -72,27 +69,19 @@ class VoterController extends Controller
      */
     public function update(Request $request, Voter $voter)
     {
+        $messages = [
+            'unique' => 'NIM telah digunakan',
+        ];
+
         $request->validate([
-            'edit_election' => 'required|numeric|exists:elections,id',
-            'edit_nim'      => 'required|string',
-            'edit_name'     => 'required|string',
-        ]);
-
-        if ($request->edit_election !== $voter->election_id && $request->edit_nim !== $voter->nim) {
-            $election = Election::find($request->edit_election);
-
-            if ($election->voters()->where('nim', $request->edit_nim)->first()) {
-                Alert::info('Gagal', "Pemilih tetap dengan NIM $request->edit_nim di Pemilu $election->period telah ada!");
-
-                return back()->withInput();
-            }
-        }
+            'edit_nim'  => "required|string|unique:voters,nim,$voter->id",
+            'edit_name' => 'required|string',
+        ], $messages);
 
         $data = [
-            'election_id' => $request->edit_election,
-            'nim'         => $request->edit_nim,
-            'name'        => $request->edit_name,
-            'token'       => Str::random(6),
+            'user_id' => Auth::id(),
+            'nim'     => $request->edit_nim,
+            'name'    => $request->edit_name,
         ];
 
         $voter->update($data)

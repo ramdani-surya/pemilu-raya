@@ -30,7 +30,7 @@ class Election extends Model
 
     public function voters()
     {
-        return $this->hasMany(Voter::class);
+        return $this->hasMany(Voter::class)->orderBy('nim');
     }
 
     public function votedVoters()

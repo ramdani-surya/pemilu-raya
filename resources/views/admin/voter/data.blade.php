@@ -15,7 +15,10 @@ Daftar Pemilih Tetap
 <div class="row">
     <div class="col-12">
         <div class="card-box table-responsive">
-            <h4 class="header-title">Daftar Pemilih Tetap</h4>
+            <h4 class="header-title">
+                Daftar Pemilih Tetap <br>
+                Pemilu {{ $election->period }}
+            </h4>
             <p class="sub-header">
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
@@ -51,13 +54,12 @@ Daftar Pemilih Tetap
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Pemilu</th>
                         <th>NIM</th>
                         <th>Nama</th>
                         <th>Token</th>
                         <th>Memilih</th>
                         <th>Email Terkirim</th>
-                        <th>Diinput Oleh</th>
+                        <th>Terakhir Diedit</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -69,7 +71,6 @@ Daftar Pemilih Tetap
                     @foreach($voters as $voter)
                     <tr>
                         <td>{{ $number++ }}</td>
-                        <td>{{ $voter->election->period }}</td>
                         <td>{{ $voter->nim }}</td>
                         <td>{{ $voter->name }}</td>
                         <td>{{ $voter->token }}</td>
@@ -123,20 +124,6 @@ Daftar Pemilih Tetap
             @csrf
             <div class="form-group">
                 <div class="col-12">
-                    <label for="election">Pemilu</label>
-                    <select class="form-control" name="election" id="election" required>
-                        @foreach($elections as $election)
-                        <option value="{{ $election->id }}" @if (old('election')===$election->id) selected
-                            @endif>{{ $election->period }}</option>
-                        @endforeach
-                    </select>
-                    @error('election')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-12">
                     <label for="nim">NIM</label>
                     <input class="form-control" type="text" id="nim" name="nim" value="{{ old('nim') }}" required>
                     @error('nim')
@@ -169,7 +156,7 @@ Daftar Pemilih Tetap
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="mySmallModalLabel">Edit Pemilu</h4>
+                <h4 class="modal-title" id="mySmallModalLabel">Edit Pemilih Tetap</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -178,21 +165,6 @@ Daftar Pemilih Tetap
                 <form class="form-horizontal" action="{{ route('voters.update', '') }}" id="edit-form" method="POST">
                     @csrf
                     @method('put')
-                    <div class="form-group">
-                        <div class="col-12">
-                            <label for="election">Pemilu</label>
-                            <select class="form-control" name="edit_election" id="election" required>
-                                @foreach($elections as $election)
-                                <option value="{{ $election->id }}" @if (old('edit_election')===$election->id)
-                                    selected
-                                    @endif>{{ $election->period }}</option>
-                                @endforeach
-                            </select>
-                            @error('edit_election')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
                     <div class="form-group">
                         <div class="col-12">
                             <label for="nim">NIM</label>
