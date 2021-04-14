@@ -12,9 +12,7 @@
     {{-- additional css --}}
     @yield('css')
 
-    <link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
-    type="text/css" />
-
+    <link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App css -->
     <link href="{{ asset('highdmin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('highdmin/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -31,36 +29,34 @@
                 <div class="logo-box">
                     <a href="index.html" class="logo">
                         <span class="logo-lg">
-                            <img src="{{ asset('highdmin/images/logo-dark.png') }}" alt=""
-                                height="22">
+                            <img src="{{ asset('highdmin/images/logo-dark.png') }}" alt="" height="22">
                             <!-- <span class="logo-lg-text-light">Highdmin</span> -->
                         </span>
                         <span class="logo-sm">
                             <!-- <span class="logo-sm-text-dark">H</span> -->
-                            <img src="{{ asset('highdmin/images/logo-sm.png') }}" alt=""
-                                height="24">
+                            <img src="{{ asset('highdmin/images/logo-sm.png') }}" alt="" height="24">
                         </span>
                     </a>
                 </div>
 
                 <!-- User box -->
                 <div class="user-box">
-                    <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-img"
-                        title="Mat Helme" class="rounded-circle" height="48">
+                    <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-img" title="Mat Helme"
+                        class="rounded-circle" height="48">
                     <div class="dropdown">
-                        <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" data-toggle="dropdown">Maxine
-                            Kennedy</a>
+                        <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+                            data-toggle="dropdown">{{ Auth::user()->name }}</a>
                     </div>
-                    <p class="text-muted">Admin</p>
+                    <p class="text-muted text-capitalize">{{ Auth::user()->role }}</p>
                 </div>
 
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <ul class="metismenu" id="side-menu">
                         <li>
-                            <a href="index.html">
+                            <a href="{{ route('admin.dashboard') }}">
                                 <i class="fe-airplay"></i>
-                                <span> Dasbor </span>
+                                <span> Dashboard </span>
                             </a>
                         </li>
                         <li>
@@ -70,7 +66,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="widgets.html">
+                            <a href="{{ route('candidates.index') }}">
                                 <i class="fe-users"></i>
                                 <span> Kandidat </span>
                             </a>
@@ -81,11 +77,10 @@
                                 <span> Daftar Pemilih Tetap </span>
                             </a>
                         </li>
-
                         <li class="menu-title">Lainnya</li>
 
                         <li>
-                            <a href="widgets.html">
+                            <a href="{{ route('users.index') }}">
                                 <i class="fe-settings"></i>
                                 <span> Manajemen Akun </span>
                             </a>
@@ -117,10 +112,10 @@
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}"
-                                alt="user-image" class="rounded-circle">
+                            <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-image"
+                                class="rounded-circle">
                             <span class="pro-user-name ml-1">
-                                Maxine K <i class="mdi mdi-chevron-down"></i>
+                                {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -130,17 +125,12 @@
                             </div>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-user"></i> <span>Akun Saya</span>
-                            </a>
-
-                            <!-- item-->
                             {{-- <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="fe-lock"></i> <span>Lock Screen</span>
                             </a> --}}
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="{{ route('admin.logout') }}" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i> <span>Logout</span>
                             </a>
                         </div>
@@ -190,7 +180,7 @@
         <!-- End Page content -->
         <!-- ============================================================== -->
     </div>
-    <!-- END wrapper -->
+    <!-- END  wrapper -->
 
     <!-- Vendor js -->
     <script src="{{ asset('highdmin/js/vendor.min.js') }}"></script>
