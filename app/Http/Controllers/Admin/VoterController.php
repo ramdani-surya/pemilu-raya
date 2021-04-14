@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Imports\VotersImport;
+use App\Mail\TokenMail;
 use App\Models\Voter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -87,6 +89,26 @@ class VoterController extends Controller
         $voter->update($data)
             ? Alert::success('Sukses', "Pemilih tetap berhasil diubah.")
             : Alert::error('Error', "Pemilih tetap gagal diubah!");
+
+        return redirect(route('voters.index'));
+    }
+
+    /**
+     * Reset dan/kirim email token
+     *
+     * @param  \App\Models\Voter  $voter
+     * @param  Boolean $sendEmail
+     * @return \Illuminate\Http\Response
+     */
+    public function resetToken(Voter $voter, $sendEmail)
+    {
+        $voter->update(['token' => generateToken()])
+            ? Alert::success('Sukses', "Token pemilih berhasil diubah.")
+            : Alert::error('Error', "Token pemilih gagal diubah!");
+
+        // gunakan filter_var() karena untuk jika value parameter adalah string
+        if (filter_var($sendEmail, FILTER_VALIDATE_BOOLEAN))
+            Mail::to("$voter->nim@mhs.stmik-sumedang.ac.id")->send(new TokenMail($voter));
 
         return redirect(route('voters.index'));
     }
