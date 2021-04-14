@@ -72,7 +72,7 @@ class UserController extends Controller
         foreach ($users as $user) {
 
 
-            $user->delete();
+            $user->delete()->skip(Auth::user());
         }
 
         (count(User::all()) < 1)

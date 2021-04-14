@@ -78,16 +78,11 @@ Manajemen Akun
                         <td>{{ Auth::user()->email }}</td>
                         <td><span class="badge badge-success font-15">{{ Auth::user()->role }}</span></td>
                         <td>
-                            <div class="button-list" style="max-width: 48%">
+                            <div class="button-list mx-auto" style="max-width: 48%">
                                 <button type="button" data-role="{{ Auth::user()->role }}" id="{{ Auth::user()->role }}"
                                     class="btn btn btn-info btn-rounded btn-block btn-edit waves-effect waves-light editButton"
                                     data-toggle="modal" data-target=".editModal"
                                     onclick="setEditData({{ Auth::user() }})">Edit
-                                </button>
-                                <button type="button"
-                                    class="btn btn-danger btn-rounded btn-block waves-light waves-effect buttonHapus mb-3"
-                                    data-toggle="modal" data-target=".deleteUser"
-                                    onclick="hapusUser({{ Auth::user() }})">Hapus
                                 </button>
                             </div>
                         </td>
