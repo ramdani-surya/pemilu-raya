@@ -19,8 +19,7 @@ class CandidateController extends Controller
 
     public function index()
     {
-        $data['candidates'] = Candidate::orderBy('id')->get();
-        $data['elections'] = Election::orderByDesc('period')->get();
+        $data['candidates'] = Election::where('archived', 1)->first()->candidates;
 
         return view('admin.candidate.data', $data);
     }
@@ -147,7 +146,7 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-        
+
         $request->validate([
             'edit_candidate_number' => "required|numeric|unique:candidates,candidate_number,$candidate->id",
             'edit_chairman_name'      => 'required|string|min:3',
