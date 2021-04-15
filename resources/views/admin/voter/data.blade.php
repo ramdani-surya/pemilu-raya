@@ -21,7 +21,7 @@ Daftar Pemilih Tetap
         <div class="card-box table-responsive">
             <h4 class="header-title">
                 Daftar Pemilih Tetap <br>
-                Pemilu {{ $election->period }}
+                {{ $election->name }}
             </h4>
             <p class="sub-header">
                 <div class="button-list">

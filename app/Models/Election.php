@@ -10,6 +10,7 @@ class Election extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'period',
         'total_voters',
         'voted_voters',

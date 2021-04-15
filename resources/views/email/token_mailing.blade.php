@@ -15,7 +15,8 @@ Token : <b>{{ $voter->token }}</b>
 <br>
 <br>
 
-bisa di isi di link {{ url('/') }} pada saat waktu pemilihan berlangsung.
+bisa di isi di link <a href="{{ url('/') }}">{{ url('/') }}</a> pada saat waktu
+pemilihan berlangsung.
 
 <br>
 <br>

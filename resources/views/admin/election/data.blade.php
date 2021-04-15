@@ -34,11 +34,12 @@ Data Pemilu
                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
+                        <th>Nama Pemilu</th>
                         <th>Periode</th>
                         <th>Jumlah DPT</th>
                         <th>DPT Memilih</th>
-                        <th>DPT Golput</th>
+                        {{-- <th>DPT Golput</th> --}}
                         <th>Jumlah Kandidat</th>
                         <th>Kandidat Terpilih</th>
                         <th>Berjalan</th>
@@ -48,15 +49,19 @@ Data Pemilu
                 </thead>
 
                 <tbody>
+                    @php
+                        $number = 1
+                    @endphp
                     @foreach($elections as $election)
                         <tr>
-                            <td>{{ $election->id }}</td>
+                            <td>{{ $number++ }}</td>
+                            <td>{{ $election->name }}</td>
                             <td>{{ $election->period }}</td>
                             <td>{{ $election->total_voters ?? count($election->voters) }}</td>
                             <td>{{ $election->voted_voters ?? count($election->votedVoters) }}
                                 ({{ votersPercentage($election, 1) }})</td>
-                            <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
-                                ({{ votersPercentage($election, 0) }})</td>
+                            {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
+                                ({{ votersPercentage($election, 0) }})</td> --}}
                             <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
                             <td>{{ "$election->chairman - $election->vice_chairman" }}
                             </td>
@@ -134,6 +139,17 @@ Data Pemilu
             @csrf
             <div class="form-group">
                 <div class="col-12">
+                    <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
+                            email)</span></label>
+                    <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021" name="name"
+                        required>
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-12">
                     <label for="period">Periode</label>
                     <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022" name="period"
                         required>
@@ -169,6 +185,17 @@ Data Pemilu
                     id="edit-form" method="POST">
                     @csrf
                     @method('put')
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
+                                    email)</span></label>
+                            <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021"
+                                name="edit_name" required>
+                            @error('edit_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-12">
                             <label for="period">Periode</label>
@@ -220,6 +247,7 @@ Data Pemilu
 
     function setEditData(election) {
         $('#edit-form').attr('action', `${updateLink}/${election.id}`);
+        $('[name="edit_name"]').val(election.name);
         $('[name="edit_period"]').val(election.period);
     }
 

@@ -31,6 +31,7 @@ class TokenMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.token_mailing');
+        return $this->subject($this->voter->election->name)
+            ->view('email.token_mailing');
     }
 }

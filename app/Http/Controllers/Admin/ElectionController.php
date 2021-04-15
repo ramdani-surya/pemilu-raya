@@ -38,6 +38,7 @@ class ElectionController extends Controller
         }
 
         $request->validate([
+            'name'   => 'required|string',
             'period' => 'required|string|unique:elections,period'
         ]);
 
@@ -69,10 +70,14 @@ class ElectionController extends Controller
     public function update(Request $request, Election $election)
     {
         $request->validate([
+            'edit_name'   => 'required|string',
             'edit_period' => "required|string|unique:elections,period,$election->id"
         ]);
 
-        $data['period'] = $request->edit_period;
+        $data = [
+            'name'   => $request->edit_name,
+            'period' => $request->edit_period,
+        ];
 
         $election->update($data)
             ? Alert::success('Sukses', 'Data pemilu berhasil diubah.')
