@@ -15,7 +15,8 @@ Token : <b>{{ $voter->token }}</b>
 <br>
 <br>
 
-bisa di isi di link <a href="{{ url('/') }}">{{ url('/') }}</a> pada saat waktu
+bisa di isi di link <a href="{{ route('login') }}">pemiluraya.stmik-sumedang.ac.id/</a> pada saat
+waktu
 pemilihan berlangsung.
 
 <br>

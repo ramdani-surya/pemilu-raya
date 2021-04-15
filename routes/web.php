@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::prefix('elections')->group(function () {
             Route::get('/clear', [ElectionController::class, 'clear'])->name('elections.clear');
             Route::get('/{election}/running/{runningStatus?}', [ElectionController::class, 'running'])->name('elections.running');
+            Route::get('/{election}/send-token', [ElectionController::class, 'sendToken'])->name('elections.send_token');
             Route::get('/{election}/archive', [ElectionController::class, 'archive'])->name('elections.archive');
             Route::get('/{election}/reset-voting', [ElectionController::class, 'resetVoting'])->name('elections.reset_voting');
         });

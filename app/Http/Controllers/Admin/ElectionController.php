@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Alert;
 use App\Http\Controllers\Controller;
+use App\Mail\TokenMail;
 use App\Models\Candidate;
 use App\Models\Election;
 use App\Models\Voter;
 use App\Models\Voting;
 use Illuminate\Http\Request;
-use Alert;
+use Illuminate\Support\Facades\Mail;
 
 class ElectionController extends Controller
 {
@@ -196,6 +198,25 @@ class ElectionController extends Controller
         Election::destroy($elections)
             ? Alert::success('Sukses', 'Data pemilu berhasil dibersihkan.')
             : Alert::error('Error', 'Data pemilu gagal dibersihkan.');
+
+        return redirect(route('elections.index'));
+    }
+
+    public function sendToken(Election $election)
+    {
+        $voters = $election->voters()->where('email_sent', 0)->get();
+
+        if (count($voters) < 1) {
+            Alert::info('Info', 'Semua token DPT telah terkirim!');
+        } else {
+            foreach ($voters as $voter) {
+                Mail::to($voter)->queue(new TokenMail($voter));
+            }
+
+            $election->voters()->update(['email_sent' => 1])
+                ? Alert::success('Sukses', 'Email token berhasil dikirim.')
+                : Alert::error('Error', 'Email token gagal dikirim.');
+        }
 
         return redirect(route('elections.index'));
     }

@@ -61,7 +61,7 @@ Data Pemilu
                             <td>{{ $election->voted_voters ?? count($election->votedVoters) }}
                                 ({{ votersPercentage($election, 1) }})</td>
                             {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
-                                ({{ votersPercentage($election, 0) }})</td> --}}
+                            ({{ votersPercentage($election, 0) }})</td> --}}
                             <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
                             <td>{{ "$election->chairman - $election->vice_chairman" }}
                             </td>
@@ -86,6 +86,10 @@ Data Pemilu
                                     @if(!$election->running && !$election->archived)
                                         <a href="{{ route('elections.running', $election) }}"
                                             class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
+                                        <button type="button" onclick="disableButton(this)"
+                                            class="btn btn-purple btn-rounded waves-light waves-effect"
+                                            data-url="{{ route('elections.send_token', $election) }}">Kirim
+                                            Email Token</button>
                                         <button type="button"
                                             data-url="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-info btn-rounded waves-light waves-effect"
@@ -321,6 +325,13 @@ Data Pemilu
                 window.location.href = `${e.dataset.url}`
             }
         })
+    }
+
+    function disableButton(e) {
+        $(e).attr('disabled', '');
+        $(e).text('Mengirim...');
+
+        window.location.href = `${e.dataset.url}`
     }
 
 </script>

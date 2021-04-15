@@ -8,9 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TokenMail extends Mailable
+class TokenMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
+
+    // https://laravel.com/docs/8.x/mail#queued-mailables-and-database-transactions
+    // public $afterCommit = true;
 
     public $voter;
 
