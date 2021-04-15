@@ -21,6 +21,7 @@ class VotersImport implements ToModel
             'nim'         => $row[0],
             'name'        => $row[1],
             'token'       => generateToken(),
+            'email'       => emailStmik($row[0]),
         ]);
     }
 }

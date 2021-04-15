@@ -68,16 +68,16 @@ Data Pemilu
                             <td>
                                 @if($election->running)
                                     <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                        <i class="fas fa-check"></i>
                                     </button>
                                 @endif
                             </td>
                             <td>
                                 @if($election->archived)
                                     <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                        <i class="fas fa-check"></i>
                                     </button>
                                 @endif
                             </td>

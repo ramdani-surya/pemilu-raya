@@ -13,6 +13,8 @@ Daftar Pemilih Tetap
     type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet"
     type="text/css" />
+<link href="{{ asset('highdmin/libs/tooltipster/tooltipster.bundle.min.css') }}"
+    rel="stylesheet" type="text/css">
 @endsection
 
 @section('content')
@@ -62,7 +64,7 @@ Daftar Pemilih Tetap
                         <th>Nama</th>
                         <th>Token</th>
                         <th>Memilih</th>
-                        <th>Email Terkirim</th>
+                        <th>Email</th>
                         <th>Terakhir Diedit</th>
                         <th>Aksi</th>
                     </tr>
@@ -77,23 +79,22 @@ Daftar Pemilih Tetap
                             <td>{{ $number++ }}</td>
                             <td>{{ $voter->nim }}</td>
                             <td>{{ $voter->name }}</td>
-                            <td>{{ $voter->token }}</td>
+                            <td>
+                                {{ $voter->token }}
+                                @if($voter->email_sent)
+                                    <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Terkirim" style="font-weight: bold;"></i>
+                                @endif
+                            </td>
                             <td>
                                 @if($voter->voted)
                                     <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                        <i class="fas fa-check"></i>
                                     </button>
                                 @endif
                             </td>
-                            <td>
-                                @if($voter->email_sent)
-                                    <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
-                                    </button>
-                                @endif
-                            </td>
+                            <td>{{ $voter->email }}</td>
                             <td>{{ $voter->storedByUser->name }}</td>
                             <td>
                                 <div class="button-list" style="display: flex">
@@ -101,7 +102,8 @@ Daftar Pemilih Tetap
                                         class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
                                         data-toggle="modal" data-target=".bs-example-modal-sm"
                                         onclick="setEditData({{ $voter }})">Edit</button>
-                                    <button type="button" data-url="{{ route('voters.reset_token', [$voter, '']) }}"
+                                    <button type="button"
+                                        data-url="{{ route('voters.reset_token', [$voter, '']) }}"
                                         class="btn btn-pink btn-rounded waves-effect waves-light"
                                         onclick="resetTokenAlert(this)">Reset Token</button>
                                     <form action="{{ route('voters.destroy', $voter) }}"
@@ -197,6 +199,15 @@ Daftar Pemilih Tetap
                             @enderror
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="email">Email</label>
+                            <input class="form-control" type="text" id="email" name="email" required>
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group account-btn text-center mt-2">
                         <div class="col-12">
                             <button class="btn width-lg btn-rounded btn-primary waves-effect waves-light"
@@ -239,14 +250,18 @@ Daftar Pemilih Tetap
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
 
+{{-- Tooltips --}}
+<script src="{{ asset('highdmin/libs/tooltipster/tooltipster.bundle.min.js') }}"></script>
+<script src="{{ asset('highdmin/js/pages/tooltipster.init.js') }}"></script>
+
 <script>
     const updateLink = $('#edit-form').attr('action');
 
     function setEditData(voter) {
         $('#edit-form').attr('action', `${updateLink}/${voter.id}`);
-        $('[name="edit_election"]').val(voter.election_id);
         $('[name="edit_nim"]').val(voter.nim);
         $('[name="edit_name"]').val(voter.name);
+        $('[name="email"]').val(voter.email);
     }
 
     $(function () {
@@ -273,7 +288,7 @@ Daftar Pemilih Tetap
             cancelButtonText: "Tidak, reset saja."
         }).then(function (t) {
             let url = e.dataset.url,
-            sendEmail = (t.value) ? true : false;
+                sendEmail = (t.value) ? true : false;
 
             window.location.href = `${url}/${sendEmail}`
         })

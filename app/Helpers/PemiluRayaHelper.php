@@ -3,6 +3,11 @@
 use App\Models\Election;
 use Illuminate\Support\Str;
 
+function emailStmik($nim)
+{
+    return "$nim@mhs.stmik-sumedang.ac.id";
+}
+
 function generateToken()
 {
     return Str::random(6);

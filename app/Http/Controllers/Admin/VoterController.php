@@ -53,6 +53,7 @@ class VoterController extends Controller
             'nim'         => $request->nim,
             'name'        => $request->name,
             'token'       => Str::random(6),
+            'email'       => emailStmik($request->nim),
         ];
 
         Auth::user()->storedVoters()->create($data)
@@ -71,19 +72,20 @@ class VoterController extends Controller
      */
     public function update(Request $request, Voter $voter)
     {
-        $messages = [
-            'unique' => 'NIM telah digunakan',
-        ];
+        $messages = config('validation_messages');
+        $messages['edit_nim.unique'] = 'NIM telah digunakan';
 
         $request->validate([
             'edit_nim'  => "required|string|unique:voters,nim,$voter->id",
             'edit_name' => 'required|string',
+            'email'     => "required|email|unique:voters,email,$voter->id",
         ], $messages);
 
         $data = [
             'user_id' => Auth::id(),
             'nim'     => $request->edit_nim,
             'name'    => $request->edit_name,
+            'email'   => $request->email,
         ];
 
         $voter->update($data)
@@ -102,13 +104,21 @@ class VoterController extends Controller
      */
     public function resetToken(Voter $voter, $sendEmail)
     {
-        $voter->update(['token' => generateToken()])
+        $data = [
+            'token'      => generateToken(),
+            'email_sent' => 0,
+        ];
+
+        $voter->update($data)
             ? Alert::success('Sukses', "Token pemilih berhasil diubah.")
             : Alert::error('Error', "Token pemilih gagal diubah!");
 
-        // gunakan filter_var() karena untuk jika value parameter adalah string
-        if (filter_var($sendEmail, FILTER_VALIDATE_BOOLEAN))
-            Mail::to("$voter->nim@mhs.stmik-sumedang.ac.id")->send(new TokenMail($voter));
+        // gunakan filter_var() untuk jika value parameter adalah string
+        if (filter_var($sendEmail, FILTER_VALIDATE_BOOLEAN)) {
+            Mail::to($voter)->send(new TokenMail($voter));
+
+            $voter->update(['email_sent' => 1]);
+        }
 
         return redirect(route('voters.index'));
     }
