@@ -27,7 +27,7 @@ Login User
                     <div class="card-box shadow-none p-4 mt-2">
                         <h2 class="text-uppercase text-center pb-3">
                             <a href="index.html" class="text-success">
-                                <span><img src="{{ asset('highdmin/images/logo-dark.png') }}" alt="" height="26"></span>
+                                <span><img src="{{ asset('Images/tahu.png') }}" alt="" height="82"></span>
                             </a>
                         </h2>
 
@@ -49,7 +49,7 @@ Login User
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <a href="page-recoverpw.html" class="text-muted float-right"><small>Forgot your
+                                    <a href="" class="text-muted float-right"><small>Forgot your
                                             password?</small></a>
                                     <label for="password">Password</label>
                                     <div class="input-group">
@@ -66,7 +66,7 @@ Login User
                             <div class="form-group row">
                                 <div class="col-12">
 
-                                    <div class="checkbox checkbox-primary">
+                                    <div class="checkbox checkbox-warning">
                                         <input id="remember" type="checkbox" name="remember" checked="">
                                         <label for="remember">
                                             Remember me
@@ -77,7 +77,7 @@ Login User
 
                             <div class="form-group row text-center">
                                 <div class="col-12">
-                                    <button class="btn btn-block btn-primary waves-effect waves-light"
+                                    <button class="btn btn-block btn-warning waves-effect waves-light"
                                         type="submit">Sign In</button>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@ Login User
         </div>
 
         <div class="text-center">
-            <p class="account-copyright">2021 &copy; Made by <a href="#">TAHUNGODING STMIK Sumedang</a></p>
+            <p class="account-copyright">2021 &copy; Made by <a href="#" style="color:#f9bc0b;">TAHUNGODING STMIK Sumedang</a></p>
         </div>
 
     </div>

@@ -28,21 +28,19 @@
                 <!-- LOGO -->
                 <div class="logo-box">
                     <a href="index.html" class="logo">
-                        <span class="logo-lg">
-                            <img src="{{ asset('highdmin/images/logo-dark.png') }}" alt="" height="22">
+                        <span class="logo-lg p-1">
+                            <img src="{{ asset('Images/tahu.png') }}" alt="" height="52">
                             <!-- <span class="logo-lg-text-light">Highdmin</span> -->
                         </span>
                         <span class="logo-sm">
                             <!-- <span class="logo-sm-text-dark">H</span> -->
-                            <img src="{{ asset('highdmin/images/logo-sm.png') }}" alt="" height="24">
+                            <img src="{{ asset('Images/tahu.png') }}" alt="" height="24">
                         </span>
                     </a>
                 </div>
 
                 <!-- User box -->
                 <div class="user-box">
-                    <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-img" title="Mat Helme"
-                        class="rounded-circle" height="48">
                     <div class="dropdown">
                         <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
                             data-toggle="dropdown">{{ Auth::user()->name }}</a>
@@ -112,8 +110,6 @@
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="{{ asset('highdmin/images/users/avatar-1.jpg') }}" alt="user-image"
-                                class="rounded-circle">
                             <span class="pro-user-name ml-1">
                                 {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
                             </span>
@@ -145,11 +141,11 @@
                     </li>
 
                     <li>
-                        <h4 class="page-title-main">Starter Page</h4>
+                        <h4 class="page-title-main">Pemilu Raya</h4>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Highdmin</a></li>
-                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                            <li class="breadcrumb-item active">Starter Page</li>
+                            <li class="breadcrumb-item"><a href="#">Pemilu Raya</a></li>
+                            <li class="breadcrumb-item"><a href="#">@yield('subtitle')</a></li>
+                            @yield('subtitle-in')
                         </ol>
                     </li>
 
@@ -169,7 +165,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6">
-                            2021 &copy; Made by <a href="#">TAHUNGODING STMIK Sumedang</a>
+                            2021 &copy; Made by <a href="#" style="color:#f9bc0b;">TAHUNGODING STMIK Sumedang</a>
                         </div>
                     </div>
                 </div>

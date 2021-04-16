@@ -19,11 +19,11 @@ class CandidateController extends Controller
 
     public function index()
     {
-        $data['candidates'] = Election::where('archived', 1)->first()->candidates;
+        $data['candidates'] = Election::where('archived', 0)->first()->candidates;
 
         return view('admin.candidate.data', $data);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -97,22 +97,6 @@ class CandidateController extends Controller
         return redirect()->back();
     }
 
-    public function clearAll()
-    {
-        $candidates = Candidate::all();
-
-        foreach ($candidates as $candidate) {
-
-
-            $candidate->delete();
-        }
-
-        (count(Candidate::all()) < 1)
-            ? Alert::success('Sukses', "Daftar Kandidat berhasil dibersihkan.")
-            : Alert::error('Error', "Daftar Kandidat gagal dibersihkan!");
-
-        return redirect(route('candidates.index'));
-    }
 
     /**
      * Display the specified resource.
@@ -200,8 +184,27 @@ class CandidateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function clear()
+    {
+        $candidates = Candidate::all();
+
+        foreach ($candidates as $candidate) {
+
+            $candidate->votings()->delete();
+            $candidate->delete();
+        }
+
+        (count(Candidate::all()) < 1)
+            ? Alert::success('Sukses', "Daftar Kandidat berhasil dibersihkan.")
+            : Alert::error('Error', "Daftar Kandidat gagal dibersihkan!");
+
+        return redirect(route('candidates.index'));
+    }
+
     public function destroy(Candidate $candidate)
     {
+        $candidate->votings()->delete();
         $candidate->delete()
             ? Alert::success('Sukses', "Kandidat berhasil dihapus.")
             : Alert::error('Error', "Kandidat gagal dihapus!");
