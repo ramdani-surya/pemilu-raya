@@ -1,6 +1,22 @@
 <?php
 
 use App\Models\Election;
+use Illuminate\Support\Str;
+
+function emailStmik($nim)
+{
+    return "$nim@mhs.stmik-sumedang.ac.id";
+}
+
+function generateToken()
+{
+    return Str::random(6);
+}
+
+function getActiveElection()
+{
+    return Election::where('archived', 0)->first();
+}
 
 function votersPercentage(Election $election, $voted=1)
 {

@@ -475,7 +475,23 @@ Manajemen Akun
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
 
 <!-- keep the modal pop up if errors occur -->
+@if ($errors->has('name') || $errors->has('username') || $errors->has('email') || $errors->has('password'))
+<script>
+    function showCreateModal() {
+        $('.createModal').modal('show');
+    }
+    showCreateModal();
+</script>
+@endif
 
+@if ($errors->has('edit_name') || $errors->has('edit_username') || $errors->has('edit_email'))
+<script>
+    function showCreateModal() {
+        $('.editModal').modal('show');
+    }
+    showCreateModal();
+</script>
+@endif
 
 
 

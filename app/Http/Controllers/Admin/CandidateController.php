@@ -19,7 +19,7 @@ class CandidateController extends Controller
 
     public function index()
     {
-        $data['candidates'] = Election::where('archived', 0)->first()->candidates;
+        $data['candidates'] = getActiveElection()->candidates;
 
         return view('admin.candidate.data', $data);
     }

@@ -17,6 +17,7 @@ class Voter extends Authenticatable
         'name',
         'token',
         'voted',
+        'email',
         'email_sent',
     ];
 
