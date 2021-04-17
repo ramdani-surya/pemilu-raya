@@ -1,8 +1,13 @@
 @extends('admin.layouts.master')
 
 @section('subtitle')
-Data Pemilu
+Data Kandidat
 @endsection
+
+@section('subtitle-in')
+<li class="breadcrumb-item active">Edit Kandidat</li>
+@endsection
+
 
 @section('css')
 <!--venobox lightbox-->
@@ -74,26 +79,30 @@ Data Pemilu
                 </p>
 
                 <div class="card filter-item all webdesign illustrator">
-                    <a href="{{ asset('images/'. $candidate->chairman_photo) }}" class="image-popup">
-                        <div class="portfolio-masonry-box">
-                            <div class="portfolio-masonry-img">
-                                @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="Default Image">
-                                @else
-                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="Chairman Photo">
-                                @endif
-                            </div>
-                            <div class="portfolio-masonry-detail">
-                                <h4 class="font-18">{{ $candidate->chairman_name }}</h4>
-                                <p>KETUA</p>
-                            </div>
-                        </div>
-                    </a>
+                    @if(empty($candidate->chairman_photo))
+                    <a href="{{ asset('images/imageNoAvailable.svg') }}" class="image-popup">
+                        @else
+                        <a href="{{ asset('images/'. $candidate->chairman_photo) }}" class="image-popup">
+                            @endif
 
+                            <div class="portfolio-masonry-box">
+                                <div class="portfolio-masonry-img">
+                                    @if(empty($candidate->chairman_photo))
+                                    <img src="{{ asset('images/imageNoAvailable.svg') }}"
+                                        style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Default Photo">
+                                    @else
+                                    <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
+                                        style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Chairman Photo">
+                                    @endif
+                                </div>
+                                <div class="portfolio-masonry-detail">
+                                    <h4 class="font-18">{{ $candidate->chairman_name }}</h4>
+                                    <p>KETUA</p>
+                                </div>
+                            </div>
+                        </a>
                 </div>
                 <div class="form-group mb-0">
                     <p class="sub-header">Upload Foto Ketua</p>
@@ -113,26 +122,32 @@ Data Pemilu
                 </p>
 
                 <div class="card filter-item all webdesign illustrator">
-                    <a href="{{ asset('images/'. $candidate->vice_chairman_photo) }}" class="image-popup">
-                        <div class="portfolio-masonry-box">
-                            <div class="portfolio-masonry-img">
-                                @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="Default Image">
-                                @else
-                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="Vice Chairman Photo">
-                                @endif
+                    @if(empty($candidate->vice_chairman_photo))
+                    <a href="{{ asset('images/imageNoAvailable.svg') }}" class="image-popup">
+                        @else
+                        <a href="{{ asset('images/'. $candidate->vice_chairman_photo) }}" class="image-popup">
+                            @endif
+
+                            <div class="portfolio-masonry-box">
+                                <div class="portfolio-masonry-img">
+                                    @if(empty($candidate->vice_chairman_photo))
+                                    <img src="{{ asset('images/imageNoAvailable.svg') }}"
+                                        style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Default Image">
+                                    @else
+                                    <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
+                                        style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Vice Chairman Photo">
+                                    @endif
+                                </div>
+                                <div class="portfolio-masonry-detail">
+                                    <h4 class="font-18">{{ $candidate->vice_chairman_name }}</h4>
+                                    <p>WAKIL KETUA</p>
+                                </div>
                             </div>
-                            <div class="portfolio-masonry-detail">
-                                <h4 class="font-18">{{ $candidate->vice_chairman_name }}</h4>
-                                <p>WAKIL KETUA</p>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
                 </div>
+
                 <div class="form-group mb-0">
                     <p class="sub-header">Upload Foto Wakil Ketua</p>
                     <input type="file" name="edit_vice_chairman_photo" class="filestyle" data-buttonBefore="true">

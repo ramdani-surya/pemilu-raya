@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class UserFactory extends Factory
 {
@@ -22,12 +23,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $array = ['admin','panitia'];
         return [
             'name' => $this->faker->name,
             'username' => $this->faker->username,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => bcrypt('secret'),
+            'role' => Arr::random($array),
             'remember_token' => Str::random(10),
         ];
     }

@@ -1,7 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('subtitle')
-Data Pemilu - Tambah
+Data Kandidat
+@endsection
+
+@section('subtitle-in')
+<li class="breadcrumb-item active">Tambah Kandidat</li>
 @endsection
 
 @section('content')
@@ -18,12 +22,11 @@ Data Pemilu - Tambah
                 </p>
 
                 <div class="form-group">
-                    <select class="form-control" name="election" id="election" required>
-                        @foreach($elections as $election)
-                        <option value="{{ $election->id }}" @if (old('election')===$election->id) selected
-                            @endif>{{ $election->period }}</option>
-                        @endforeach
-                    </select>
+                    <label for="Periode">Periode<span class="text-danger">*</span></label>
+                    @foreach($elections as $election)
+                    <input type="hidden" name="election" value="{{ $election->id }}">
+                    <input type="text" class="form-control" value="{{ $election->period }}" disabled>
+                    @endforeach
 
                     @error('election')
                     <span class="text-danger">{{ $message }}</span>
