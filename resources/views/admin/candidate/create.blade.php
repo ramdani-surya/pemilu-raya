@@ -23,10 +23,8 @@ Data Kandidat
 
                 <div class="form-group">
                     <label for="Periode">Periode<span class="text-danger">*</span></label>
-                    @foreach($elections as $election)
-                    <input type="hidden" name="election" value="{{ $election->id }}">
-                    <input type="text" class="form-control" value="{{ $election->period }}" disabled>
-                    @endforeach
+                    <input type="hidden" name="election" value="{{ getActiveElection()->id }}">
+                    <input type="text" class="form-control" value="{{ getActiveElection()->period }}" disabled>
 
                     @error('election')
                     <span class="text-danger">{{ $message }}</span>
@@ -37,7 +35,7 @@ Data Kandidat
                     <label for="nomorKandidat">Nomor Kandidat<span class="text-danger">*</span></label>
                     <input type="number" name="candidate_number" parsley-trigger="change"
                         placeholder="Masukkan Nomor Kandidat" class="form-control" id="candidate_number"
-                        value="{{ old('candidate_number') }}">
+                        value="{{ old('candidate_number') }}" min="1">
 
                     @error('candidate_number')
                     <div class="mt-1">

@@ -24,12 +24,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('login')->middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('/', [AuthController::class, 'authenticate'])->name('authenticate');
+
+    Route::get('/admin', [LoginController::class, 'index'])->middleware('guest')->name('admin.login');
+    Route::post('/admin', [LoginController::class, 'login']);
 });
-
-Route::get('/admin-login', [LoginController::class, 'index'])->middleware('guest')->name('admin.login');
-Route::post('/admin-login', [LoginController::class, 'login']);
-Route::get('/admin-logout', [LoginController::class, 'logout'])->   name('admin.logout');
-
 
 Route::middleware('auth:voter')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:voter')->name('logout');
