@@ -23,7 +23,7 @@ class CandidateController extends Controller
 
         return view('admin.candidate.data', $data);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,9 +31,7 @@ class CandidateController extends Controller
      */
     public function create()
     {
-        $data['elections'] = Election::orderByDesc('period')->get();
-
-        return view('admin.candidate.create', $data);
+        return view('admin.candidate.create');
     }
 
     /**
@@ -45,14 +43,14 @@ class CandidateController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'election' => 'required',
-            'candidate_number' => "required|numeric|unique:candidates",
-            'chairman_name' => 'required|string|min:3|max:35',
-            'vice_chairman_name' => 'required|string|min:3|max:35',
-            'chairman_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'election'            => 'required',
+            'candidate_number'    => "required|numeric|unique:candidates",
+            'chairman_name'       => 'required|string|min:2',
+            'vice_chairman_name'  => 'required|string|min:2',
+            'chairman_photo'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'vice_chairman_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'vision' => 'required|string|min:10',
-            'mission' => 'required|string|min:10'
+            'vision'              => 'required|string|min:10',
+            'mission'             => 'required|string|min:10'
         ]);
 
         if ($request->hasFile('chairman_photo')) {
@@ -80,20 +78,21 @@ class CandidateController extends Controller
         }
 
         $data = [
-            'election_id' => $request->election,
-            'candidate_number' => $request->candidate_number,
-            'chairman_name' => $request->chairman_name,
-            'vice_chairman_name' => $request->vice_chairman_name,
-            'chairman_photo' => $chairman_photo,
+            'election_id'         => $request->election,
+            'candidate_number'    => $request->candidate_number,
+            'chairman_name'       => $request->chairman_name,
+            'vice_chairman_name'  => $request->vice_chairman_name,
+            'chairman_photo'      => $chairman_photo,
             'vice_chairman_photo' => $vice_chairman_photo,
-            'vision' => $request->vision,
-            'mission' => $request->mission,
+            'vision'              => $request->vision,
+            'mission'             => $request->mission,
         ];
 
 
         Candidate::create($data)
             ? Alert::success('Sukses', "Kandidat berhasil ditambahkan.")
             : Alert::error('Error', "Kandidat gagal ditambahkan!");
+
         return redirect()->back();
     }
 
@@ -117,7 +116,6 @@ class CandidateController extends Controller
      */
     public function edit(Candidate $candidate)
     {
-
         return view('admin.candidate.edit', compact('candidate'));
     }
 
@@ -132,13 +130,13 @@ class CandidateController extends Controller
     {
 
         $request->validate([
-            'edit_candidate_number' => "required|numeric|unique:candidates,candidate_number,$candidate->id",
-            'edit_chairman_name'      => 'required|string|min:3',
-            'edit_vice_chairman_name'     => 'required|string|min:3',
-            'edit_chairman_photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'edit_vice_chairman_photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'edit_vision'     => 'required|string|min:10',
-            'edit_mission'     => 'required|string|min:10',
+            'edit_candidate_number'    => "required|numeric|unique:candidates,candidate_number,$candidate->id",
+            'edit_chairman_name'       => 'required|string|min:2',
+            'edit_vice_chairman_name'  => 'required|string|min:2',
+            'edit_chairman_photo'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'edit_vice_chairman_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'edit_vision'              => 'required|string|min:10',
+            'edit_mission'             => 'required|string|min:10',
         ]);
 
         if ($request->hasFile('edit_chairman_photo')) {
@@ -190,8 +188,11 @@ class CandidateController extends Controller
         $candidates = Candidate::all();
 
         foreach ($candidates as $candidate) {
+            foreach ($candidate->votings as $voting) {
+                $voting->voter()->update(['voted' => 0]);
+                $voting->delete();
+            }
 
-            $candidate->votings()->delete();
             $candidate->delete();
         }
 
@@ -204,10 +205,15 @@ class CandidateController extends Controller
 
     public function destroy(Candidate $candidate)
     {
-        $candidate->votings()->delete();
+        foreach ($candidate->votings as $voting) {
+            $voting->voter()->update(['voted' => 0]);
+            $voting->delete();
+        }
+
         $candidate->delete()
             ? Alert::success('Sukses', "Kandidat berhasil dihapus.")
             : Alert::error('Error', "Kandidat gagal dihapus!");
+
         return redirect(route('candidates.index'));
     }
 }
