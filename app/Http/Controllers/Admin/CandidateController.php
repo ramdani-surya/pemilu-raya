@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Candidate;
 use App\Models\Election;
@@ -15,8 +16,6 @@ class CandidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
     public function index()
     {
         $data['candidates'] = getActiveElection()->candidates;
@@ -88,14 +87,12 @@ class CandidateController extends Controller
             'mission'             => $request->mission,
         ];
 
-
         Candidate::create($data)
             ? Alert::success('Sukses', "Kandidat berhasil ditambahkan.")
             : Alert::error('Error', "Kandidat gagal ditambahkan!");
 
         return redirect()->back();
     }
-
 
     /**
      * Display the specified resource.
@@ -215,5 +212,27 @@ class CandidateController extends Controller
             : Alert::error('Error', "Kandidat gagal dihapus!");
 
         return redirect(route('candidates.index'));
+    }
+
+    public function elect(Candidate $candidate)
+    {
+        $data = [
+            'election_id' => $candidate->election_id,
+            'voter_id'    => Auth::guard('voter')->id(),
+        ];
+
+        if ($candidate->votings()->create($data)) {
+            Auth::guard('voter')->user()->update([
+                'voted' => 1
+            ]);
+
+            Alert::success('Sukses', "Terima kasih telah menggunakan hak suara Anda.");
+
+            return redirect(route('has_voted'));
+        }
+
+        Alert::error('Error', "Kandidat gagal dipilih!");
+
+        return back();
     }
 }
