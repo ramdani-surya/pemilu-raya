@@ -18,6 +18,24 @@ function getActiveElection()
     return Election::where('archived', 0)->first();
 }
 
+function getRunningElection()
+{
+    return Election::where('running', 1)->first();
+}
+
+function tglIndo($date)
+{
+    $bln  = config('constant.bulan');
+    $date = date('d-m-Y', strtotime($date));
+    $date = explode('-', $date);
+
+    // variabel pecahkan 0 = tanggal
+    // variabel pecahkan 1 = bulan
+    // variabel pecahkan 2 = tahun
+
+    return $date[0] . ' ' . $bln[(int) $date[1]] . ' ' . $date[2];
+}
+
 function votersPercentage(Election $election, $voted=1)
 {
     $totalVoters   = $election->total_voters ?? count($election->voters);

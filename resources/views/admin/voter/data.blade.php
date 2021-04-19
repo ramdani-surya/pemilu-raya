@@ -98,14 +98,17 @@ Daftar Pemilih Tetap
                             <td>{{ $voter->storedByUser->name }}</td>
                             <td>
                                 <div class="button-list" style="display: flex">
-                                    <button type="button"
-                                        class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
-                                        data-toggle="modal" data-target=".bs-example-modal-sm"
-                                        onclick="setEditData({{ $voter }})">Edit</button>
-                                    <button type="button"
-                                        data-url="{{ route('voters.reset_token', [$voter, '']) }}"
-                                        class="btn btn-pink btn-rounded waves-effect waves-light"
-                                        onclick="resetTokenAlert(this)">Reset Token</button>
+                                    @if(!$voter->voted)
+                                        <button type="button"
+                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm"
+                                            onclick="setEditData({{ $voter }})">Edit</button>
+                                        <button type="button"
+                                            data-url="{{ route('voters.reset_token', [$voter, '']) }}"
+                                            class="btn btn-pink btn-rounded waves-effect waves-light"
+                                            onclick="resetTokenAlert(this)">Reset Token</button>
+                                    @endif
+
                                     <form action="{{ route('voters.destroy', $voter) }}"
                                         method="post" class="form-delete">
                                         @csrf

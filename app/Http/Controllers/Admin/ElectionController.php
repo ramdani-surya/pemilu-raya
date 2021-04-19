@@ -40,8 +40,9 @@ class ElectionController extends Controller
         }
 
         $request->validate([
-            'name'   => 'required|string',
-            'period' => 'required|string|unique:elections,period'
+            'name'         => 'required|string',
+            'period'       => 'required|string|unique:elections,period',
+            'running_date' => 'nullable|date'
         ]);
 
         Election::create($request->all())
@@ -73,12 +74,14 @@ class ElectionController extends Controller
     {
         $request->validate([
             'edit_name'   => 'required|string',
-            'edit_period' => "required|string|unique:elections,period,$election->id"
+            'edit_period' => "required|string|unique:elections,period,$election->id",
+            'edit_date'   => 'nullable|date'
         ]);
 
         $data = [
-            'name'   => $request->edit_name,
-            'period' => $request->edit_period,
+            'name'         => $request->edit_name,
+            'period'       => $request->edit_period,
+            'running_date' => $request->date,
         ];
 
         $election->update($data)
