@@ -1,4 +1,4 @@
-<p align="center"><img src="public/Images/tahu.png" width="200"></p>
+<p align="center"><img src="public/Images/tahu.png" width="250"></p>
 
 # <p align="center"> **TAHU**NGODING </p>
 
