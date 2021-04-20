@@ -36,7 +36,7 @@ function tglIndo($date)
     return $date[0] . ' ' . $bln[(int) $date[1]] . ' ' . $date[2];
 }
 
-function votersPercentage(Election $election, $voted=1)
+function votersPercentage(Election $election, $voted=1, $label=true)
 {
     $totalVoters   = $election->total_voters ?? count($election->voters);
     $votedVoters   = $election->voted_voters ?? count($election->votedVoters);
@@ -50,5 +50,8 @@ function votersPercentage(Election $election, $voted=1)
         $percentage = 0;
     }
 
-    return  "$percentage%";
+    if ($label) 
+        $percentage = "$percentage%";
+
+    return  $percentage;
 }

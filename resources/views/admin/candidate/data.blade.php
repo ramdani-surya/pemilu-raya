@@ -33,6 +33,10 @@ Data Kandidat
         margin-top: 40px;
     }
 
+    .candidates_name {
+        padding: 20px;
+    }
+
     .candidateNumber {
         padding: 20px;
     }
@@ -51,12 +55,30 @@ Data Kandidat
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-3">
+            <div class="card mt-2" style="height: 80%">
+                <div class="candidates_name">
+                    <h4 class="header-title mt-2">KETUA</h4>
+                    <p class="sub-header">
+                        {{ $candidate->chairman_name }}
+                    </p>
+                    <h4 class="header-title ">WAKIL KETUA</h4>
+                    <p class="sub-header">
+                        {{ $candidate->vice_chairman_name }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-4">
             <div class="card-box">
-                <h4 class="header-title">KETUA</h4>
-                <p class="sub-header">
-                    {{ $candidate->chairman_name }}
-                </p>
+
+
+
+
+
 
                 <div class="card filter-item all webdesign illustrator">
                     @if(!empty($candidate->image) && file_exists(public_path('images/uploaded/'.
@@ -82,8 +104,8 @@ Data Kandidat
                                     @endif
                                 </div>
                                 <div class="portfolio-masonry-detail">
-                                    <h4 class="font-18">{{ $candidate->chairman_name }}</h4>
-                                    <p>KETUA</p>
+                                    <h4 class="font-18">FOTO</h4>
+                                    <p>KANDIDAT</p>
                                 </div>
                             </div>
                         </a>
