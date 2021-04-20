@@ -5,21 +5,21 @@ Daftar Pemilih Tetap
 @endsection
 
 @section('css')
-<link href="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet"
-    type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/tooltipster/tooltipster.bundle.min.css') }}" rel="stylesheet" type="text/css">
 @endsection
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card-box table-responsive">
-            <h4 class="header-title">Daftar Pemilih Tetap</h4>
+            <h4 class="header-title">
+                Daftar Pemilih Tetap <br>
+                {{ $election->name }}
+            </h4>
             <p class="sub-header">
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
@@ -29,8 +29,8 @@ Daftar Pemilih Tetap
                         class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</a>
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="{{ route('voters.import') }}" method="POST"
-                                enctype="multipart/form-data" id="form-import">
+                            <form action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data"
+                                id="form-import">
                                 @csrf
                                 <div class="form-row align-items-center">
                                     <div class="col-auto" style="padding-right:0px">
@@ -41,7 +41,7 @@ Daftar Pemilih Tetap
                                             class="btn btn-secondary waves-light waves-effect">Download Format</a>
                                     </div>
                                     @error('file')
-                                        <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </form>
@@ -55,51 +55,55 @@ Daftar Pemilih Tetap
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Pemilu</th>
                         <th>NIM</th>
                         <th>Nama</th>
                         <th>Token</th>
                         <th>Memilih</th>
-                        <th>Email Terkirim</th>
-                        <th>Diinput Oleh</th>
+                        <th>Email</th>
+                        <th>Terakhir Diedit</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @php
-                        $number = 1
+                    $number = 1
                     @endphp
                     @foreach($voters as $voter)
                         <tr>
                             <td>{{ $number++ }}</td>
-                            <td>{{ $voter->election->period }}</td>
                             <td>{{ $voter->nim }}</td>
                             <td>{{ $voter->name }}</td>
-                            <td>{{ $voter->token }}</td>
+                            <td>
+                                {{ $voter->token }}
+                                @if($voter->email_sent)
+                                    <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Terkirim" style="font-weight: bold;"></i>
+                                @endif
+                            </td>
                             <td>
                                 @if($voter->voted)
                                     <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                        <i class="fas fa-check"></i>
                                     </button>
                                 @endif
                             </td>
-                            <td>
-                                @if($voter->email_sent)
-                                    <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-sm">
-                                        <i class="fe-check-square"></i>
-                                    </button>
-                                @endif
-                            </td>
+                            <td>{{ $voter->email }}</td>
                             <td>{{ $voter->storedByUser->name }}</td>
                             <td>
-                                <div class="button-list">
-                                    <button type="button"
-                                        class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
-                                        data-toggle="modal" data-target=".bs-example-modal-sm"
-                                        onclick="setEditData({{ $voter }})">Edit</button>
+                                <div class="button-list" style="display: flex">
+                                    @if(!$voter->voted)
+                                        <button type="button"
+                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm"
+                                            onclick="setEditData({{ $voter }})">Edit</button>
+                                        <button type="button"
+                                            data-url="{{ route('voters.reset_token', [$voter, '']) }}"
+                                            class="btn btn-pink btn-rounded waves-effect waves-light"
+                                            onclick="resetTokenAlert(this)">Reset Token</button>
+                                    @endif
+
                                     <form action="{{ route('voters.destroy', $voter) }}"
                                         method="post" class="form-delete">
                                         @csrf
@@ -130,35 +134,19 @@ Daftar Pemilih Tetap
             @csrf
             <div class="form-group">
                 <div class="col-12">
-                    <label for="election">Pemilu</label>
-                    <select class="form-control" name="election" id="election" required>
-                        @foreach($elections as $election)
-                            <option value="{{ $election->id }}" @if (old('election')===$election->id) selected
-                        @endif>{{ $election->period }}</option>
-                        @endforeach
-                    </select>
-                    @error('election')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-12">
                     <label for="nim">NIM</label>
-                    <input class="form-control" type="text" id="nim" name="nim"
-                        value="{{ old('nim') }}" required>
+                    <input class="form-control" type="text" id="nim" name="nim" value="{{ old('nim') }}" required>
                     @error('nim')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-12">
                     <label for="name">Nama</label>
-                    <input class="form-control" type="text" id="name" name="name"
-                        value="{{ old('name') }}" required>
+                    <input class="form-control" type="text" id="name" name="name" value="{{ old('name') }}" required>
                     @error('name')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -178,38 +166,21 @@ Daftar Pemilih Tetap
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="mySmallModalLabel">Edit Pemilu</h4>
+                <h4 class="modal-title" id="mySmallModalLabel">Edit Pemilih Tetap</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"
-                    action="{{ route('voters.update', '') }}" id="edit-form"
-                    method="POST">
+                <form class="form-horizontal" action="{{ route('voters.update', '') }}" id="edit-form" method="POST">
                     @csrf
                     @method('put')
-                    <div class="form-group">
-                        <div class="col-12">
-                            <label for="election">Pemilu</label>
-                            <select class="form-control" name="edit_election" id="election" required>
-                                @foreach($elections as $election)
-                                    <option value="{{ $election->id }}" @if (old('edit_election')===$election->id)
-                                        selected
-                                @endif>{{ $election->period }}</option>
-                                @endforeach
-                            </select>
-                            @error('edit_election')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
                     <div class="form-group">
                         <div class="col-12">
                             <label for="nim">NIM</label>
                             <input class="form-control" type="text" id="nim" name="edit_nim" required>
                             @error('edit_nim')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -218,7 +189,16 @@ Daftar Pemilih Tetap
                             <label for="name">Nama</label>
                             <input class="form-control" type="text" id="name" name="edit_name" required>
                             @error('edit_name')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="email">Email</label>
+                            <input class="form-control" type="text" id="email" name="email" required>
+                            @error('email')
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -264,14 +244,18 @@ Daftar Pemilih Tetap
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
 
+{{-- Tooltips --}}
+<script src="{{ asset('highdmin/libs/tooltipster/tooltipster.bundle.min.js') }}"></script>
+<script src="{{ asset('highdmin/js/pages/tooltipster.init.js') }}"></script>
+
 <script>
     const updateLink = $('#edit-form').attr('action');
 
     function setEditData(voter) {
         $('#edit-form').attr('action', `${updateLink}/${voter.id}`);
-        $('[name="edit_election"]').val(voter.election_id);
         $('[name="edit_nim"]').val(voter.nim);
         $('[name="edit_name"]').val(voter.name);
+        $('[name="email"]').val(voter.email);
     }
 
     $(function () {
@@ -285,6 +269,24 @@ Daftar Pemilih Tetap
             $('#form-import').submit();
         });
     });
+
+    function resetTokenAlert(e) {
+        Swal.fire({
+            title: "Reset dan kirim token?",
+            text: `Kirim email token setelah token direset.`,
+            type: "question",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Tidak, reset saja."
+        }).then(function (t) {
+            let url = e.dataset.url,
+                sendEmail = (t.value) ? true : false;
+
+            window.location.href = `${url}/${sendEmail}`
+        })
+    }
 
 </script>
 @endsection

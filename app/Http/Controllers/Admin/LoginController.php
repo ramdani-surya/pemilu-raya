@@ -25,7 +25,7 @@ class LoginController extends Controller
         if (auth()->attempt(array('username' => $input['username'], 'password' => $input['password']))) {
             return redirect()->route('admin.dashboard');
         } else {
-            return redirect()->route('login')->with('error', 'Username atau Password salah!');
+            return redirect()->route('admin.login')->with('error', 'Username atau Password salah!');
         }
     }
 
@@ -33,6 +33,6 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        return redirect(route('login'));
+        return redirect(route('admin.login'));
     }
 }

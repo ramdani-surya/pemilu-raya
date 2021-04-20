@@ -17,9 +17,9 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role == 'admin') {
+        if (Auth::user() &&  Auth::user()->role == 'admin' || Auth::user() &&  Auth::user()->role == 'panitia') {
             return $next($request);
         }
-        return redirect()->back()->with('error','You have not admin access');
+        return redirect()->route('admin.login')->with('error','You have not admin access');
     }
 }

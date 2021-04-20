@@ -16,28 +16,20 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $message = [
-            'nim.exists'   => 'NIM belum terdaftar.',
-            'token.exists' => 'Token tidak valid.',
-            'min'          => 'Token minimal :min karakter.',
-        ];
-
         $request->validate([
-            'nim'   => 'required|string|exists:voters,nim',
-            'token' => 'required|string|min:6|exists:voters,token',
-        ], $message);
+            'nim'   => 'required|string',
+            'token' => 'required|string',
+        ]);
 
-        $voter = Voter::where($request->only('nim', 'token'))->firstOrFail();
+        $voter = Voter::where($request->only('nim', 'token'))->first();
 
-        if (Auth::guard('voter')->loginUsingId($voter->id)) {
+        if ($voter && Auth::guard('voter')->loginUsingId($voter->id)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');
         }
 
-        Alert::error('Error', 'Tidak dapat login!');
-
-        return back()->withInput();
+        return view('login_error');
     }
 
     public function logout(Request $request)
@@ -47,6 +39,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect(route('login'));
     }
 }

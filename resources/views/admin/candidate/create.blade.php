@@ -1,12 +1,16 @@
 @extends('admin.layouts.master')
 
 @section('subtitle')
-Data Pemilu - Tambah
+Data Kandidat
+@endsection
+
+@section('subtitle-in')
+<li class="breadcrumb-item active">Tambah Kandidat</li>
 @endsection
 
 @section('content')
 <!-- start form -->
-<form action="{{ route('candidates.store') }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('candidates.store') }}" method="post" enctype="multipart/form-data" name="myForm">
     @csrf
     <!-- start row -->
     <div class="row">
@@ -18,12 +22,9 @@ Data Pemilu - Tambah
                 </p>
 
                 <div class="form-group">
-                    <select class="form-control" name="election" id="election" required>
-                        @foreach($elections as $election)
-                        <option value="{{ $election->id }}" @if (old('election')===$election->id) selected
-                            @endif>{{ $election->period }}</option>
-                        @endforeach
-                    </select>
+                    <label for="Periode">Periode<span class="text-danger">*</span></label>
+                    <input type="hidden" name="election" value="{{ getActiveElection()->id }}">
+                    <input type="text" class="form-control" value="{{ getActiveElection()->period }}" disabled>
 
                     @error('election')
                     <span class="text-danger">{{ $message }}</span>
@@ -34,7 +35,7 @@ Data Pemilu - Tambah
                     <label for="nomorKandidat">Nomor Kandidat<span class="text-danger">*</span></label>
                     <input type="number" name="candidate_number" parsley-trigger="change"
                         placeholder="Masukkan Nomor Kandidat" class="form-control" id="candidate_number"
-                        value="{{ old('candidate_number') }}">
+                        value="{{ old('candidate_number') }}" min="1">
 
                     @error('candidate_number')
                     <div class="mt-1">
@@ -46,7 +47,8 @@ Data Pemilu - Tambah
                 <div class="form-group">
                     <label for="namaKetua">Nama Ketua<span class="text-danger">*</span></label>
                     <input type="text" name="chairman_name" parsley-trigger="change" placeholder="Masukkan Nama Ketua"
-                        class="form-control" id="chairman_name" value="{{ old('chairman_name') }}">
+                        class="form-control @error('chairman_name') is-invalid @enderror" id="chairman_name"
+                        value="{{ old('chairman_name') }}">
 
                     @error('chairman_name')
                     <div class="mt-1">
@@ -58,7 +60,8 @@ Data Pemilu - Tambah
                 <div class="form-group">
                     <label for="namaWakil">Nama Wakil<span class="text-danger">*</span></label>
                     <input type="text" name="vice_chairman_name" parsley-trigger="change"
-                        placeholder="Masukkan Nama Wakil Ketua" class="form-control" id="vice_chairman_name"
+                        placeholder="Masukkan Nama Wakil Ketua"
+                        class="form-control @error('vice_chairman_name') is-invalid @enderror" id="vice_chairman_name"
                         value="{{ old('vice_chairman_name') }}">
 
                     @error('vice_chairman_name')
@@ -73,43 +76,30 @@ Data Pemilu - Tambah
     <!-- end row -->
 
     <div class="row">
-        <div class="col-lg-6">
-            <div class="card-box">
-                <h4 class="header-title">KETUA</h4>
+        <div class="col-lg-12">
+            <div class="card-box validasi-foto">
+                <h4 class="header-title">KETUA DAN Wakil</h4>
                 <p class="sub-header">
-                    Ini merupakan foto dari ketua kandidat
+                    Ini merupakan foto dari kandidat ketua dan wakil
                 </p>
 
                 <div class="form-group mb-0">
-                    <img id="preview-image-before-upload" src="{{ asset('images/imageNoAvailable.svg') }}"
-                        alt="preview image" style="max-height: 250px;">
-                    <p class="sub-header mt-2">Upload Foto Ketua</p>
-                    <input type="file" name="chairman_photo" class="filestyle" data-buttonBefore="true" id="image">
+                    <img id="preview-image-before-upload"
+                        src="{{ asset('images/admin_component/imageNoAvailable.svg') }}" alt="preview image"
+                        style="max-height: 250px;">
+                    <p class="sub-header mt-2">Upload Foto</p>
+                    <input type="file" name="image" class="filestyle" data-buttonBefore="true" id="image">
 
-                    @error('chairman_photo')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="card-box">
-                <h4 class="header-title">WAKIL KETUA</h4>
-                <p class="sub-header">
-                    Ini merupakan foto dari wakil ketua kandidat
-                </p>
-
-
-                <div class="form-group mb-0">
-                    <img id="preview-image-before-upload2" src="{{ asset('images/imageNoAvailable.svg') }}"
-                        alt="preview image" style="max-height: 250px;">
-                    <p class="sub-header mt-2">Upload Foto Wakil Ketua</p>
-                    <input type="file" name="vice_chairman_photo" class="filestyle" data-buttonBefore="true"
-                        id="image2">
-
-                    @error('vice_chairman_photo')
-                    <span class="text-danger">{{ $message }}</span>
+                    @error('image')
+                    <div class="mt-2">
+                        <style>
+                            .validasi-foto {
+                                border: 1px solid #FF3333 !important;
+                                border-radius: 5px !important;
+                            }
+                        </style>
+                        <span class="text-danger">{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
             </div>
@@ -127,16 +117,22 @@ Data Pemilu - Tambah
     <!-- start row -->
     <div class="row">
         <div class="col-lg-6">
-            <div class="card-box">
+            <div class="card-box validasi-visi">
                 <h4 class="header-title">VISI</h4>
                 <p class="sub-header">
                     Visi adalah gambaran besar, tujuan utama dan cita-cita suatu perusahaan, instansi, pribadi atau
                     organisasi di masa depan.
                 </p>
-                <div class="form-group">
+                <div class="form-group mb-0">
                     <textarea class="ckeditor form-control" name="vision">{{ old('vision') }}</textarea>
 
                     @error('vision')
+                    <style>
+                        .validasi-visi {
+                            border: 1px solid #FF3333 !important;
+                            border-radius: 5px !important;
+                        }
+                    </style>
                     <div class="mt-2">
                         <span class="text-danger">{{ $message }}</span>
                     </div>
@@ -147,16 +143,23 @@ Data Pemilu - Tambah
 
 
         <div class="col-lg-6">
-            <div class="card-box">
+            <div class="card-box validasi-misi">
                 <h4 class="header-title">MISI</h4>
                 <p class="sub-header">
                     Misi adalah Penjabaran atau langkah-langkah yang akan dilakukan untuk mencapai / mewujudkan visi
                     tersebut.
                 </p>
-                <div class="form-group">
-                    <textarea class="ckeditor form-control" name="mission">{{ old('mission') }}</textarea>
+                <div class="form-group mb-0">
+                    <textarea class="ckeditor form-control" maxlength="10" minlength="1"
+                        name="mission">{{ old('mission') }}</textarea>
 
                     @error('mission')
+                    <style>
+                        .validasi-misi {
+                            border: 1px solid #FF3333 !important;
+                            border-radius: 5px !important;
+                        }
+                    </style>
                     <div class="mt-2">
                         <span class="text-danger">{{ $message }}</span>
                     </div>
@@ -198,6 +201,7 @@ Data Pemilu - Tambah
         $('.ckeditor').ckeditor();
     });
 </script>
+
 <!-- Image preview  -->
 <script>
     $(document).ready(function(e) {
@@ -205,14 +209,6 @@ Data Pemilu - Tambah
             let reader = new FileReader();
             reader.onload = (e) => {
                 $('#preview-image-before-upload').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        $('#image2').change(function() {
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                $('#preview-image-before-upload2').attr('src', e.target.result);
             }
             reader.readAsDataURL(this.files[0]);
         });

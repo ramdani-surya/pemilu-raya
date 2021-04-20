@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('subtitle')
-Data Pemilu
+Data Kandidat
 @endsection
 
 @section('css')
@@ -20,23 +20,17 @@ Data Pemilu
     <div class="button-list">
         <a href="{{ route('candidates.create') }}"
             class="btn btn-primary btn-sm btn-create waves-light waves-effect">Tambah</a>
-        <button type="button" class="btn btn-danger btn-sm waves-light waves-effect" data-toggle="modal"
-            data-target=".deleteAllCandidate">Bersihkan</button>
+        <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
+            id="bersihkan-semua-data">Bersihkan</button>
     </div>
 </p>
 
-<!-- Increment -->
-@php
-$increment = 1;
-@endphp
-
 <!-- Content -->
-@foreach($candidates as $candidate)
 
 <!-- internal style  -->
 <style>
-    .container-wrap {
-        padding: 20px;
+    .wrap {
+        margin-top: 40px;
     }
 
     .candidateNumber {
@@ -44,9 +38,18 @@ $increment = 1;
     }
 </style>
 
-<h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}</h2>
-<div class="container-wrap d-flex justify-content-center">
-    <!-- start row -->
+
+@foreach($candidates as $candidate)
+
+<div class="wrap">
+    <div class="row text-center">
+        <div class="col-lg-3">
+            <div class="card">
+                <h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}
+                </h2>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="card-box">
@@ -56,64 +59,43 @@ $increment = 1;
                 </p>
 
                 <div class="card filter-item all webdesign illustrator">
-                    <a href="{{ asset('images/'. $candidate->chairman_photo) }}" class="image-popup">
-                        <div class="portfolio-masonry-box">
-                            <div class="portfolio-masonry-img">
-                                @if(empty($candidate->chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
-                                @else
-                                <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
-                                @endif
+                    @if(!empty($candidate->image) && file_exists(public_path('images/uploaded/'.
+                    $candidate->image)))
+                    <a href="{{ asset('images/uploaded/'. $candidate->image) }}" class="image-popup">
+
+                        @else
+                        <a href="{{ asset('images/admin_component/imageNoAvailable.svg') }}" class="image-popup">
+
+                            @endif
+
+                            <div class="portfolio-masonry-box">
+                                <div class="portfolio-masonry-img">
+                                    @if(!empty($candidate->image) &&
+                                    file_exists(public_path('images/uploaded/'. $candidate->image)))
+                                    <img src="{{ asset('images/uploaded/'. $candidate->image) }}"
+                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Chairman Photo">
+                                    @else
+                                    <img src="{{ asset('images/admin_component/imageNoAvailable.svg') }}"
+                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Default Photo">
+                                    @endif
+                                </div>
+                                <div class="portfolio-masonry-detail">
+                                    <h4 class="font-18">{{ $candidate->chairman_name }}</h4>
+                                    <p>KETUA</p>
+                                </div>
                             </div>
-                            <div class="portfolio-masonry-detail">
-                                <h4 class="font-18">{{ $candidate->chairman_name }}</h4>
-                                <p>KETUA</p>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card-box">
-                <h4 class="header-title">WAKIL KETUA</h4>
-                <p class="sub-header">
-                    {{ $candidate->vice_chairman_name }}
-                </p>
-
-                <div class="card filter-item all webdesign illustrator">
-                    <a href="{{ asset('images/'. $candidate->vice_chairman_photo) }}" class="image-popup">
-                        <div class="portfolio-masonry-box">
-                            <div class="portfolio-masonry-img">
-                                @if(empty($candidate->vice_chairman_photo))
-                                <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
-                                @else
-                                <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
-                                    style="height:550px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                    alt="work-thumbnail">
-                                @endif
-                            </div>
-                            <div class="portfolio-masonry-detail">
-                                <h4 class="font-18">{{ $candidate->vice_chairman_name }}</h4>
-                                <p>WAKIL KETUA</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
 
         <div class="col-lg-4 d-flex align-items-center">
             <div class="card">
-                <div class="card-body ">
-                    <div class="form-group">
+                <div class="card-body " style="margin-top:20px;">
+                    <div class="form-group ">
                         <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
                             style="width:100%" data-toggle="modal" data-target=".modalVisionOrMission"
                             onclick="showVision({{ $candidate }})">
@@ -127,23 +109,27 @@ $increment = 1;
                     </div>
                     <div class="form-group">
                         <a href="{{ route('candidates.edit', $candidate->id) }}"
-                            class="btn btn-blue btn-sm waves-effect waves-light rounded" style="width:100%;">Edit</a>
-                        <button type="button" class="btn btn-danger btn-sm rounded waves-light waves-effect buttonHapus"
-                            style="width:100%; margin-top:10px;" data-toggle="modal" data-target=".deleteCandidate"
-                            onclick="hapusKandidat({{ $candidate }})">Hapus</button>
+                            class="btn btn-warning btn-sm waves-effect waves-light rounded" style="width:100%;">Edit</a>
+                        <form style="display: inline" action="{{ route('candidates.destroy', $candidate) }}"
+                            method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="button" class="btn btn-danger btn-sm rounded waves-light waves-effect"
+                                style="width:100%; margin-top:10px;" onclick="deleteAlert(this)">Hapus</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end row -->
+
 </div>
 @endforeach
 
 <!-- vision and mission modal pop up -->
 <div class="modal fade modalVisionOrMission" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
     aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="vision-and-missionTitle"></h4>
@@ -151,10 +137,10 @@ $increment = 1;
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body padding-outside">
-                <div class="card padding-inside">
-                    <div class="card-body ">
-                        <h2 class="visi-and-missionText"></h2>
+            <div class="modal-body p-3">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="visi-and-missionText"></p>
                     </div>
                 </div>
             </div>
@@ -196,34 +182,6 @@ $increment = 1;
     </div>
 </div>
 
-<!-- delete ALL modal pop up -->
-<div class="modal fade deleteAllCandidate" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="mySmallModalLabel">Hapus Semua Kandidat</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group account-btn text-center">
-                    <div class="col-12">
-                        <h3>Apakah anda yakin?</h3>
-                        <p>Data akan dihapus secara permanen!</p>
-                        <div class="btn-group py-2" role="group">
-                            <a href="{{ route('candidates.clearAll') }}"
-                                class="btn btn-danger mr-2 rounded waves-effect waves-light">Bersihkan</a>
-                            <button type="button" class="btn btn-secondary rounded  waves-effect waves-light"
-                                data-dismiss="modal" aria-label="Close">Kembali</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('js')
@@ -248,11 +206,41 @@ $increment = 1;
         $('#vision-and-missionTitle').text('Misi')
     }
 
-    //  passing data to delete modal pop up
-    const hapusKandidats = $('#hapusKandidat').attr('action');
+    $("#bersihkan-semua-data").click(function () {
+        Swal.fire({
+            title: "Bersihkan data kandidat?",
+            text: `Seluruh data terkait kandidat akan ikut terhapus. Anda tidak akan dapat mengembalikan aksi
+            ini!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                window.location.href = "{{ route('candidates.clear') }}"
+            }
+        })
+    });
 
-    function hapusKandidat(candidate) {
-        $('#hapusKandidat').attr('action', `${hapusKandidats}/${candidate.id}`);
+    function deleteAlert(e) {
+        Swal.fire({
+            title: "Hapus user?",
+            text: `Seluruh data terkait (kandidat, voting) akan terhapus. Anda tidak akan dapat mengembalikan aksi
+            ini!`,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then(function (t) {
+            if (t.value) {
+                e.parentNode.submit()
+            }
+        })
     }
+
 </script>
 @endsection

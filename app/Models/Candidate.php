@@ -14,8 +14,7 @@ class Candidate extends Model
         'candidate_number',
         'chairman_name',
         'vice_chairman_name',
-        'chairman_photo',
-        'vice_chairman_photo',
+        'image',
         'vision',
         'mission',
     ];

@@ -1,4 +1,4 @@
-@extends('admin.layouts.loginSystem')
+@extends('admin.layouts.login_system')
 
 @section('subtitle')
 Login User
@@ -11,7 +11,11 @@ Login User
 <body class="account-pages">
 
     <!-- Begin page -->
-    <div class="accountbg" style="background: url( {{ url('highdmin/images/bg-1.jpg') }} ); background-size: cover;background-position: center;"></div>
+    <div class="accountbg">
+        <img src="{{ asset('images/admin_component/login_bg.jpg') }}"
+        style="width: 67%; height: 100vh; object-fit:cover;" class="thumb-img img-fluid"
+        alt="Default Image">
+    </div>
 
     <div class="wrapper-page account-page-full">
 
@@ -23,7 +27,7 @@ Login User
                     <div class="card-box shadow-none p-4 mt-2">
                         <h2 class="text-uppercase text-center pb-3">
                             <a href="index.html" class="text-success">
-                                <span><img src="{{ asset('highdmin/images/logo-dark.png') }}" alt="" height="26"></span>
+                                <span><img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="82"></span>
                             </a>
                         </h2>
 
@@ -33,23 +37,25 @@ Login User
                         </div>
                         @endif
 
-                        <form action="{{ route('login') }}" method="POST">
+                        <form action="{{ route('admin.login') }}" method="POST">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-12">
                                     <label for="username">Username</label>
-                                    <input class="form-control" type="text" name="username" id="username" placeholder="Masukan username anda" required>
+                                    <input class="form-control" type="text" name="username" id="username"
+                                        placeholder="Masukan username anda" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <a href="page-recoverpw.html" class="text-muted float-right"><small>Forgot your password?</small></a>
                                     <label for="password">Password</label>
                                     <div class="input-group">
-                                        <input class="form-control" type="password" name="password" id="passwordId" placeholder="Masukan Password Anda">
+                                        <input class="form-control" type="password" name="password" id="passwordId"
+                                            placeholder="Masukan Password Anda">
                                         <div class="input-group-append">
-                                            <button class="btn btn-secondary fas fa-eye toggle-password" type="button"></button>
+                                            <button class="btn btn-secondary fas fa-eye toggle-password"
+                                                type="button"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +64,7 @@ Login User
                             <div class="form-group row">
                                 <div class="col-12">
 
-                                    <div class="checkbox checkbox-primary">
+                                    <div class="checkbox checkbox-warning">
                                         <input id="remember" type="checkbox" name="remember" checked="">
                                         <label for="remember">
                                             Remember me
@@ -69,7 +75,8 @@ Login User
 
                             <div class="form-group row text-center">
                                 <div class="col-12">
-                                    <button class="btn btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
+                                    <button class="btn btn-block btn-warning waves-effect waves-light"
+                                        type="submit">Sign In</button>
                                 </div>
                             </div>
 
@@ -82,7 +89,7 @@ Login User
         </div>
 
         <div class="text-center">
-            <p class="account-copyright">2021 &copy; Made by <a href="#">TAHUNGODING STMIK Sumedang</a></p>
+            <p class="account-copyright">2021 &copy; Made by <a href="#" style="color:#f9bc0b;">TAHUNGODING STMIK Sumedang</a></p>
         </div>
 
     </div>

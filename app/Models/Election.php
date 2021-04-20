@@ -10,6 +10,7 @@ class Election extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'period',
         'total_voters',
         'voted_voters',
@@ -20,17 +21,19 @@ class Election extends Model
         'vice_chairman',
         'chairman_photo',
         'vice_chairman_photo',
+        'running_date',
+        'running',
         'archived',
     ];
 
     public function candidates()
     {
-        return $this->hasMany(Candidate::class);
+        return $this->hasMany(Candidate::class)->orderBy('candidate_number');
     }
 
     public function voters()
     {
-        return $this->hasMany(Voter::class);
+        return $this->hasMany(Voter::class)->orderBy('nim');
     }
 
     public function votedVoters()
