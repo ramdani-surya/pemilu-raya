@@ -33,7 +33,7 @@ Data Kandidat
                     <input type="number" name="edit_candidate_number" parsley-trigger="change"
                         placeholder="Masukkan Nomor Kandidat"
                         class="form-control @error('edit_candidate_number') is-invalid @enderror"
-                        id="edit_candidate_number" value="{{ $candidate->candidate_number }}">
+                        id="edit_candidate_number" value="{{ $candidate->candidate_number }}" min="1">
                     @error('edit_candidate_number')
                     <div class="mt-1">
                         <span class="text-danger">{{ $message }}</span>

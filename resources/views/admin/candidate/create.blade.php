@@ -23,11 +23,8 @@ Data Kandidat
 
                 <div class="form-group">
                     <label for="Periode">Periode<span class="text-danger">*</span></label>
-                    @foreach($elections as $election)
-                    <input type="hidden" name="election" value="{{ $election->id }}">
-                    <input type="text" class="form-control @error('election') is-invalid @enderror"
-                        value="{{ $election->period }}" disabled>
-                    @endforeach
+                    <input type="hidden" name="election" value="{{ getActiveElection()->id }}">
+                    <input type="text" class="form-control" value="{{ getActiveElection()->period }}" disabled>
 
                     @error('election')
                     <span class="text-danger">{{ $message }}</span>
@@ -36,11 +33,9 @@ Data Kandidat
 
                 <div class="form-group">
                     <label for="nomorKandidat">Nomor Kandidat<span class="text-danger">*</span></label>
-                    <input type="text" minlength="1" maxlength="2"
-                        onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                        name="candidate_number" parsley-trigger="change" placeholder="Masukkan Nomor Kandidat"
-                        class="form-control  @error('candidate_number') is-invalid @enderror" id="candidate_number"
-                        value="{{ old('candidate_number') }}">
+                    <input type="number" name="candidate_number" parsley-trigger="change"
+                        placeholder="Masukkan Nomor Kandidat" class="form-control" id="candidate_number"
+                        value="{{ old('candidate_number') }}" min="1">
 
                     @error('candidate_number')
                     <div class="mt-1">

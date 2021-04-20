@@ -70,44 +70,50 @@ Daftar Pemilih Tetap
                     $number = 1
                     @endphp
                     @foreach($voters as $voter)
-                    <tr>
-                        <td>{{ $number++ }}</td>
-                        <td>{{ $voter->nim }}</td>
-                        <td>{{ $voter->name }}</td>
-                        <td>
-                            {{ $voter->token }}
-                            @if($voter->email_sent)
-                            <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
-                                data-original-title="Terkirim" style="font-weight: bold;"></i>
-                            @endif
-                        </td>
-                        <td>
-                            @if($voter->voted)
-                            <button type="button" class="btn btn-icon waves-effect waves-light btn-success btn-xs">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            @endif
-                        </td>
-                        <td>{{ $voter->email }}</td>
-                        <td>{{ $voter->storedByUser->name }}</td>
-                        <td>
-                            <div class="button-list" style="display: flex">
-                                <button type="button"
-                                    class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
-                                    data-toggle="modal" data-target=".bs-example-modal-sm"
-                                    onclick="setEditData({{ $voter }})">Edit</button>
-                                <button type="button" data-url="{{ route('voters.reset_token', [$voter, '']) }}"
-                                    class="btn btn-pink btn-rounded waves-effect waves-light"
-                                    onclick="resetTokenAlert(this)">Reset Token</button>
-                                <form action="{{ route('voters.destroy', $voter) }}" method="post" class="form-delete">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit"
-                                        class="btn btn-danger btn-rounded waves-light waves-effect">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $number++ }}</td>
+                            <td>{{ $voter->nim }}</td>
+                            <td>{{ $voter->name }}</td>
+                            <td>
+                                {{ $voter->token }}
+                                @if($voter->email_sent)
+                                    <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Terkirim" style="font-weight: bold;"></i>
+                                @endif
+                            </td>
+                            <td>
+                                @if($voter->voted)
+                                    <button type="button"
+                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                @endif
+                            </td>
+                            <td>{{ $voter->email }}</td>
+                            <td>{{ $voter->storedByUser->name }}</td>
+                            <td>
+                                <div class="button-list" style="display: flex">
+                                    @if(!$voter->voted)
+                                        <button type="button"
+                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm"
+                                            onclick="setEditData({{ $voter }})">Edit</button>
+                                        <button type="button"
+                                            data-url="{{ route('voters.reset_token', [$voter, '']) }}"
+                                            class="btn btn-pink btn-rounded waves-effect waves-light"
+                                            onclick="resetTokenAlert(this)">Reset Token</button>
+                                    @endif
+
+                                    <form action="{{ route('voters.destroy', $voter) }}"
+                                        method="post" class="form-delete">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit"
+                                            class="btn btn-danger btn-rounded waves-light waves-effect">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

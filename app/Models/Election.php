@@ -21,6 +21,8 @@ class Election extends Model
         'vice_chairman',
         'chairman_photo',
         'vice_chairman_photo',
+        'running_date',
+        'running',
         'archived',
     ];
 

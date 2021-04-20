@@ -43,6 +43,7 @@ Data Pemilu
                         <th>Jumlah Kandidat</th>
                         <th>Kandidat Terpilih</th>
                         <th>Berjalan</th>
+                        <th>Tanggal</th>
                         <th>Diarsipkan</th>
                         <th>Aksi</th>
                     </tr>
@@ -73,6 +74,7 @@ Data Pemilu
                                     </button>
                                 @endif
                             </td>
+                            <td>{{ tglIndo($election->running_date) }}</td>
                             <td>
                                 @if($election->archived)
                                     <button type="button"
@@ -162,6 +164,15 @@ Data Pemilu
                     @enderror
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-12">
+                    <label for="date">Tanggal</label>
+                    <input class="form-control" type="date" id="date" name="running_date" required>
+                    @error('running_date')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
             <div class="form-group account-btn text-center mt-2">
                 <div class="col-12">
                     <button class="btn width-lg btn-rounded btn-primary waves-effect waves-light"
@@ -206,6 +217,15 @@ Data Pemilu
                             <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022"
                                 name="edit_period" required>
                             @error('edit_period')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="date">Tanggal</label>
+                            <input class="form-control" type="date" id="date" name="date" required>
+                            @error('date')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
