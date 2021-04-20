@@ -59,22 +59,26 @@ Data Kandidat
                 </p>
 
                 <div class="card filter-item all webdesign illustrator">
-                    @if(empty($candidate->chairman_photo))
-                    <a href="{{ asset('images/imageNoAvailable.svg') }}" class="image-popup">
+                    @if(!empty($candidate->image) && file_exists(public_path('images/uploaded/'.
+                    $candidate->image)))
+                    <a href="{{ asset('images/uploaded/'. $candidate->image) }}" class="image-popup">
+
                         @else
-                        <a href="{{ asset('images/'. $candidate->chairman_photo) }}" class="image-popup">
+                        <a href="{{ asset('images/admin_component/imageNoAvailable.svg') }}" class="image-popup">
+
                             @endif
 
                             <div class="portfolio-masonry-box">
                                 <div class="portfolio-masonry-img">
-                                    @if(empty($candidate->chairman_photo))
-                                    <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                        alt="Default Photo">
-                                    @else
-                                    <img src="{{ asset('images/'. $candidate->chairman_photo) }}"
+                                    @if(!empty($candidate->image) &&
+                                    file_exists(public_path('images/uploaded/'. $candidate->image)))
+                                    <img src="{{ asset('images/uploaded/'. $candidate->image) }}"
                                         style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
                                         alt="Chairman Photo">
+                                    @else
+                                    <img src="{{ asset('images/admin_component/imageNoAvailable.svg') }}"
+                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
+                                        alt="Default Photo">
                                     @endif
                                 </div>
                                 <div class="portfolio-masonry-detail">
@@ -87,41 +91,6 @@ Data Kandidat
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card-box">
-                <h4 class="header-title">WAKIL KETUA</h4>
-                <p class="sub-header">
-                    {{ $candidate->vice_chairman_name }}
-                </p>
-
-                <div class="card filter-item all webdesign illustrator">
-                    @if(empty($candidate->vice_chairman_photo))
-                    <a href="{{ asset('images/imageNoAvailable.svg') }}" class="image-popup">
-                        @else
-                        <a href="{{ asset('images/'. $candidate->vice_chairman_photo) }}" class="image-popup">
-                            @endif
-
-                            <div class="portfolio-masonry-box">
-                                <div class="portfolio-masonry-img">
-                                    @if(empty($candidate->vice_chairman_photo))
-                                    <img src="{{ asset('images/imageNoAvailable.svg') }}"
-                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                        alt="Default Image">
-                                    @else
-                                    <img src="{{ asset('images/'. $candidate->vice_chairman_photo) }}"
-                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                        alt="Vice Chairman Photo">
-                                    @endif
-                                </div>
-                                <div class="portfolio-masonry-detail">
-                                    <h4 class="font-18">{{ $candidate->vice_chairman_name }}</h4>
-                                    <p>WAKIL KETUA</p>
-                                </div>
-                            </div>
-                        </a>
-                </div>
-            </div>
-        </div>
 
         <div class="col-lg-4 d-flex align-items-center">
             <div class="card">
@@ -168,7 +137,7 @@ Data Kandidat
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-3">
                 <div class="card">
                     <div class="card-body">
                         <p class="visi-and-missionText"></p>

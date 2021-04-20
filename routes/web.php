@@ -35,7 +35,7 @@ Route::middleware('auth:voter')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:voter')->name('logout');
 });
 
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['admin']], function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
