@@ -10,7 +10,8 @@ Cooming Soon
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="{{ asset('images/Logo_Panitia.png') }}" alt="" class="wM80 w60">
+                    <img src="{{ asset('images/admin_component/Logo_Panitia.png') }}" alt=""
+                        class="wM80 w60">
                 </div>
                 <div class="col-md-8 pt-4">
                     <h1 class="title titleSection spacingM0c3 fSM4 font-weight-bold text-md-left text-center"

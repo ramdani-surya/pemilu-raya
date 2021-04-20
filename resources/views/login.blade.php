@@ -40,12 +40,12 @@
                 </form>
                 <p class="textCopy mt-md-5 mt-3">
                     Build with passion by
-                    <img src="{{ asset('images/Logo_Tahu_Ngoding.png') }}"
+                    <img src="{{ asset('images/admin_component/Logo_Tahu_Ngoding.png') }}"
                         class="logoTahuNgoding" />
                 </p>
             </div>
             <div class="col-md-6 d-md-block d-flex justify-content-center order-md-2 order-1">
-                <img src="{{ asset('images/Ilustrator.png') }}" class="ilustratorImg" />
+                <img src="{{ asset('images/admin_component/Ilustrator.png') }}" class="ilustratorImg" />
             </div>
         </div>
     </div>
