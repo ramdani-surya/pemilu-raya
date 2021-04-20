@@ -52,7 +52,7 @@ Route::group(['middleware' => ['admin']], function () {
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
         Route::resource('elections', ElectionController::class)->except('create', 'edit');
-        Route::prefix('elections')->group(function () {
+        Route::prefix('election')->group(function () {
             Route::get('/clear', [ElectionController::class, 'clear'])->name('elections.clear');
             Route::get('/{election}/running/{runningStatus?}', [ElectionController::class, 'running'])->name('elections.running');
             Route::get('/{election}/send-token', [ElectionController::class, 'sendToken'])->name('elections.send_token');
