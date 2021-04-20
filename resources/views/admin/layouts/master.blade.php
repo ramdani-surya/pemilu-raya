@@ -29,12 +29,12 @@
                 <div class="logo-box">
                     <a href="index.html" class="logo">
                         <span class="logo-lg p-1">
-                            <img src="{{ asset('Images/tahu.png') }}" alt="" height="52">
+                            <img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="52">
                             <!-- <span class="logo-lg-text-light">Highdmin</span> -->
                         </span>
                         <span class="logo-sm">
                             <!-- <span class="logo-sm-text-dark">H</span> -->
-                            <img src="{{ asset('Images/tahu.png') }}" alt="" height="24">
+                            <img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="24">
                         </span>
                     </a>
                 </div>

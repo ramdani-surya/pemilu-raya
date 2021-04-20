@@ -12,7 +12,7 @@ Login User
 
     <!-- Begin page -->
     <div class="accountbg">
-        <img src="{{ asset('images/login_bg.jpg') }}"
+        <img src="{{ asset('images/admin_component/login_bg.jpg') }}"
         style="width: 67%; height: 100vh; object-fit:cover;" class="thumb-img img-fluid"
         alt="Default Image">
     </div>
@@ -27,7 +27,7 @@ Login User
                     <div class="card-box shadow-none p-4 mt-2">
                         <h2 class="text-uppercase text-center pb-3">
                             <a href="index.html" class="text-success">
-                                <span><img src="{{ asset('Images/tahu.png') }}" alt="" height="82"></span>
+                                <span><img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="82"></span>
                             </a>
                         </h2>
 
@@ -49,8 +49,6 @@ Login User
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <a href="" class="text-muted float-right"><small>Forgot your
-                                            password?</small></a>
                                     <label for="password">Password</label>
                                     <div class="input-group">
                                         <input class="form-control" type="password" name="password" id="passwordId"

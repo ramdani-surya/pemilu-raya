@@ -9,9 +9,14 @@ Manajemen Akun
 <link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.4/sweetalert2.min.css"
+    integrity="sha512-1ZnBKRTKQpSWa+zTPLIvikrThliiXRIUAk7vYALF8lpHpkUI8y9kynkCtmjpxGRiF4Gic9cXcbHrcAP3CPif4Q=="
+    crossorigin="anonymous" />
 @endsection
 
 @section('content')
+<meta name="_token" content="{{csrf_token()}}" />
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card-box table-responsive">
@@ -65,12 +70,12 @@ Manajemen Akun
                         <td>
                             <div class="form-group">
                                 <button type="button" data-role="{{ Auth::user()->role }}" id="{{ Auth::user()->role }}"
-                                    class="btn btn-info btn-edit waves-effect waves-light editButton mr-2"
+                                    class="btn btn-info btn-sm btn-edit waves-effect waves-light editButton  mr-2"
                                     data-toggle="modal" data-target=".editModal"
                                     onclick="setEditData({{ Auth::user() }})">Edit
                                 </button>
                                 <a href="{{ route('users.edit', Auth::user()->id) }}"
-                                    class="btn btn-dark waves-effect waves-light" id="update-password">Ubah
+                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
                                     Password</a>
                             </div>
                             <div class="form-group">
@@ -155,7 +160,7 @@ Manajemen Akun
                         <td>
                             <div class="form-group">
                                 <button type="button" data-role="{{ $user->role }}" id="{{ $user->role }}"
-                                    class="btn btn-warning rounded btn-edit waves-effect waves-light editButton"
+                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton"
                                     data-toggle="modal" data-target=".editModal" onclick="setEditData({{ $user }})">Edit
                                 </button>
                                 <form style="display: inline" action="{{ route('users.destroy', $user) }}"
@@ -163,7 +168,7 @@ Manajemen Akun
                                     @csrf
                                     @method('delete')
                                     <button type="button"
-                                        class="btn btn-danger rounded waves-light waves-effect buttonHapus"
+                                        class="btn btn-danger btn-sm rounded waves-light waves-effect buttonHapus"
                                         onclick="deleteAlert(this)">Hapus
                                     </button>
                                 </form>
@@ -171,7 +176,7 @@ Manajemen Akun
                             </div>
                             <div class="form-group">
                                 <a href="{{ route('users.edit', $user->id) }}"
-                                    class="btn btn-dark waves-effect waves-light" id="update-password">Ubah
+                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
                                     Password</a>
                             </div>
                         </td>
@@ -199,8 +204,8 @@ Manajemen Akun
 </style>
 
 <!-- create modal pop up -->
-<div class="modal fade createModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
-    style="display: none;">
+<div class="modal fade createModal" id="createModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -210,7 +215,7 @@ Manajemen Akun
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="{{ route('users.store') }}" method="post">
+                <form class="form-horizontal" action="{{ route('users.store') }}" method="post" id="tambahUser">
                     @csrf
 
                     <div class="form-group">
@@ -218,8 +223,7 @@ Manajemen Akun
                             <label for="election">Nama Lengkap</label>
                             <input class="form-control mb-1 @error('name') is-invalid @enderror" type="text" id="name"
                                 placeholder="Contoh: Briana White" name="name" value="{{ old('name') }}" required>
-
-                            @error('name')
+                            @error('edit_name')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -273,16 +277,14 @@ Manajemen Akun
                             <div class="input-group mb-1">
                                 <input class="form-control @error('password') is-invalid @enderror" type="password"
                                     name="password_confirmation" id="passwordConfirm"
-                                    placeholder="Masukan Konfirmasi Password Anda">
+                                    placeholder="Masukan Konfirmasi Password Anda" value="{{ old('email') }}">
                                 <div class="input-group-append">
                                     <button
                                         class="btn btn-secondary fas fa-eye toggle-password-confirm @error('password') btn-danger @enderror"
                                         type="button"></button>
                                 </div>
                             </div>
-                            @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+
                         </div>
                     </div>
 
@@ -293,7 +295,6 @@ Manajemen Akun
                                 <option value="admin">Admin</option>
                                 <option value="panitia">Panitia</option>
                             </select>
-
                             @error('role')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -303,7 +304,7 @@ Manajemen Akun
                     <div class="form-group account-btn text-center mt-2">
                         <div class="col-12">
                             <button class="btn width-lg btn-rounded btn-primary waves-effect waves-light"
-                                type="submit">Simpan</button>
+                                id="tambahForm" type="submit">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -313,8 +314,8 @@ Manajemen Akun
 </div>
 
 <!-- edit modal pop up -->
-<div class="modal fade editModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
-    style="display: none;">
+<div class="modal fade editModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -373,7 +374,6 @@ Manajemen Akun
                             <label for="role">Role</label>
                             <select class="form-control mb-1 @error('edit_role') is-invalid @enderror" name="edit_role"
                                 id="edit_role" required>
-                                <option value="">Pilih Role</option>
                                 <option value="admin">Admin</option>
                                 <option value="panitia">Panitia</option>
                             </select>
@@ -389,8 +389,14 @@ Manajemen Akun
                             <label for="role">Role</label>
                             <select class="form-control mb-1 @error('edit_role') is-invalid @enderror" name="edit_role"
                                 id="edit_role" required>
+                                @if ($errors->has('edit_name') || $errors->has('edit_username') ||
+                                $errors->has('edit_email'))
+                                <option value="{{ old('edit_role') }}">{{ old('edit_role') }}</option>
+                                @else
                                 <option value="">Pilih Role</option>
                                 <option value="panitia">Panitia</option>
+                                @endif
+
                             </select>
 
                             @error('role')
@@ -399,11 +405,6 @@ Manajemen Akun
                         </div>
                     </div>
                     @endif
-                    <div class="form-group">
-                        <div class="col-12">
-
-                        </div>
-                    </div>
                     <div class="form-group account-btn text-center mt-2">
                         <div class="col-12">
                             <button class="btn width-lg btn-rounded btn-primary waves-effect waves-light"
@@ -473,27 +474,81 @@ Manajemen Akun
 <script src="{{ asset('highdmin/js/pages/datatables.init.js') }}"></script>
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.4/sweetalert2.min.js"
+    integrity="sha512-CIz2tDz3t76s1DE7eYvLrS6INwR6VlKsWHMrBtswdL1TiokTomhuUIiOgIN0U+l1BaThZUYDMrSRiRtjg8nGOQ=="
+    crossorigin="anonymous"></script>
 <!-- keep the modal pop up if errors occur -->
-@if ($errors->has('name') || $errors->has('username') || $errors->has('email') || $errors->has('password'))
+{{-- <script type="text/javascript">
+    $('body').on('click', '#tambahForm', function(){
+        var tambahUser = $("#tambahUser");
+        var formData = tambahUser.serialize();
+        $( '#name-error' ).html( "" );
+        $( '#username-error' ).html( "" );
+        $( '#email-error' ).html( "" );
+        $( '#password-error' ).html( "" );
+        $( '#role-error' ).html( "" );
+
+        $.ajax({
+            url:"{{ route('users.store') }}",
+type:'POST',
+data:formData,
+success:function(data) {
+console.log(data);
+if(data.errors) {
+if(data.errors.name){
+$( '#name-error' ).html( data.errors.name[0] );
+}
+if(data.errors.username){
+$( '#username-error' ).html( data.errors.username[0] );
+}
+if(data.errors.email){
+$( '#email-error' ).html( data.errors.email[0] );
+}
+if(data.errors.password){
+$( '#password-error' ).html( data.errors.password[0] );
+}
+if(data.errors.role){
+$( '#role-error' ).html( data.errors.role[0] );
+}
+
+}
+if(data.success) {
+Swal.fire({
+type: "success",
+title: 'Berhasil!',
+text: 'Data User telah berhasil di masukkan!'
+}).then(function() {
+location.reload();
+});
+
+}
+},
+});
+});
+
+var tag = document.getElementById('demo');
+
+if(tag.innerText.length == 0){
+document.getElementById("demo2").style.color = "red";
+}
+</script> --}}
+@if ($errors->has('name') || $errors->has('username') || $errors->has('email')
+|| $errors->has('password') || $errors->has('password_confirmed') || $errors->has('role'))
 <script>
-    function showCreateModal() {
-        $('.createModal').modal('show');
-    }
-    showCreateModal();
+    $('#createModal').modal('show'); 
 </script>
 @endif
 
-@if ($errors->has('edit_name') || $errors->has('edit_username') || $errors->has('edit_email'))
+@if ($errors->has('edit_name') || $errors->has('edit_username') || $errors->has('edit_email')||
+$errors->has('edit_role'))
 <script>
-    function showCreateModal() {
-        $('.editModal').modal('show');
-    }
-    showCreateModal();
+    Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Data Gagal Di Edit',
+})
 </script>
 @endif
-
-
 
 <script>
     //  passing data to edit modal pop up 

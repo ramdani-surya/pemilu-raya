@@ -3,9 +3,11 @@
 @section('subtitle')
 Dashboard
 @endsection
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @section('content')
 <!-- start row -->
+
 <div class="row text-center">
     <div class="col-sm-6 col-xl-3">
         <div class="card-box widget-flat border-primary bg-primary text-white">
@@ -38,10 +40,17 @@ Dashboard
 </div>
 <!-- end row -->
 
+<div class="card-box d-flex justify-content-center">
+    <div style="width:60%;">
+        {!! $chartjs->render() !!}
+    </div>
+</div>
+
 
 @endsection
 
 @section('js')
+
 <!-- Flot chart -->
 <script src="{{ asset('highdmin/libs/flot-charts/jquery.flot.js') }}"></script>
 <script src="{{ asset('highdmin/libs/flot-charts/jquery.flot.time.js') }}"></script>
@@ -57,4 +66,9 @@ Dashboard
 
 <!-- Dashboard init -->
 <script src="{{ asset('highdmin/js/pages/dashboard.init.js') }}"></script>
+
+<!-- ChartJs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"
+    integrity="sha512-RGbSeD/jDcZBWNsI1VCvdjcDULuSfWTtIva2ek5FtteXeSjLfXac4kqkDRHVGf1TwsXCAqPTF7/EYITD0/CTqw=="
+    crossorigin="anonymous"></script>
 @endsection
