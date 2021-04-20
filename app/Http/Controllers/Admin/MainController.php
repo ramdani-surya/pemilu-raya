@@ -15,16 +15,26 @@ use Carbon\Carbon;
 
 class MainController extends Controller
 {
-    public function dashboard(Election $election, Candidate $candidates)
+    public function dashboard(Election $election)
     {
         $jumlah_kandidat = Candidate::All();
-        $candidate = $jumlah_kandidat->count();
+        $candidate = count(getActiveElection()->candidates);
+        $candidates = Candidate::all();
+        $not_voted = votersPercentage($election, 0);
+        $candidateArray = [];
+        $candidateVotings = [];
+
+        foreach ($candidates as $dcandidate) {
+            $candidateArray[] = "$dcandidate->chairman_name - $dcandidate->vice_chairman_name";
+            $candidateVotings[] = count($dcandidate->votings);
+        }
+        $candidateArray[] = 'Belum Memilih';
+        $candidateVotings[] = $not_voted;
 
        
         $jumlah_voter = Voter::All();
         $voter = $jumlah_voter->count();
 
-        $not_voted = votersPercentage($election, 0);
         $voted = votersPercentage($election, 1);    
 
         $sudah_memilih = Voter::where('voted', '1')->get();
@@ -38,12 +48,12 @@ class MainController extends Controller
          ->name('barChartTest')
          ->type('bar')
          ->size(['width' => 400, 'height' => 200])
-         ->labels(['Kandidat 1', 'Kandidat 2', 'Kandidat 3', 'Belum Memilih'])
+         ->labels($candidateArray)
          ->datasets([
              [
                  "label" => "Suara",
                  'backgroundColor' => ['#fff', 'rgba(54, 162, 235, 0.2)', '#acacac'],
-                 'data' => [$jumlahAdmin,12,200,$not_voted]
+                 'data' => $candidateVotings
              ],
              
              
