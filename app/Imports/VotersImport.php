@@ -18,10 +18,10 @@ class VotersImport implements ToModel
         return new Voter([
             'user_id'     => Auth::id(),
             'election_id' => getActiveElection()->id,
-            'nim'         => $row[0],
-            'name'        => $row[1],
+            'nim'         => substr($row[0], 0, 10),
+            'name'        => "$row[1] $row[2]",
             'token'       => generateToken(),
-            'email'       => emailStmik($row[0]),
+            'email'       => $row[0],
         ]);
     }
 }

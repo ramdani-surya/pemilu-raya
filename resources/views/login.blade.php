@@ -25,13 +25,14 @@
                     @csrf
                     <div class="form-group d-md-block d-flex justify-content-center text-center">
                         <input type="text" class="form-control login" placeholder="NIM" name="nim"
-                            value="{{ old('nim') }}" required>
+                            value="{{ Request::all()['nim'] ?? old('nim') }}" required>
                         @error('nim')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group d-md-block d-flex justify-content-center text-center mtMd1c5">
-                        <input type="text" class="form-control login" placeholder="TOKEN" name="token" required>
+                        <input type="text" class="form-control login" placeholder="TOKEN" name="token"
+                            value="{{ Request::all()['token'] ?? old('token') }}" required>
                         @error('token')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -40,12 +41,12 @@
                 </form>
                 <p class="textCopy mt-md-5 mt-3">
                     Build with passion by
-                    <img src="{{ asset('images/Logo_Tahu_Ngoding.png') }}"
+                    <img src="{{ asset('images/admin_component/Logo_Tahu_Ngoding.png') }}"
                         class="logoTahuNgoding" />
                 </p>
             </div>
             <div class="col-md-6 d-md-block d-flex justify-content-center order-md-2 order-1">
-                <img src="{{ asset('images/Ilustrator.png') }}" class="ilustratorImg" />
+                <img src="{{ asset('images/admin_component/Ilustrator.png') }}" class="ilustratorImg" />
             </div>
         </div>
     </div>

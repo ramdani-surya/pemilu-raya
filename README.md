@@ -1,4 +1,4 @@
-<p align="center"><img src="public/Images/tahu.png" width="250"></p>
+<p align="center"><img src="public/images/admin_component/tahu.png" width="250"></p>
 
 # <p align="center"> **TAHU**NGODING </p>
 
@@ -18,19 +18,19 @@
     </td>
     <td align="center">
         <a href="https://github.com/kittenstack">
-            <img src="public/Images/tahu_adnan.jpg" width="100px;"><br>
+            <img src="public/images/admin_component/tahu_adnan.jpg" width="100px;"><br>
             <sub><b>ADNAN</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/hippies67">
-            <img src="public/Images/tahu_ikbal.jpg" width="100px;"><br>
+            <img src="public/images/admin_component/tahu_ikbal.jpg" width="100px;"><br>
             <sub><b>IKBAL MR</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/ramdani-surya">
-            <img src="public/Images/tahu_surya.jpg" width="100px;"><br>
+            <img src="public/images/admin_component/tahu_surya.jpg" width="100px;"><br>
             <sub><b>R. SURYA</b></sub>
         </a>
     </td>

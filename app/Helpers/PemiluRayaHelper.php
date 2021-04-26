@@ -23,6 +23,17 @@ function getRunningElection()
     return Election::where('running', 1)->first();
 }
 
+function replaceEachChar($string, $replace)
+{
+    $chars = '';
+
+    foreach (str_split($string) as $char) {
+        $chars .= $replace;
+    }
+
+    return $chars;
+}
+
 function tglIndo($date)
 {
     $bln  = config('constant.bulan');
@@ -50,7 +61,7 @@ function votersPercentage(Election $election, $voted=1, $label=true)
         $percentage = 0;
     }
 
-    if ($label) 
+    if ($label)
         $percentage = "$percentage%";
 
     return  $percentage;
