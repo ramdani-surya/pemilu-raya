@@ -37,7 +37,7 @@ class Controller extends BaseController
 
     public function closed()
     {
-        if (getRunningElection())
+        if (getRunningElection() || getActiveElection())
             return redirect('/');
 
         return view('closed');

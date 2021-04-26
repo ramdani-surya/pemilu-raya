@@ -75,7 +75,7 @@ Daftar Pemilih Tetap
                             <td>{{ $voter->nim }}</td>
                             <td>{{ $voter->name }}</td>
                             <td>
-                                {{ $voter->token }}
+                                {{ replaceEachChar($voter->token, '*') }}
                                 @if($voter->email_sent)
                                     <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
                                         data-original-title="Terkirim" style="font-weight: bold;"></i>

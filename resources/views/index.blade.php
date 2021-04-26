@@ -8,11 +8,17 @@ Kandidat
 <section class="sectionFormLogin">
     <div class="container mt-5">
         <div class="row">
+            @php
+                $color = ['One', 'Two', 'Three'];
+                $number = 0;
+            @endphp
+
             @foreach($candidates as $candidate)
                 <div class="col-md-4 px-5 mt-5 mt-md-0" data-toggle="modal"
                     data-target="#exampleModal{{ $candidate->id }}">
-                    <img src="{{ asset($candidate->image) }}" alt="" class="img-fluid candidateImgTwo">
-                    <div class="wrapperCandidateTwo text-center mt-5 p-4">
+                    <img src="{{ asset("images/uploaded/$candidate->image") }}" alt=""
+                        class="img-fluid candidateImg{{ $color[$number] }}" {{ $number }}>
+                    <div class="wrapperCandidate{{ $color[$number] }} text-center mt-5 p-4">
                         <h5>
                             {{ $candidate->chairman_name }}
                         </h5>
@@ -21,6 +27,13 @@ Kandidat
                         </h5>
                     </div>
                 </div>
+
+                @php
+                    $number++;
+
+                    if ($number > 2)
+                        $number = 0;
+                @endphp
             @endforeach
         </div>
 
