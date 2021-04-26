@@ -25,13 +25,14 @@
                     @csrf
                     <div class="form-group d-md-block d-flex justify-content-center text-center">
                         <input type="text" class="form-control login" placeholder="NIM" name="nim"
-                            value="{{ old('nim') }}" required>
+                            value="{{ Request::all()['nim'] ?? old('nim') }}" required>
                         @error('nim')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group d-md-block d-flex justify-content-center text-center mtMd1c5">
-                        <input type="text" class="form-control login" placeholder="TOKEN" name="token" required>
+                        <input type="text" class="form-control login" placeholder="TOKEN" name="token"
+                            value="{{ Request::all()['token'] ?? old('token') }}" required>
                         @error('token')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

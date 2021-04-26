@@ -1,26 +1,45 @@
-<b>Assalamualaikum wr.wb</b>
+<!DOCTYPE html>
+<html lang="en">
 
-<br>
-<br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ $voter->election->name }}</title>
+</head>
 
-Kami dari panitia pemilu raya untuk pemilihan SEMA (Senat Mahasiswa) STMIK Sumedang memberitahukan NIM dan token yang
-akan digunakan pada saat pemilu raya nanti, datanya sebagai berikut :
+<body>
+    <p>
+        <b>Assalamualaikum wr.wb</b>
 
-<br>
-<br>
+        <br>
+        <br>
 
-NIM : <b>{{ $voter->nim }}</b> <br>
-Token : <b>{{ $voter->token }}</b>
+        Kami dari panitia {{ $voter->election->name }} STMIK Sumedang memberitahukan NIM dan token
+        yang
+        akan digunakan pada saat pemilu raya nanti, datanya sebagai berikut :
 
-<br>
-<br>
+        <br>
+        <br>
 
-bisa di isi di link <a href="{{ route('login') }}">pemiluraya.stmik-sumedang.ac.id/</a> pada saat
-waktu
-pemilihan berlangsung.
+        NIM : <b>{{ $voter->nim }}</b> <br>
+        Token : <b>{{ $voter->token }}</b>
 
-<br>
-<br>
+        <br>
+        <br>
 
-Demikian pemberitahuan dari kami <br>
-<b>Wassalamualaikum wr.wb</b>
+        bisa di isi di link <a
+            href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">pemiluraya.stmik-sumedang.ac.id/</a>
+        pada saat
+        waktu
+        pemilihan berlangsung.
+
+        <br>
+        <br>
+
+        Demikian pemberitahuan dari kami <br>
+        <b>Wassalamualaikum wr.wb</b>
+    </p>
+</body>
+
+</html>
