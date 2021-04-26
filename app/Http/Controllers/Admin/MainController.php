@@ -18,7 +18,7 @@ class MainController extends Controller
     public function dashboard(Election $election)
     {
         $jumlah_kandidat = Candidate::All();
-        $candidate = count(getActiveElection()->candidates);
+        $candidate = getActiveElection() ? count(getActiveElection()->candidates) : 0;
         $candidates = Candidate::all();
         $not_voted = votersPercentage($election, 0);
         $candidateArray = [];
@@ -31,17 +31,17 @@ class MainController extends Controller
         $candidateArray[] = 'Belum Memilih';
         $candidateVotings[] = $not_voted;
 
-       
+
         $jumlah_voter = Voter::All();
         $voter = $jumlah_voter->count();
 
-        $voted = votersPercentage($election, 1);    
+        $voted = votersPercentage($election, 1);
 
         $sudah_memilih = Voter::where('voted', '1')->get();
 
         $kandidat1 = Voting::where('candidate_id', '17')->get();
         $jumlah = $kandidat1->count();
-        
+
         $user = User::where('role','admin')->get();
         $jumlahAdmin = $user->count();
         $chartjs = app()->chartjs
@@ -55,13 +55,13 @@ class MainController extends Controller
                  'backgroundColor' => ['#fff', 'rgba(54, 162, 235, 0.2)', '#acacac'],
                  'data' => $candidateVotings
              ],
-             
-             
-            
+
+
+
          ])
          ->options([]);
 
-       
+
 
         return view('admin.dashboard.data', compact('candidate','voter','voted','not_voted','chartjs'));
     }
