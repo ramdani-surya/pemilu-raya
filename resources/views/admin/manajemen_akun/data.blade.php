@@ -9,9 +9,6 @@ Manajemen Akun
 <link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.4/sweetalert2.min.css"
-    integrity="sha512-1ZnBKRTKQpSWa+zTPLIvikrThliiXRIUAk7vYALF8lpHpkUI8y9kynkCtmjpxGRiF4Gic9cXcbHrcAP3CPif4Q=="
-    crossorigin="anonymous" />
 @endsection
 
 @section('content')
@@ -160,8 +157,8 @@ Manajemen Akun
                         <td>
                             <div class="form-group">
                                 <button type="button" data-role="{{ $user->role }}" id="{{ $user->role }}"
-                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton"
-                                    data-toggle="modal" data-target=".editModal" onclick="setEditData({{ $user }})">Edit
+                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton popup"
+                                    data-toggle="modal" data-target="#editModal" onclick="setEditData({{ $user }})">Edit
                                 </button>
                                 <form style="display: inline" action="{{ route('users.destroy', $user) }}"
                                     method="post">
@@ -201,6 +198,25 @@ Manajemen Akun
         border-radius: 5px;
         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
     }
+
+
+    label.error {
+        color: #f1556c;
+        font-size: 13px;
+        margin: 0;
+        padding: 0;
+    }
+
+    input.error {
+        color: #f1556c;
+        border: 1px solid #f1556c;
+    }
+
+    .input-group-append .fas.error {
+        background-color: #f1556c !important;
+        font-size: 14px !important;
+        border: 1px solid #f1556c !important;
+    }
 </style>
 
 <!-- create modal pop up -->
@@ -222,10 +238,7 @@ Manajemen Akun
                         <div class="col-12">
                             <label for="election">Nama Lengkap</label>
                             <input class="form-control mb-1 @error('name') is-invalid @enderror" type="text" id="name"
-                                placeholder="Contoh: Briana White" name="name" value="{{ old('name') }}" required>
-                            @error('edit_name')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                                placeholder="Contoh: Briana White" name="name" value="{{ old('name') }}">
                         </div>
                     </div>
 
@@ -234,10 +247,7 @@ Manajemen Akun
                             <label for="period">Username</label>
                             <input class="form-control mb-1 @error('username') is-invalid @enderror" type="text"
                                 id="username" placeholder="Contoh: briana67" name="username"
-                                value="{{ old('username') }}" required>
-                            @error('username')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                                value="{{ old('username') }}">
                         </div>
                     </div>
 
@@ -246,10 +256,7 @@ Manajemen Akun
                             <label for="period">Email</label>
                             <input class="form-control mb-1 @error('email') is-invalid @enderror" minlength="3"
                                 maxlength="35" type="email" id="email" placeholder="Contoh: briana67@gmail.com"
-                                name="email" value="{{ old('email') }}" required>
-                            @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                                name="email" value="{{ old('email') }}">
                         </div>
                     </div>
 
@@ -260,14 +267,16 @@ Manajemen Akun
                                 <input class="form-control @error('password') is-invalid @enderror" type="password"
                                     name="password" id="passwordId" placeholder="Masukan Password Anda">
                                 <div class="input-group-append">
-                                    <button
-                                        class="btn btn-secondary fas fa-eye toggle-password @error('password') btn-danger @enderror"
+                                    <button class="btn btn-secondary fas fa-eye toggle-password tombol"
                                         type="button"></button>
                                 </div>
                             </div>
-                            @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            <label for="passwordId" id="passwordV" generated="true" class="error"></label>
+                            <script>
+                                if (document.getElementById('passwordV').innerHTML == ""){
+                                        document.getElementById('passwordV').style.display = "none";
+                                  }
+                            </script>
                         </div>
                     </div>
 
@@ -275,29 +284,30 @@ Manajemen Akun
                         <div class="col-12">
                             <label for="period">Password Confirmation</label>
                             <div class="input-group mb-1">
-                                <input class="form-control @error('password') is-invalid @enderror" type="password"
-                                    name="password_confirmation" id="passwordConfirm"
-                                    placeholder="Masukan Konfirmasi Password Anda" value="{{ old('email') }}">
+                                <input class="form-control" type="password" name="password_confirmation"
+                                    id="passwordConfirm" placeholder="Masukan Konfirmasi Password Anda"
+                                    value="{{ old('email') }}">
                                 <div class="input-group-append">
-                                    <button
-                                        class="btn btn-secondary fas fa-eye toggle-password-confirm @error('password') btn-danger @enderror"
+                                    <button class="btn btn-secondary fas fa-eye toggle-password-confirm"
                                         type="button"></button>
                                 </div>
                             </div>
-
+                            <label for="passwordConfirm" id="password_confirm" generated="true" class="error"></label>
+                            <script>
+                                if (document.getElementById('password_confirm').innerHTML == ""){
+                                        document.getElementById('password_confirm').style.display = "none";
+                                  }
+                            </script>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-12">
                             <label for="period">Role</label>
-                            <select class="form-control" name="role" id="role" required>
+                            <select class="form-control mb-1" name="role" id="role">
                                 <option value="admin">Admin</option>
                                 <option value="panitia">Panitia</option>
                             </select>
-                            @error('role')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                     </div>
 
@@ -327,7 +337,7 @@ Manajemen Akun
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="{{ route('users.update', '') }}" id="edit-form" method="POST">
+                <form class="form-horizontal" action="{{ route('users.update', '') }}" id="editUser" method="POST">
                     @csrf
                     @method('put')
 
@@ -474,88 +484,125 @@ Manajemen Akun
 <script src="{{ asset('highdmin/js/pages/datatables.init.js') }}"></script>
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.4/sweetalert2.min.js"
-    integrity="sha512-CIz2tDz3t76s1DE7eYvLrS6INwR6VlKsWHMrBtswdL1TiokTomhuUIiOgIN0U+l1BaThZUYDMrSRiRtjg8nGOQ=="
-    crossorigin="anonymous"></script>
-<!-- keep the modal pop up if errors occur -->
-{{-- <script type="text/javascript">
-    $('body').on('click', '#tambahForm', function(){
-        var tambahUser = $("#tambahUser");
-        var formData = tambahUser.serialize();
-        $( '#name-error' ).html( "" );
-        $( '#username-error' ).html( "" );
-        $( '#email-error' ).html( "" );
-        $( '#password-error' ).html( "" );
-        $( '#role-error' ).html( "" );
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 
-        $.ajax({
-            url:"{{ route('users.store') }}",
-type:'POST',
-data:formData,
-success:function(data) {
-console.log(data);
-if(data.errors) {
-if(data.errors.name){
-$( '#name-error' ).html( data.errors.name[0] );
-}
-if(data.errors.username){
-$( '#username-error' ).html( data.errors.username[0] );
-}
-if(data.errors.email){
-$( '#email-error' ).html( data.errors.email[0] );
-}
-if(data.errors.password){
-$( '#password-error' ).html( data.errors.password[0] );
-}
-if(data.errors.role){
-$( '#role-error' ).html( data.errors.role[0] );
-}
-
-}
-if(data.success) {
-Swal.fire({
-type: "success",
-title: 'Berhasil!',
-text: 'Data User telah berhasil di masukkan!'
-}).then(function() {
-location.reload();
-});
-
-}
-},
-});
-});
-
-var tag = document.getElementById('demo');
-
-if(tag.innerText.length == 0){
-document.getElementById("demo2").style.color = "red";
-}
-</script> --}}
-@if ($errors->has('name') || $errors->has('username') || $errors->has('email')
-|| $errors->has('password') || $errors->has('password_confirmed') || $errors->has('role'))
 <script>
-    $('#createModal').modal('show'); 
+    $(document).ready(function() {
+            $("#tambahUser").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    username:{
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    email: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    password : {
+                        required: true,
+                        minlength : 2
+                    },
+                    password_confirmation : {
+                        required: true,
+                        equalTo : "#passwordId"
+                    },
+                    role: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    name: {
+                        required: "Nama harus di isi",
+                        minlength: "Nama tidak boleh kurang dari 3 karakter",
+                        maxlength: "Nama tidak boleh lebih dari 30 karakter"
+                    },
+                    username: {
+                        required: "Username harus di isi",
+                        minlength: "Username tidak boleh kurang dari 3 karakter",
+                        maxlength: "Username tidak boleh lebih dari 30 karakter"
+                    },
+                    email: {
+                        required: "Email harus di isi",
+                        email: "Email yang di isikan harus valid",
+                        minlength: "Email tidak boleh kurang dari 3 karakter",
+                        maxlength: "Email tidak boleh lebih dari 30 karakter"
+                    },
+                    password: {
+                        required: "Password harus di isi",
+                        minlength: "Password tidak boleh kurang dari 2 karakter"
+                    },
+                    password_confirmation: {
+                        required: "Konfirmasi Password harus di isi",
+                        equalTo: "Konfirmasi Password tidak sama"
+                    },
+                    role: {
+                        required: "Role harus di isi"
+                    },
+                }
+            });
+        });
 </script>
-@endif
 
-@if ($errors->has('edit_name') || $errors->has('edit_username') || $errors->has('edit_email')||
-$errors->has('edit_role'))
 <script>
-    Swal.fire({
-  icon: 'error',
-  title: 'Oops...',
-  text: 'Data Gagal Di Edit',
-})
+    $(document).ready(function() {
+            $("#editUser").validate({
+                rules: {
+                    edit_name: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    edit_username:{
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    edit_email: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30,
+                    },
+                    edit_role: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    edit_name: {
+                        required: "Nama harus di isi",
+                        minlength: "Nama tidak boleh kurang dari 3 karakter",
+                        maxlength: "Nama tidak boleh lebih dari 30 karakter"
+                    },
+                    edit_username: {
+                        required: "Username harus di isi",
+                        minlength: "Username tidak boleh kurang dari 3 karakter",
+                        maxlength: "Username tidak boleh lebih dari 30 karakter"
+                    },
+                    edit_email: {
+                        required: "Email harus di isi",
+                        email: "Email yang di isikan harus valid",
+                        minlength: "Email tidak boleh kurang dari 3 karakter",
+                        maxlength: "Email tidak boleh lebih dari 30 karakter"
+                    },
+                    edit_role: {
+                        required: "Role harus di isi"
+                    },
+                }
+            });
+        });
 </script>
-@endif
 
 <script>
     //  passing data to edit modal pop up 
-    const updateLink = $('#edit-form').attr('action');
-
+    const updateLink = $('#editUser').attr('action');
     function setEditData(user) {
-        $('#edit-form').attr('action', `${updateLink}/${user.id}`);
+        $('#editUser').attr('action',  `${updateLink}/${user.id}`);
         $('[name="edit_name"]').val(user.name);
         $('[name="edit_username"]').val(user.username);
         $('[name="edit_email"]').val(user.email);

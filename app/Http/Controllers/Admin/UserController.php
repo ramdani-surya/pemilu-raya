@@ -144,7 +144,8 @@ class UserController extends Controller
             'edit_role' => 'required',
         ]);
 
-
+        
+        
         $data = [
             'name' => $request->edit_name,
             'username' => $request->edit_username,

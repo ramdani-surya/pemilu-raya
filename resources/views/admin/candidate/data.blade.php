@@ -36,50 +36,19 @@ Data Kandidat
     .candidates_name {
         padding: 20px;
     }
-
-    .candidateNumber {
-        padding: 20px;
-    }
 </style>
 
 
-@foreach($candidates as $candidate)
 
 <div class="wrap">
-    <div class="row text-center">
-        <div class="col-lg-3">
-            <div class="card">
+    <div class="row ">
+        @foreach($candidates as $candidate)
+        <div class="col-lg-4">
+            <div class="card text-center" style="width: 70%; padding: 20px;">
                 <h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}
                 </h2>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="card mt-2" style="height: 80%">
-                <div class="candidates_name">
-                    <h4 class="header-title mt-2">KETUA</h4>
-                    <p class="sub-header">
-                        {{ $candidate->chairman_name }}
-                    </p>
-                    <h4 class="header-title ">WAKIL KETUA</h4>
-                    <p class="sub-header">
-                        {{ $candidate->vice_chairman_name }}
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="card-box">
-
-
-
-
-
-
+            <div class="card-box p-4">
                 <div class="card filter-item all webdesign illustrator">
                     @if(!empty($candidate->image) && file_exists(public_path('images/uploaded/'.
                     $candidate->image)))
@@ -95,8 +64,8 @@ Data Kandidat
                                     @if(!empty($candidate->image) &&
                                     file_exists(public_path('images/uploaded/'. $candidate->image)))
                                     <img src="{{ asset('images/uploaded/'. $candidate->image) }}"
-                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                        alt="Chairman Photo">
+                                        style="height:400px; width: 100%; padding:50px; object-fit:cover;"
+                                        class="thumb-img img-fluid" alt="Chairman Photo">
                                     @else
                                     <img src="{{ asset('images/admin_component/imageNoAvailable.svg') }}"
                                         style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
@@ -111,22 +80,37 @@ Data Kandidat
                         </a>
                 </div>
             </div>
+            <style>
+                .testo {
+                    display: flex;
+                    align-items: center;
+                }
+            </style>
+
+
+
         </div>
-
-
-        <div class="col-lg-4 d-flex align-items-center">
-            <div class="card">
+        <div class="col-lg-2 testo">
+            <div class="card ">
                 <div class="card-body " style="margin-top:20px;">
                     <div class="form-group ">
+                        @if(!empty($candidate->program))
                         <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
-                            style="width:100%" data-toggle="modal" data-target=".modalVisionOrMission"
-                            onclick="showVision({{ $candidate }})">
-                            Visi
+                            style="width:100%" data-toggle="modal" data-target=".programModal"
+                            onclick="showProgram({{ $candidate }})">
+                            Program
                         </button>
+                        @else
                         <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
-                            style="width:100%; margin-top:10px;" data-toggle="modal" data-target=".modalVisionOrMission"
-                            onclick="showMission({{ $candidate }})">
-                            Misi
+                            style="width:100%" data-toggle="modal" data-target=".programModal"
+                            onclick="showProgram({{ $candidate }})" disabled>
+                            Program
+                        </button>
+                        @endif
+                        <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
+                            style="width:100%; margin-top:10px;" data-toggle="modal" data-target=".detailModal"
+                            onclick="showDetail({{ $candidate }})">
+                            Detail
                         </button>
                     </div>
                     <div class="form-group">
@@ -143,18 +127,26 @@ Data Kandidat
                 </div>
             </div>
         </div>
+
+
+
+        <style>
+
+        </style>
+
+        @endforeach
+
     </div>
 
 </div>
-@endforeach
 
-<!-- vision and mission modal pop up -->
-<div class="modal fade modalVisionOrMission" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true" style="display: none;">
+<!-- Program modal pop up -->
+<div class="modal fade programModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    style="display: none;">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="vision-and-missionTitle"></h4>
+                <h4 class="modal-title" id="programTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -162,10 +154,47 @@ Data Kandidat
             <div class="modal-body p-3">
                 <div class="card">
                     <div class="card-body">
-                        <p class="visi-and-missionText"></p>
+                        <p class="program"></p>
                     </div>
                 </div>
             </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .brian {
+        width: 50% !important;
+        margin: 0 auto !important;
+    }
+</style>
+<!-- Detail modal pop up -->
+<div class="modal fade detailModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <div class="modal-content brian">
+            <div class="modal-header">
+                <h4 class="modal-title" id="detailTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p>Nama Ketua :</p>
+                            <span class="chairman-name-detail font-weight-bold"></span>
+                        </div>
+                        <div class="form-group">
+                            <p>Nama Wakil Ketua :</p>
+                            <span class="vice-chairman-name-detail font-weight-bold"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -216,16 +245,17 @@ Data Kandidat
 
 
 <script>
-    //  passing data to mission and vission modal pop up
-    function showVision(candidate) {
-        $('.visi-and-missionText').html(candidate.vision);
-        $('#vision-and-missionTitle').text('Visi')
+    //  passing data to program modal pop up
+    function showProgram(candidate) {
+        $('.program').html(candidate.program);
+        $('#programTitle').text('Program')
 
     }
 
-    function showMission(candidate) {
-        $('.visi-and-missionText').html(candidate.mission);
-        $('#vision-and-missionTitle').text('Misi')
+    function showDetail(candidate) {
+        $('.chairman-name-detail').html(candidate.chairman_name);
+        $('.vice-chairman-name-detail').html(candidate.vice_chairman_name);
+        $('#detailTitle').text('Detail')
     }
 
     $("#bersihkan-semua-data").click(function () {

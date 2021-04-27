@@ -15,8 +15,7 @@ class Candidate extends Model
         'chairman_name',
         'vice_chairman_name',
         'image',
-        'vision',
-        'mission',
+        'program',
     ];
 
     public function election()
