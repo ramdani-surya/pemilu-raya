@@ -137,14 +137,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        
         $this->validate($request, [
             'edit_name' => 'required|string|min:3|max:35',
-            'edit_username' => 'required|string|min:3|unique:users,username,$user->id|max:35',
-            'edit_email' => 'required|string|min:5|unique:users,email,$user->id|max:35',
+            'edit_username' => "required|string|min:3|unique:users,username,$user->id|max:35",
+            'edit_email' => "required|string|min:5|unique:users,email,$user->id|max:35",
             'edit_role' => 'required',
         ]);
 
-        
         
         $data = [
             'name' => $request->edit_name,
