@@ -65,4 +65,22 @@ class MainController extends Controller
 
         return view('admin.dashboard.data', compact('candidate','voter','voted','not_voted','chartjs'));
     }
+
+    public function dashboardApi()
+    {
+        $data = [
+            'total_voter' => count(getActiveElection()->voters),
+            'has_voted'   => [
+                'total'      => count(getActiveElection()->votedVoters),
+                'percentage' => votersPercentage(getActiveElection()),
+            ],
+            'unvoted' => [
+                'total'      => count(getActiveElection()->unvotedVoters),
+                'percentage' => votersPercentage(getActiveElection(), 0),
+            ],
+            'total_candidate' => count(getActiveElection()->candidates),
+        ];
+
+        return response()->json($data);
+    }
 }
