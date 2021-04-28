@@ -33,9 +33,12 @@ Data Kandidat
 
                 <div class="form-group">
                     <label for="nomorKandidat">Nomor Kandidat<span class="text-danger">*</span></label>
-                    <input type="number" name="candidate_number" parsley-trigger="change"
-                        placeholder="Masukkan Nomor Kandidat" class="form-control" id="candidate_number"
-                        value="{{ old('candidate_number') }}" min="1">
+
+                    <input type="text" name="candidate_number" parsley-trigger="change"
+                        placeholder="Masukkan Nomor Kandidat"
+                        class="form-control @error('candidate_number') is-invalid @enderror" id="candidate_number"
+                        value="{{ old('candidate_number') }}" minlength="1" maxlength="2"
+                        onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
 
                     @error('candidate_number')
                     <div class="mt-1">
@@ -116,46 +119,18 @@ Data Kandidat
 
     <!-- start row -->
     <div class="row">
-        <div class="col-lg-6">
-            <div class="card-box validasi-visi">
-                <h4 class="header-title">VISI</h4>
+        <div class="col-lg-12">
+            <div class="card-box validasi-program">
+                <h4 class="header-title">Program</h4>
                 <p class="sub-header">
-                    Visi adalah gambaran besar, tujuan utama dan cita-cita suatu perusahaan, instansi, pribadi atau
-                    organisasi di masa depan.
+                    Di kolom ini anda dapat menambahkan program kandidat.
                 </p>
                 <div class="form-group mb-0">
-                    <textarea class="ckeditor form-control" name="vision">{{ old('vision') }}</textarea>
+                    <textarea class="ckeditor form-control" name="program">{{ old('program') }}</textarea>
 
-                    @error('vision')
+                    @error('program')
                     <style>
-                        .validasi-visi {
-                            border: 1px solid #FF3333 !important;
-                            border-radius: 5px !important;
-                        }
-                    </style>
-                    <div class="mt-2">
-                        <span class="text-danger">{{ $message }}</span>
-                    </div>
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-lg-6">
-            <div class="card-box validasi-misi">
-                <h4 class="header-title">MISI</h4>
-                <p class="sub-header">
-                    Misi adalah Penjabaran atau langkah-langkah yang akan dilakukan untuk mencapai / mewujudkan visi
-                    tersebut.
-                </p>
-                <div class="form-group mb-0">
-                    <textarea class="ckeditor form-control" maxlength="10" minlength="1"
-                        name="mission">{{ old('mission') }}</textarea>
-
-                    @error('mission')
-                    <style>
-                        .validasi-misi {
+                        .validasi-program {
                             border: 1px solid #FF3333 !important;
                             border-radius: 5px !important;
                         }
