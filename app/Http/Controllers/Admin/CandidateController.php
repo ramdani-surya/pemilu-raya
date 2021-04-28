@@ -48,8 +48,7 @@ class CandidateController extends Controller
             'chairman_name' => 'required|string|min:3|max:35',
             'vice_chairman_name' => 'required|string|min:3|max:35',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'vision' => 'required',
-            'mission' => 'required'
+            'program' => 'required',
         ],
         [
             'election.required' => 'Election harus di isi.',
@@ -67,8 +66,7 @@ class CandidateController extends Controller
             'image.image' => 'Foto harus berupa gambar.',
             'image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
-            'vision.required' => 'Kolom Visi harus di isi.',
-            'mission.required' => 'Kolom Misi harus di isi.',
+            'program.required' => 'Kolom Program harus di isi.',
         ]);
 
         if ($request->hasFile('image')) {
@@ -89,8 +87,7 @@ class CandidateController extends Controller
             'chairman_name' => $request->chairman_name,
             'vice_chairman_name' => $request->vice_chairman_name,
             'image' => $image,
-            'vision' => $request->vision,
-            'mission' => $request->mission,
+            'program' => $request->program,
         ];
 
         Candidate::create($data)
@@ -137,8 +134,7 @@ class CandidateController extends Controller
             'edit_chairman_name'      => 'required|min:3|max:35',
             'edit_vice_chairman_name'     => 'required|min:3|max:35',
             'edit_image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'edit_vision'     => 'required',
-            'edit_mission'     => 'required',
+            'edit_program'     => 'required',
         ],
         [
             'edit_candidate_number.required' => 'Nomor Kandidat harus di isi.',
@@ -155,8 +151,7 @@ class CandidateController extends Controller
             'edit_image.image' => 'Foto harus berupa gambar.',
             'edit_image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
-            'edit_vision.required' => 'Kolom Visi harus di isi.',
-            'edit_mission.required' => 'Kolom Misi harus di isi.',
+            'edit_program.required' => 'Kolom Program harus di isi.',
         ]);
 
         if ($request->hasFile('edit_image')) {
@@ -180,8 +175,7 @@ class CandidateController extends Controller
             'chairman_name'         => $request->edit_chairman_name,
             'vice_chairman_name'    => $request->edit_vice_chairman_name,
             'image'                 => $request->hasFile('edit_image') ? $edit_image : $candidate->image,
-            'vision'                => $request->edit_vision,
-            'mission'               => $request->edit_mission,
+            'program'                => $request->edit_program,
         ];
         $candidate->update($data)
             ? Alert::success('Sukses', "Kandidat berhasil diubah.")
