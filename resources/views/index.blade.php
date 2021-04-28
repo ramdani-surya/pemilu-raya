@@ -55,8 +55,11 @@ Kandidat
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog custom" role="document">
                 <div class="modal-content custom">
-                    <div class="modal-body p-md-5 p-4 pt-5">
-                        <div class="row">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="row p-md-5 p-4 pt-5">
                             <div class="col-md-6">
                                 <h1 class="font-weight-bold title titleSection">
                                     Visi
@@ -105,7 +108,7 @@ Kandidat
                         </li>
                     </ol>
                     <div class="wFull d-flex justify-content-start mt-3">
-                        <a href="#" type="submit" class="btn login font-weight-bold">Mengerti</a>
+                        <button type="button" class="btn login font-weight-bold" data-dismiss="modal">Mengerti</button>
                     </div>
                 </div>
             </div>
