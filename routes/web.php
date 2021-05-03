@@ -46,7 +46,7 @@ Route::prefix('login')->middleware('guest')->group(function () {
     Route::post('/admin', [LoginController::class, 'login']);
 });
 
-Route::group(['middleware' => ['admin']], function () {
+Route::group(['middleware' => ['admin', 'web']], function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
