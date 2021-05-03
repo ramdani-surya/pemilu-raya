@@ -127,6 +127,5 @@ Dashboard
         );
 
     }, 1000);
-
 </script>
 @endsection
