@@ -110,9 +110,7 @@
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            <span class="pro-user-name ml-1">
-                                {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
-                            </span>
+                            {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                             <!-- item-->

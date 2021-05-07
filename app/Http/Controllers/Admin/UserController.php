@@ -160,6 +160,47 @@ class UserController extends Controller
         return redirect(route('users.index'));
     }
 
+    function checkUsername(Request $request)
+    {
+        if($request->Input('username')){
+            $username = User::where('username',$request->Input('username'))->first();
+            if($username){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_username')){
+            $checkUsername = User::where('username',$request->Input('edit_username'))->first();
+            if($checkUsername){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
+    function checkEmail(Request $request)
+    {
+        if($request->Input('email')){
+            $email = User::where('email',$request->Input('email'))->first();
+            if($email){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_email')){
+            $checkEmail = User::where('email',$request->Input('edit_email'))->first();
+            if($checkEmail){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
     
     /**
      * Remove the specified resource from storage.

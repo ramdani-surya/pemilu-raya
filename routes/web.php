@@ -63,6 +63,8 @@ Route::group(['middleware' => ['admin']], function () {
         Route::resource('users', UserController::class)->except('create');
         Route::get('/user/clear', [UserController::class, 'clear'])->name('users.clear');
         Route::post('/user/update-password/{user}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+        Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('user.checkUsername');
+        Route::post('/checkEmail', [UserController::class, 'checkEmail'])->name('user.checkEmail');
 
         Route::middleware('checkActiveElection')->group(function () {
             Route::resource('candidates', CandidateController::class);
