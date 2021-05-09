@@ -12,7 +12,7 @@ Manajemen Akun
 @endsection
 
 @section('content')
-<meta name="_token" content="{{csrf_token()}}" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="row">
     <div class="col-lg-12">
@@ -66,9 +66,9 @@ Manajemen Akun
                         <td><span class="badge badge-success font-15">{{ Auth::user()->role }}</span></td>
                         <td>
                             <div class="form-group">
-                                <button type="button" data-role="{{ Auth::user()->role }}" id="{{ Auth::user()->role }}"
+                                <button type="button" data-role="{{ Auth::user()->role }}"
                                     class="btn btn-info btn-sm btn-edit waves-effect waves-light editButton  mr-2"
-                                    data-toggle="modal" data-target=".editModal"
+                                    data-toggle="modal" data-target="#editModal"
                                     onclick="setEditData({{ Auth::user() }})">Edit
                                 </button>
                                 <a href="{{ route('users.edit', Auth::user()->id) }}"
@@ -147,6 +147,8 @@ Manajemen Akun
                     @endphp
 
                     @foreach($users as $user)
+
+
                     <tr>
                         <td>{{ $increment++ }} </td>
                         <td>{{ $user->name }}</td>
@@ -156,10 +158,11 @@ Manajemen Akun
                         @if(Auth::user()->role == 'admin')
                         <td>
                             <div class="form-group">
-                                <button type="button" data-role="{{ $user->role }}" id="{{ $user->role }}"
-                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton popup"
-                                    data-toggle="modal" data-target="#editModal" onclick="setEditData({{ $user }})">Edit
-                                </button>
+
+                                <button type="button" data-toggle="modal" data-target="#editModal"
+                                    data-ids="{{ $user->id }}" data-role="{{ $user->role }}"
+                                    onclick="setEditData({{ $user }})"
+                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton popup">Edit</button>
                                 <form style="display: inline" action="{{ route('users.destroy', $user) }}"
                                     method="post">
                                     @csrf
@@ -172,6 +175,7 @@ Manajemen Akun
 
                             </div>
                             <div class="form-group">
+
                                 <a href="{{ route('users.edit', $user->id) }}"
                                     class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
                                     Password</a>
@@ -203,6 +207,9 @@ Manajemen Akun
     label.error {
         color: #f1556c;
         font-size: 13px;
+        font-size: .875rem;
+        font-weight: 400;
+        line-height: 1.5;
         margin: 0;
         padding: 0;
     }
@@ -233,6 +240,7 @@ Manajemen Akun
             <div class="modal-body">
                 <form class="form-horizontal" action="{{ route('users.store') }}" method="post" id="tambahUser">
                     @csrf
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                     <div class="form-group">
                         <div class="col-12">
@@ -324,28 +332,33 @@ Manajemen Akun
 </div>
 
 <!-- edit modal pop up -->
-<div class="modal fade editModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true" style="display: none;">
+<div class="modal fade editModal ubahModal" id="editModal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="mySmallModalLabel">Edit User</h4> <span
-                    class="badge badge-light font-15 ">@if(Auth::user()->role == 'admin')akses admin @else akses panitia
+                    class="badge badge-light font-15 ">@if(Auth::user()->role == 'admin')akses admin @else akses
+                    panitia
                     @endif</span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="{{ route('users.update', '') }}" id="editUser" method="POST">
+                <form class="form-horizontal" action="{{ route('users.update', '') }}" id="editUser" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('put')
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" id="checkUsername">
+                    <input type="hidden" id="checkEmail">
 
                     <div class="form-group">
                         <div class="col-12">
                             <label for="name">Nama Lengkap</label>
                             <input class="form-control mb-1 @error('edit_name') is-invalid @enderror" type="text"
-                                id="edit_name" placeholder="Contoh: Briana White" name="edit_name"
+                                id="Edit" placeholder="Contoh: Briana White" name="edit_name"
                                 value="{{ old('edit_name') }}" required>
 
                             @error('edit_name')
@@ -427,7 +440,6 @@ Manajemen Akun
     </div>
 </div>
 
-
 <!-- delete row modal pop up -->
 <div class="modal fade deleteUser" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     style="display: none;">
@@ -488,6 +500,11 @@ Manajemen Akun
 
 <script>
     $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
             $("#tambahUser").validate({
                 rules: {
                     name: {
@@ -499,11 +516,19 @@ Manajemen Akun
                         required: true,
                         minlength: 3,
                         maxlength: 30,
+                        remote: {
+                                url: "{{ route('user.checkUsername') }}",
+                                type: "post",
+                        }
                     },
                     email: {
                         required: true,
                         minlength: 3,
                         maxlength: 30,
+                        remote: {
+                                url: "{{ route('user.checkEmail') }}",
+                                type: "post",
+                        }
                     },
                     password : {
                         required: true,
@@ -526,13 +551,16 @@ Manajemen Akun
                     username: {
                         required: "Username harus di isi",
                         minlength: "Username tidak boleh kurang dari 3 karakter",
-                        maxlength: "Username tidak boleh lebih dari 30 karakter"
+                        maxlength: "Username tidak boleh lebih dari 30 karakter",
+                        remote: "Username sudah tersedia"
+
                     },
                     email: {
                         required: "Email harus di isi",
                         email: "Email yang di isikan harus valid",
                         minlength: "Email tidak boleh kurang dari 3 karakter",
-                        maxlength: "Email tidak boleh lebih dari 30 karakter"
+                        maxlength: "Email tidak boleh lebih dari 30 karakter",
+                        remote: "Email sudah tersedia"
                     },
                     password: {
                         required: "Password harus di isi",
@@ -552,6 +580,11 @@ Manajemen Akun
 
 <script>
     $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
             $("#editUser").validate({
                 rules: {
                     edit_name: {
@@ -563,11 +596,33 @@ Manajemen Akun
                         required: true,
                         minlength: 3,
                         maxlength: 30,
+                        remote: {
+                            param: {
+                                url: "{{ route('user.checkUsername') }}",
+                                type: "post",
+                            },
+                            depends: function(element) {
+                                // compare name in form to hidden field
+                                return ($(element).val() !== $('#checkUsername').val());
+                            },
+                           
+                        }
                     },
                     edit_email: {
                         required: true,
                         minlength: 3,
                         maxlength: 30,
+                        remote: {
+                            param: {
+                                url: "{{ route('user.checkEmail') }}",
+                                type: "post",
+                            },
+                            depends: function(element) {
+                                // compare name in form to hidden field
+                                return ($(element).val() !== $('#checkEmail').val());
+                            },
+                           
+                        }
                     },
                     edit_role: {
                         required: true,
@@ -582,13 +637,15 @@ Manajemen Akun
                     edit_username: {
                         required: "Username harus di isi",
                         minlength: "Username tidak boleh kurang dari 3 karakter",
-                        maxlength: "Username tidak boleh lebih dari 30 karakter"
+                        maxlength: "Username tidak boleh lebih dari 30 karakter",
+                        remote: "Username sudah tersedia"
                     },
                     edit_email: {
                         required: "Email harus di isi",
                         email: "Email yang di isikan harus valid",
                         minlength: "Email tidak boleh kurang dari 3 karakter",
-                        maxlength: "Email tidak boleh lebih dari 30 karakter"
+                        maxlength: "Email tidak boleh lebih dari 30 karakter",
+                        remote: "Email sudah tersedia"
                     },
                     edit_role: {
                         required: "Role harus di isi"
@@ -599,10 +656,17 @@ Manajemen Akun
 </script>
 
 <script>
+    $('#editModal').on('hidden.bs.modal', function() {
+    var $alertas = $('#editModal');
+    $alertas.validate().resetForm();
+    $alertas.find('.error').removeClass('error');
+});
     //  passing data to edit modal pop up 
     const updateLink = $('#editUser').attr('action');
     function setEditData(user) {
         $('#editUser').attr('action',  `${updateLink}/${user.id}`);
+        $('#checkUsername').val(user.username);
+        $('#checkEmail').val(user.email);
         $('[name="edit_name"]').val(user.name);
         $('[name="edit_username"]').val(user.username);
         $('[name="edit_email"]').val(user.email);
@@ -611,7 +675,7 @@ Manajemen Akun
     
     // passing data to select option tag
     $(".editButton").click(function() {
-        var idAsValue = $(this).attr('id');
+        var idAsValue = $(this).attr('data-role');
         $("#edit_role").val(idAsValue);
     });
 

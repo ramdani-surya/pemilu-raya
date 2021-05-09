@@ -38,8 +38,6 @@ Data Kandidat
     }
 </style>
 
-
-
 <div class="wrap">
     <div class="row ">
         @foreach($candidates as $candidate)
@@ -65,11 +63,11 @@ Data Kandidat
                                     file_exists(public_path('images/uploaded/'. $candidate->image)))
                                     <img src="{{ asset('images/uploaded/'. $candidate->image) }}"
                                         style="height:400px; width: 100%; padding:50px; object-fit:cover;"
-                                        class="thumb-img img-fluid" alt="Chairman Photo">
+                                        class="thumb-img img-fluid candidateImage" alt="Chairman Photo">
                                     @else
                                     <img src="{{ asset('images/admin_component/imageNoAvailable.svg') }}"
-                                        style="height:400px; width: 100%; object-fit:cover;" class="thumb-img img-fluid"
-                                        alt="Default Photo">
+                                        style="height:400px; width: 100%; object-fit:cover;"
+                                        class="thumb-img img-fluid defaultImage" alt="Default Photo">
                                     @endif
                                 </div>
                                 <div class="portfolio-masonry-detail">
@@ -84,6 +82,23 @@ Data Kandidat
                 .testo {
                     display: flex;
                     align-items: center;
+                }
+
+                @media only screen and (min-device-width : 360px) and (max-device-width : 640px) {}
+
+                /* Smartphones (portrait and landscape) ----------- */
+                @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+                    .testo {
+                        display: block;
+                    }
+
+                    .candidateImage {
+                        height: 250px !important;
+                    }
+
+                    .defaultImage {
+                        height: 250px !important;
+                    }
                 }
             </style>
 
@@ -164,7 +179,7 @@ Data Kandidat
 </div>
 
 <style>
-    .brian {
+    .modalWidth {
         width: 50% !important;
         margin: 0 auto !important;
     }
@@ -173,7 +188,7 @@ Data Kandidat
 <div class="modal fade detailModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     style="display: none;">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
-        <div class="modal-content brian">
+        <div class="modal-content modalWidth">
             <div class="modal-header">
                 <h4 class="modal-title" id="detailTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
