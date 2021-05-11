@@ -147,8 +147,6 @@ Manajemen Akun
                     @endphp
 
                     @foreach($users as $user)
-
-
                     <tr>
                         <td>{{ $increment++ }} </td>
                         <td>{{ $user->name }}</td>
@@ -158,7 +156,6 @@ Manajemen Akun
                         @if(Auth::user()->role == 'admin')
                         <td>
                             <div class="form-group">
-
                                 <button type="button" data-toggle="modal" data-target="#editModal"
                                     data-ids="{{ $user->id }}" data-role="{{ $user->role }}"
                                     onclick="setEditData({{ $user }})"
@@ -172,13 +169,12 @@ Manajemen Akun
                                         onclick="deleteAlert(this)">Hapus
                                     </button>
                                 </form>
-
                             </div>
                             <div class="form-group">
-
                                 <a href="{{ route('users.edit', $user->id) }}"
                                     class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
-                                    Password</a>
+                                    Password
+                                </a>
                             </div>
                         </td>
                         @endif
@@ -190,20 +186,8 @@ Manajemen Akun
     </div>
 </div>
 
-
-<!-- Create modal -->
+<!-- style for error jquery validation plugin -->
 <style>
-    .add-modal {
-        overflow-y: scroll !important;
-    }
-
-    textarea {
-        border: 1px solid #e3eaef !important;
-        border-radius: 5px;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
-    }
-
-
     label.error {
         color: #f1556c;
         font-size: 13px;
@@ -472,7 +456,6 @@ Manajemen Akun
     </div>
 </div>
 
-
 @endsection
 
 @section('js')
@@ -496,8 +479,10 @@ Manajemen Akun
 <script src="{{ asset('highdmin/js/pages/datatables.init.js') }}"></script>
 <!-- Custombox modal -->
 <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+<!-- Jquery Validation Plugin -->
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 
+{{-- Validate Modal Tambah User --}}
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -578,6 +563,7 @@ Manajemen Akun
         });
 </script>
 
+{{-- Validate Modal Edit User --}}
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -656,11 +642,13 @@ Manajemen Akun
 </script>
 
 <script>
+    //  when modal is closed error validation removed 
     $('#editModal').on('hidden.bs.modal', function() {
-    var $alertas = $('#editModal');
-    $alertas.validate().resetForm();
-    $alertas.find('.error').removeClass('error');
-});
+        var $alertas = $('#editModal');
+        $alertas.validate().resetForm();
+        $alertas.find('.error').removeClass('error');
+    });
+
     //  passing data to edit modal pop up 
     const updateLink = $('#editUser').attr('action');
     function setEditData(user) {
@@ -733,7 +721,7 @@ Manajemen Akun
 
     });
     
-    // sweetalert
+    // sweetalert clear all data
     $("#bersihkan-semua-data").click(function () {
         Swal.fire({
             title: "Bersihkan data user?",
@@ -752,6 +740,7 @@ Manajemen Akun
         })
     });
 
+    // sweetalert delete one data
     function deleteAlert(e) {
         Swal.fire({
             title: "Hapus user?",
