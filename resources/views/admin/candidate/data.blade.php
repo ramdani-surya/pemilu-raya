@@ -25,8 +25,6 @@ Data Kandidat
     </div>
 </p>
 
-<!-- Content -->
-
 <!-- internal style  -->
 <style>
     .wrap {
@@ -42,7 +40,7 @@ Data Kandidat
     <div class="row ">
         @foreach($candidates as $candidate)
         <div class="col-lg-4">
-            <div class="card text-center" style="width: 70%; padding: 20px;">
+            <div class="card text-center candidateNumberCard" style="width: 70%; padding: 20px;">
                 <h2 class="candidateNumber">Kandidat {{ str_pad($candidate->candidate_number, 2, "0", STR_PAD_LEFT) }}
                 </h2>
             </div>
@@ -79,25 +77,101 @@ Data Kandidat
                 </div>
             </div>
             <style>
-                .testo {
+                .button-card {
                     display: flex;
                     align-items: center;
                 }
 
-                @media only screen and (min-device-width : 360px) and (max-device-width : 640px) {}
-
-                /* Smartphones (portrait and landscape) ----------- */
-                @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-                    .testo {
+                @media only screen and (min-device-width : 360px) and (max-device-width : 640px) {
+                    .button-card {
                         display: block;
                     }
 
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                @media only screen and (min-device-width : 375px) and (max-device-width : 667px) {
+                    .button-card {
+                        display: block;
+                    }
+
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                @media only screen and (min-device-width : 360px) and (max-device-width : 720px) {
+                    .button-card {
+                        display: block;
+                    }
+
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                @media only screen and (min-device-width : 375px) and (max-device-width : 812px) {
+                    .button-card {
+                        display: block;
+                    }
+
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                @media only screen and (min-device-width : 411px) and (max-device-width : 731px) {
+                    .button-card {
+                        display: block;
+                    }
+
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                @media only screen and (min-device-width : 411px) and (max-device-width : 731px) {
+                    .button-card {
+                        display: block;
+                    }
+
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+                }
+
+                /*  Galaxy Fold*/
+                @media only screen and (min-device-width : 280px) and (max-device-width : 653px) {
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+
                     .candidateImage {
-                        height: 250px !important;
+                        height: 235px !important;
                     }
 
                     .defaultImage {
-                        height: 250px !important;
+                        height: 235px !important;
+                    }
+
+                    .button-card {
+                        display: block;
+                    }
+                }
+
+                @media only screen and (min-device-width : 1024px) and (max-device-width : 1366px) {
+                    .candidateNumberCard {
+                        width: 100% !important;
+                    }
+
+                    .candidateImage {
+                        height: 235px !important;
+                    }
+
+                    .defaultImage {
+                        height: 235px !important;
                     }
                 }
             </style>
@@ -105,7 +179,7 @@ Data Kandidat
 
 
         </div>
-        <div class="col-lg-2 testo">
+        <div class="col-lg-2 button-card">
             <div class="card ">
                 <div class="card-body " style="margin-top:20px;">
                     <div class="form-group ">
@@ -143,12 +217,6 @@ Data Kandidat
             </div>
         </div>
 
-
-
-        <style>
-
-        </style>
-
         @endforeach
 
     </div>
@@ -178,12 +246,6 @@ Data Kandidat
     </div>
 </div>
 
-<style>
-    .modalWidth {
-        width: 50% !important;
-        margin: 0 auto !important;
-    }
-</style>
 <!-- Detail modal pop up -->
 <div class="modal fade detailModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     style="display: none;">
@@ -258,21 +320,22 @@ Data Kandidat
 <!-- Gallery Init-->
 <script src="{{ asset('highdmin/js/pages/gallery.init.js') }}"></script>
 
-
 <script>
-    //  passing data to program modal pop up
+    //  passing data to program modal
     function showProgram(candidate) {
         $('.program').html(candidate.program);
         $('#programTitle').text('Program')
 
     }
 
+    // passing data to showdetail modal
     function showDetail(candidate) {
         $('.chairman-name-detail').html(candidate.chairman_name);
         $('.vice-chairman-name-detail').html(candidate.vice_chairman_name);
         $('#detailTitle').text('Detail')
     }
 
+    // sweetalert clear all data
     $("#bersihkan-semua-data").click(function () {
         Swal.fire({
             title: "Bersihkan data kandidat?",
@@ -291,6 +354,7 @@ Data Kandidat
         })
     });
 
+    // sweetalert delete one row
     function deleteAlert(e) {
         Swal.fire({
             title: "Hapus user?",
@@ -308,6 +372,5 @@ Data Kandidat
             }
         })
     }
-
 </script>
 @endsection

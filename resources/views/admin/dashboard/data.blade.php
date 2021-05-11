@@ -38,12 +38,20 @@ Dashboard
 </div>
 <!-- end row -->
 
-<div class="card-box d-flex justify-content-center">
-    <div style="width:60%;">
-        <canvas id="myChart" data-candidates="{{ implode(',', $candidates) }}"
-            data-votings="{{ implode(',', $candidateVotings) }}"></canvas>
+<style>
+    .chartStyle {
+        margin: 0 auto;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-8 chartStyle">
+        <div class="card-box">
+            <canvas id="myChart" data-candidates="{{ implode(',', $candidates) }}"
+                data-votings="{{ implode(',', $candidateVotings) }}"></canvas>
+        </div>
     </div>
 </div>
+
 @endsection
 
 @section('js')
@@ -64,7 +72,7 @@ Dashboard
 <script src="{{ asset('highdmin/js/pages/dashboard.init.js') }}"></script>
 
 <!-- ChartJs -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
 
 <script>
     const chartArea = $('#myChart')
@@ -74,19 +82,31 @@ Dashboard
         datasets: [{
             label: 'Perolehan Suara',
             backgroundColor: [
-                'rgba(237, 174, 73, 1)',
-                'rgba(209, 73, 91, 1)',
-                'rgba(0, 121, 140, 1)',
-                'rgba(48, 99, 142, 1)'
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
             ],
-            borderColor: ['#EDAE49', '#D1495B', '#00798C', '#30638E'],
+            borderColor: ['rgb(255, 159, 64)', 'rgb(153, 102, 255)','rgb(75, 192, 192)'],
+            borderWidth: 1,
             data: chartArea.data('votings').split(',')
         }]
     };
 
     const config = {
         type: 'bar',
-        data
+        data,
+        options: {
+            indexAxis: 'y',
+            options: {
+                plugins: {
+                    datalabels: {
+                        display: function(context) {
+                            return context.chart.width > 500;
+                        }
+                    }
+                }
+            }
+        }
     };
 
     let myChart = new Chart(
