@@ -38,15 +38,22 @@ Dashboard
 </div>
 <!-- end row -->
 
-<div class="card-box d-flex justify-content-center">
-    <div style="width:60%;">
-        <canvas id="myChart" data-candidates="{{ implode(',', $candidates) }}"
-            data-votings="{{ implode(',', $candidateVotings) }}"></canvas>
+<style>
+    .chartStyle {
+        margin: 0 auto;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-8 chartStyle">
+        <div class="card-box">
+            <canvas id="myChart" data-candidates="{{ implode(',', $candidates) }}"
+                data-votings="{{ implode(',', $candidateVotings) }}"></canvas>
+        </div>
     </div>
-</div>
-<div class="card-box d-flex justify-content-center">
-    <div style="width:50%;">
-        <canvas id="myPieChart"></canvas>
+    <div class="col-lg-6 chartStyle">
+        <div class="card-box">
+            <canvas id="myPieChart"></canvas>
+        </div>
     </div>
 </div>
 @endsection
@@ -69,7 +76,7 @@ Dashboard
 <script src="{{ asset('highdmin/js/pages/dashboard.init.js') }}"></script>
 
 <!-- ChartJs -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
 
 <script>
     // BAR CHART
@@ -91,7 +98,19 @@ Dashboard
 
     const config = {
         type: 'bar',
-        data
+        data,
+        options: {
+            indexAxis: 'y',
+            options: {
+                plugins: {
+                    datalabels: {
+                        display: function(context) {
+                            return context.chart.width > 500;
+                        }
+                    }
+                }
+            }
+        }
     };
 
     let myChart = new Chart(
