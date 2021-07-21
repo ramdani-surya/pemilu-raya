@@ -50,8 +50,12 @@ Dashboard
                 data-votings="{{ implode(',', $candidateVotings) }}"></canvas>
         </div>
     </div>
+    <div class="col-lg-6 chartStyle">
+        <div class="card-box">
+            <canvas id="myPieChart"></canvas>
+        </div>
+    </div>
 </div>
-
 @endsection
 
 @section('js')
@@ -75,19 +79,19 @@ Dashboard
 <script src="{{ asset('js/chart.js') }}"></script>
 
 <script>
+    // BAR CHART
     const chartArea = $('#myChart')
 
     let data = {
         labels: chartArea.data('candidates').split(','),
         datasets: [{
-            label: 'Perolehan Suara',
+            label: 'PEROLEHAN SUARA',
             backgroundColor: [
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
+                'rgba(237, 174, 73, 1)',
+                'rgba(209, 73, 91, 1)',
+                'rgba(0, 121, 140, 1)',
             ],
-            borderColor: ['rgb(255, 159, 64)', 'rgb(153, 102, 255)','rgb(75, 192, 192)'],
-            borderWidth: 1,
+            borderColor: ['#EDAE49', '#D1495B', '#00798C'],
             data: chartArea.data('votings').split(',')
         }]
     };
@@ -107,23 +111,50 @@ Dashboard
     );
 
     myChart.options.animation = false;
+    // END BAR CHART
 
-    function addData(chart, data) {
-        chart.data.datasets.forEach((dataset) => {
+    // PIE CHART
+    const chartPieArea = $('#myPieChart')
+
+    const configPie = {
+        type: 'pie',
+        data
+    };
+
+    let myPieChart = new Chart(
+        chartPieArea,
+        configPie
+    );
+
+    myPieChart.options.animation = false;
+    // END PIE CHART
+
+    // CHART FUNCTIONS
+    function addData(data) {
+        myChart.data.datasets.forEach((dataset) => {
             dataset.data = data;
         });
 
-        chart.update();
+        myPieChart.data.datasets.forEach((dataset) => {
+            dataset.data = data;
+        });
+
+        myChart.update();
+        myPieChart.update();
     }
 
-    function removeData(chart) {
-        chart.data.datasets.forEach((dataset) => {
+    function removeData() {
+        myChart.data.datasets.forEach((dataset) => {
             dataset.data = null;
         });
 
-        chart.update();
-    }
+        myPieChart.data.datasets.forEach((dataset) => {
+            dataset.data = null;
+        });
 
+        myChart.update();
+        myPieChart.update();
+    }
 
     setInterval(() => {
         $.getJSON('{{ route('dashboard_api') }}', null,
@@ -133,11 +164,14 @@ Dashboard
                 $('#unvoted').text(`${data.unvoted.total} (${data.unvoted.percentage})`);
                 $('#total-candidate').text(data.total_candidate);
 
-                removeData(myChart)
-                addData(myChart, data.votings)
+                data.votings.pop()
+
+                removeData()
+                addData(data.votings)
             }
         );
 
     }, 1000);
+
 </script>
 @endsection

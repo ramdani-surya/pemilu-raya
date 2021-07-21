@@ -27,7 +27,7 @@
             <div class="slimscroll-menu">
                 <!-- LOGO -->
                 <div class="logo-box">
-                    <a href="index.html" class="logo">
+                    <a href="#" class="logo">
                         <span class="logo-lg p-1">
                             <img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="52">
                             <!-- <span class="logo-lg-text-light">Highdmin</span> -->
@@ -114,19 +114,11 @@
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            {{ Auth::user()->name }}
+                            <span class="pro-user-name ml-1">
+                                {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
+                            </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                            <!-- item-->
-                            <div class="dropdown-item noti-title">
-                                <h6 class="text-overflow m-0">Selamat Datang !</h6>
-                            </div>
-
-                            <!-- item-->
-                            {{-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-lock"></i> <span>Lock Screen</span>
-                            </a> --}}
-
                             <!-- item-->
                             <a href="{{ route('admin.logout') }}" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i> <span>Logout</span>

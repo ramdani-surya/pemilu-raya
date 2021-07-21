@@ -4,6 +4,14 @@
 Kandidat
 @endsection
 
+@section('css')
+    <style>
+        .login {
+            background: #17a2b8 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
 <section class="sectionFormLogin">
     <div class="container mt-5">
