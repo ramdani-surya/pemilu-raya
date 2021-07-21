@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Alert;
 
@@ -166,7 +167,7 @@ class VoterController extends Controller
      */
     public function downloadFormat()
     {
-        return response()->download('storage/DPT_Pemilu_Raya.xlsx');
+        return Storage::download('public/DPT_Pemilu_Raya.xlsx');
     }
 
     /**

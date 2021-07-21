@@ -76,7 +76,7 @@ class CandidateController extends Controller
 
             $tujuan_upload = 'images/uploaded';
 
-            $file->move($tujuan_upload, $image);
+            $file->move(public_path($tujuan_upload), $image);
         } else {
             $image = null;
         }
@@ -167,7 +167,7 @@ class CandidateController extends Controller
 
             $tujuan_upload = 'images/uploaded';
 
-            $file->move($tujuan_upload, $edit_image);
+            $file->move(public_path($tujuan_upload), $edit_image);
         }
 
         $data = [
