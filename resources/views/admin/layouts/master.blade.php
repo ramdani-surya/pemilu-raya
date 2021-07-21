@@ -75,6 +75,9 @@
                                 <span> Daftar Pemilih Tetap </span>
                             </a>
                         </li>
+                        @if(Auth::user()->role == 'saksi')
+
+                        @else
                         <li class="menu-title">Lainnya</li>
 
                         <li>
@@ -83,6 +86,7 @@
                                 <span> Manajemen Akun </span>
                             </a>
                         </li>
+                        @endif
                         {{-- Grafik hasil pemilu dari tiap penyelenggaraan tahun ke tahun --}}
                         {{-- <li>
                             <a href="widgets.html">

@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,10 +45,22 @@ Route::prefix('login')->middleware('guest')->group(function () {
     Route::post('/admin', [LoginController::class, 'login']);
 });
 
-Route::group(['middleware' => ['admin', 'web']], function () {
+
+
+
+
+
+Route::group(['middleware' => ['loggedIn', 'web']], function () {
+   
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
+        Route::resource('users', UserController::class)->except('create');
+        Route::get('/user/clear', [UserController::class, 'clear'])->name('users.clear');
+        Route::post('/user/update-password/{user}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+        Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('user.checkUsername');
+        Route::post('/checkEmail', [UserController::class, 'checkEmail'])->name('user.checkEmail');
 
         Route::resource('elections', ElectionController::class)->except('create', 'edit');
         Route::prefix('election')->group(function () {
@@ -59,12 +70,6 @@ Route::group(['middleware' => ['admin', 'web']], function () {
             Route::get('/{election}/archive', [ElectionController::class, 'archive'])->name('elections.archive');
             Route::get('/{election}/reset-voting', [ElectionController::class, 'resetVoting'])->name('elections.reset_voting');
         });
-
-        Route::resource('users', UserController::class)->except('create');
-        Route::get('/user/clear', [UserController::class, 'clear'])->name('users.clear');
-        Route::post('/user/update-password/{user}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
-        Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('user.checkUsername');
-        Route::post('/checkEmail', [UserController::class, 'checkEmail'])->name('user.checkEmail');
 
         Route::middleware('checkActiveElection')->group(function () {
             Route::resource('candidates', CandidateController::class);
@@ -80,3 +85,4 @@ Route::group(['middleware' => ['admin', 'web']], function () {
         });
     });
 });
+

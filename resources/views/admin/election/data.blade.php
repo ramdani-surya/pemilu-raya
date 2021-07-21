@@ -5,14 +5,10 @@ Data Pemilu
 @endsection
 
 @section('css')
-<link href="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet"
-    type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -20,6 +16,7 @@ Data Pemilu
     <div class="col-12">
         <div class="card-box table-responsive">
             <h4 class="header-title">Data Pemilu</h4>
+            @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
             <p class="sub-header">
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
@@ -29,6 +26,7 @@ Data Pemilu
                         id="sa-warning">Bersihkan</button>
                 </div>
             </p>
+            @endif
 
             <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -45,86 +43,85 @@ Data Pemilu
                         <th>Berjalan</th>
                         <th>Tanggal</th>
                         <th>Diarsipkan</th>
+                        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                         <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
 
                 <tbody>
                     @php
-                        $number = 1
+                    $number = 1
                     @endphp
                     @foreach($elections as $election)
-                        <tr>
-                            <td>{{ $number++ }}</td>
-                            <td>{{ $election->name }}</td>
-                            <td>{{ $election->period }}</td>
-                            <td>{{ $election->total_voters ?? count($election->voters) }}</td>
-                            <td>{{ $election->voted_voters ?? count($election->votedVoters) }}
-                                ({{ votersPercentage($election, 1) }})</td>
-                            {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
-                            ({{ votersPercentage($election, 0) }})</td> --}}
-                            <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                            <td>{{ "$election->chairman - $election->vice_chairman" }}
-                            </td>
-                            <td>
-                                @if($election->running)
-                                    <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
-                                        <i class="fas fa-check"></i>
-                                    </button>
+                    <tr>
+                        <td>{{ $number++ }}</td>
+                        <td>{{ $election->name }}</td>
+                        <td>{{ $election->period }}</td>
+                        <td>{{ $election->total_voters ?? count($election->voters) }}</td>
+                        <td>{{ $election->voted_voters ?? count($election->votedVoters) }}
+                            ({{ votersPercentage($election, 1) }})</td>
+                        {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
+                        ({{ votersPercentage($election, 0) }})</td> --}}
+                        <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
+                        <td>{{ "$election->chairman - $election->vice_chairman" }}
+                        </td>
+                        <td>
+                            @if($election->running)
+                            <button type="button" class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            @endif
+                        </td>
+                        <td>{{ tglIndo($election->running_date) }}</td>
+                        <td>
+                            @if($election->archived)
+                            <button type="button" class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            @endif
+                        </td>
+                        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                        <td>
+                            <div class="button-list">
+                                @if(!$election->running && !$election->archived)
+                                <a href="{{ route('elections.running', $election) }}"
+                                    class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
+                                <button type="button" onclick="disableButton(this)"
+                                    class="btn btn-purple btn-rounded waves-light waves-effect"
+                                    data-url="{{ route('elections.send_token', $election) }}">Kirim
+                                    Email Token</button>
+                                <button type="button" data-url="{{ route('elections.archive', [$election, 1]) }}"
+                                    class="btn btn-info btn-rounded waves-light waves-effect"
+                                    onclick="archiveAlert(this)">Arsipkan</button>
+                                <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
+                                    onclick="resetAlert(this)"
+                                    data-url="{{ route('elections.reset_voting', $election) }}">Reset
+                                    Voting</button>
+                                <button type="button"
+                                    class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                    data-toggle="modal" data-target=".bs-example-modal-sm"
+                                    onclick="setEditData({{ $election }})">Edit</button>
                                 @endif
-                            </td>
-                            <td>{{ tglIndo($election->running_date) }}</td>
-                            <td>
-                                @if($election->archived)
-                                    <button type="button"
-                                        class="btn btn-icon waves-effect waves-light btn-success btn-xs">
-                                        <i class="fas fa-check"></i>
-                                    </button>
+
+                                @if($election->running && !$election->archived)
+                                <a href="{{ route('elections.running', [$election, 0]) }}"
+                                    class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</a>
                                 @endif
-                            </td>
-                            <td>
-                                <div class="button-list">
-                                    @if(!$election->running && !$election->archived)
-                                        <a href="{{ route('elections.running', $election) }}"
-                                            class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
-                                        <button type="button" onclick="disableButton(this)"
-                                            class="btn btn-purple btn-rounded waves-light waves-effect"
-                                            data-url="{{ route('elections.send_token', $election) }}">Kirim
-                                            Email Token</button>
-                                        <button type="button"
-                                            data-url="{{ route('elections.archive', [$election, 1]) }}"
-                                            class="btn btn-info btn-rounded waves-light waves-effect"
-                                            onclick="archiveAlert(this)">Arsipkan</button>
-                                        <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
-                                            onclick="resetAlert(this)"
-                                            data-url="{{ route('elections.reset_voting', $election) }}">Reset
-                                            Voting</button>
-                                        <button type="button"
-                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
-                                            data-toggle="modal" data-target=".bs-example-modal-sm"
-                                            onclick="setEditData({{ $election }})">Edit</button>
-                                    @endif
 
-                                    @if($election->running && !$election->archived)
-                                        <a href="{{ route('elections.running', [$election, 0]) }}"
-                                            class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</a>
-                                    @endif
-
-                                    @if(!$election->running || $election->archived)
-                                        <form style="display: inline"
-                                            action="{{ route('elections.destroy', $election) }}"
-                                            method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="button"
-                                                class="btn btn-danger btn-rounded waves-light waves-effect"
-                                                onclick="deleteAlert(this)">Hapus</button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
+                                @if(!$election->running || $election->archived)
+                                <form style="display: inline" action="{{ route('elections.destroy', $election) }}"
+                                    method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="button" class="btn btn-danger btn-rounded waves-light waves-effect"
+                                        onclick="deleteAlert(this)">Hapus</button>
+                                </form>
+                                @endif
+                            </div>
+                        </td>
+                        @endif
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -150,7 +147,7 @@ Data Pemilu
                     <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021" name="name"
                         required>
                     @error('name')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -160,7 +157,7 @@ Data Pemilu
                     <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022" name="period"
                         required>
                     @error('period')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -169,7 +166,7 @@ Data Pemilu
                     <label for="date">Tanggal</label>
                     <input class="form-control" type="date" id="date" name="running_date" required>
                     @error('running_date')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -195,9 +192,7 @@ Data Pemilu
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"
-                    action="{{ route('elections.update', '') }}"
-                    id="edit-form" method="POST">
+                <form class="form-horizontal" action="{{ route('elections.update', '') }}" id="edit-form" method="POST">
                     @csrf
                     @method('put')
                     <div class="form-group">
@@ -207,7 +202,7 @@ Data Pemilu
                             <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021"
                                 name="edit_name" required>
                             @error('edit_name')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -217,7 +212,7 @@ Data Pemilu
                             <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022"
                                 name="edit_period" required>
                             @error('edit_period')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -226,7 +221,7 @@ Data Pemilu
                             <label for="date">Tanggal</label>
                             <input class="form-control" type="date" id="date" name="date" required>
                             @error('date')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
