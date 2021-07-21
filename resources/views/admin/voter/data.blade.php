@@ -20,6 +20,7 @@ Daftar Pemilih Tetap
                 Daftar Pemilih Tetap <br>
                 {{ $election->name }}
             </h4>
+            @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
             <p class="sub-header">
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
@@ -49,6 +50,7 @@ Daftar Pemilih Tetap
                     </div>
                 </div>
             </p>
+            @endif
 
             <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -61,7 +63,9 @@ Daftar Pemilih Tetap
                         <th>Memilih</th>
                         <th>Email</th>
                         <th>Terakhir Diedit</th>
+                        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                         <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -91,6 +95,7 @@ Daftar Pemilih Tetap
                             </td>
                             <td>{{ $voter->email }}</td>
                             <td>{{ $voter->storedByUser->name }}</td>
+                            @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                             <td>
                                 <div class="button-list" style="display: flex">
                                     @if(!$voter->voted)
@@ -113,6 +118,7 @@ Daftar Pemilih Tetap
                                     </form>
                                 </div>
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

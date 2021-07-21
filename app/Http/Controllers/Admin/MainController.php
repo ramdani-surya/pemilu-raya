@@ -18,6 +18,9 @@ class MainController extends Controller
             $data['candidateVotings'] = [];
         }
 
+        array_pop($data['candidates']);
+        array_pop($data['candidateVotings']);
+
         return view('admin.dashboard.data', $data);
     }
 

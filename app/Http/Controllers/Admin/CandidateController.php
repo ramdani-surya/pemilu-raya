@@ -74,7 +74,7 @@ class CandidateController extends Controller
 
             $image = time() . "_" . $file->getClientOriginalName();
 
-            $tujuan_upload = 'images/uploaded';
+            $tujuan_upload = public_path('images/uploaded');
 
             $file->move(public_path($tujuan_upload), $image);
         } else {
@@ -155,9 +155,9 @@ class CandidateController extends Controller
         ]);
 
         if ($request->hasFile('edit_image')) {
-            
+
             $StoredImage = public_path("images/{$candidate->image}");
-            if (File::exists($StoredImage) && !empty($candidate->image)) { 
+            if (File::exists($StoredImage) && !empty($candidate->image)) {
                 unlink($StoredImage);
             }
 
@@ -165,7 +165,7 @@ class CandidateController extends Controller
 
             $edit_image = time() . "_" . $file->getClientOriginalName();
 
-            $tujuan_upload = 'images/uploaded';
+            $tujuan_upload = public_path('images/uploaded');
 
             $file->move(public_path($tujuan_upload), $edit_image);
         }
