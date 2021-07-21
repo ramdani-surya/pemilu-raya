@@ -299,6 +299,7 @@ Manajemen Akun
                             <select class="form-control mb-1" name="role" id="role">
                                 <option value="admin">Admin</option>
                                 <option value="panitia">Panitia</option>
+                                <option value="saksi">Saksi</option>
                             </select>
                         </div>
                     </div>
@@ -383,6 +384,27 @@ Manajemen Akun
                                 id="edit_role" required>
                                 <option value="admin">Admin</option>
                                 <option value="panitia">Panitia</option>
+                                <option value="saksi">Saksi</option>
+                            </select>
+
+                            @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    @elseif(Auth::user()->role == 'panitia')
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label for="role">Role</label>
+                            <select class="form-control mb-1 @error('edit_role') is-invalid @enderror" name="edit_role"
+                                id="edit_role" required>
+                                @if ($errors->has('edit_name') || $errors->has('edit_username') ||
+                                $errors->has('edit_email'))
+                                <option value="{{ old('edit_role') }}">{{ old('edit_role') }}</option>
+                                @else
+                                <option value="">Pilih Role</option>
+                                <option value="panitia">Panitia</option>
+                                @endif
                             </select>
 
                             @error('role')
@@ -401,9 +423,8 @@ Manajemen Akun
                                 <option value="{{ old('edit_role') }}">{{ old('edit_role') }}</option>
                                 @else
                                 <option value="">Pilih Role</option>
-                                <option value="panitia">Panitia</option>
+                                <option value="saksi">Saksi</option>
                                 @endif
-
                             </select>
 
                             @error('role')

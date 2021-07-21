@@ -7,28 +7,28 @@ Dashboard
 @section('content')
 <!-- start row -->
 <div class="row text-center">
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-3">
         <div class="card-box widget-flat border-primary bg-primary text-white">
             <i class="fas fa-poll"></i>
             <h3 class="text-white" id="total-voter"></h3>
             <p class="text-uppercase font-13 mb-2 font-weight-bold">Jumlah Pemilih</p>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-3">
         <div class="card-box bg-blue widget-flat border-blue text-white">
             <i class="fas fa-vote-yea"></i>
             <h3 class="text-white" id="has-voted"></h3>
             <p class="text-uppercase font-13 mb-2 font-weight-bold">Sudah Memilih</p>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-3">
         <div class="card-box widget-flat border-success bg-success text-white">
             <i class="fab fa-snapchat-ghost"></i>
             <h3 class="text-white" id="unvoted"></h3>
             <p class="text-uppercase font-13 mb-2 font-weight-bold">Belum Memilih</p>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-3">
         <div class="card-box bg-warning widget-flat border-danger text-white">
             <i class="fas fa-poll-h"></i>
             <h3 class="text-white" id="total-candidate"></h3>
@@ -97,15 +97,7 @@ Dashboard
         data,
         options: {
             indexAxis: 'y',
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: function(context) {
-                            return context.chart.width > 500;
-                        }
-                    }
-                }
-            }
+
         }
     };
 

@@ -20,6 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->role == 'saksi') {
+            return redirect()->back();
+        }
+        
         $data['users'] = User::orderBy('id')->get();
 
         return view('admin.manajemen_akun.data', $data);

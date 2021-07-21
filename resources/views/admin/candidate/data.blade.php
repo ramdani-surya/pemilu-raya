@@ -16,6 +16,7 @@ Data Kandidat
 @endsection
 
 @section('content')
+@if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
 <p class="sub-header">
     <div class="button-list">
         <a href="{{ route('candidates.create') }}"
@@ -24,6 +25,7 @@ Data Kandidat
             id="bersihkan-semua-data">Bersihkan</button>
     </div>
 </p>
+@endif
 
 <!-- internal style  -->
 <style>
@@ -75,6 +77,26 @@ Data Kandidat
                             </div>
                         </a>
                 </div>
+                @if(Auth::user()->role == 'saksi')
+                @if(!empty($candidate->program))
+                <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
+                    style="width:100%;" data-toggle="modal" data-target=".programModal"
+                    onclick="showProgram({{ $candidate }})">
+                    Program
+                </button>
+                @else
+                <button class="btn btn-outlineprimary btn-sm waves-effect waves-light showVisionMission rounded"
+                    style="width:100%;" data-toggle="modal" data-target=".programModal"
+                    onclick="showProgram({{ $candidate }})" disabled>
+                    Program
+                </button>
+                @endif
+                <button class="btn btn-outline-secondary btn-sm waves-effect waves-light showVisionMission rounded"
+                    style="width:100%; margin-top:10px;" data-toggle="modal" data-target=".detailModal"
+                    onclick="showDetail({{ $candidate }})">
+                    Detail
+                </button>
+                @endif
             </div>
             <style>
                 .button-card {
@@ -179,19 +201,20 @@ Data Kandidat
 
 
         </div>
+        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
         <div class="col-lg-2 button-card">
             <div class="card ">
-                <div class="card-body " style="margin-top:20px;">
+                <div class="card-body">
                     <div class="form-group ">
                         @if(!empty($candidate->program))
                         <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
-                            style="width:100%" data-toggle="modal" data-target=".programModal"
+                            style="width:100%;" data-toggle="modal" data-target=".programModal"
                             onclick="showProgram({{ $candidate }})">
                             Program
                         </button>
                         @else
                         <button class="btn btn-primary btn-sm waves-effect waves-light showVisionMission rounded"
-                            style="width:100%" data-toggle="modal" data-target=".programModal"
+                            style="width:100%;" data-toggle="modal" data-target=".programModal"
                             onclick="showProgram({{ $candidate }})" disabled>
                             Program
                         </button>
@@ -216,11 +239,9 @@ Data Kandidat
                 </div>
             </div>
         </div>
-
+        @endif
         @endforeach
-
     </div>
-
 </div>
 
 <!-- Program modal pop up -->
