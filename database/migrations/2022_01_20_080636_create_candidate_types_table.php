@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateCandidates extends Migration
+class CreateCandidateTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class UpdateCandidates extends Migration
      */
     public function up()
     {
-        Schema::table('candidates', function (Blueprint $table) {
-            $table->renameColumn('chairman_photo', 'image')->after('vice_chairman_name');
-            $table->dropColumn('vice_chairman_photo');
+        Schema::create('candidate_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ class UpdateCandidates extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('candidate_types');
     }
 }

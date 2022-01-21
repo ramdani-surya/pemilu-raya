@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFacultyToCandidatesTable extends Migration
+class CreateFacultiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddFacultyToCandidatesTable extends Migration
      */
     public function up()
     {
-        Schema::table('candidates', function (Blueprint $table) {
-            $table->string('faculty')->nullable();
-            $table->string('study_program')->nullable();
+        Schema::create('faculties', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +27,6 @@ class AddFacultyToCandidatesTable extends Migration
      */
     public function down()
     {
-        Schema::table('candidates', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('faculties');
     }
 }

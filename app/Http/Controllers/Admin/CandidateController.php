@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Candidate;
+use App\Models\CandidateType;
 use App\Models\Election;
 use Alert;
 use File;
+use Storage;
 
 class CandidateController extends Controller
 {
@@ -20,6 +22,8 @@ class CandidateController extends Controller
     public function index()
     {
         $data['candidates'] = getActiveElection()->candidates;
+        $data['candidate_type'] = CandidateType::has('candidates')->get();
+
 
         return view('admin.candidate.data', $data);
     }
@@ -31,7 +35,8 @@ class CandidateController extends Controller
      */
     public function create()
     {
-        return view('admin.candidate.create');
+        $data['candidate_type'] = CandidateType::all();
+        return view('admin.candidate.create', $data);
     }
 
     /**
@@ -46,7 +51,6 @@ class CandidateController extends Controller
             'election' => 'required',
             'candidate_number' => "required|numeric|unique:candidates",
             'chairman_name' => 'required|string|min:3|max:35',
-            'vice_chairman_name' => 'required|string|min:3|max:35',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'program' => 'required',
         ],
@@ -59,33 +63,21 @@ class CandidateController extends Controller
             'chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
             'chairman_name.max' => 'Nama Ketua tidak boleh lebih dari 35 karakter.',
 
-            'vice_chairman_name.required' => 'Nama Wakil Ketua harus di isi.',
-            'vice_chairman_name.min' => 'Nama Wakil Ketua harus 3 karakter.',
-            'vice_chairman_name.max' => 'Nama Wakil Ketua tidak boleh lebih dari 35 karakter.',
-
             'image.image' => 'Foto harus berupa gambar.',
             'image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
             'program.required' => 'Kolom Program harus di isi.',
         ]);
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-
-            $image = time() . "_" . $file->getClientOriginalName();
-
-            $tujuan_upload = public_path('images/uploaded');
-
-            $file->move(public_path($tujuan_upload), $image);
-        } else {
-            $image = null;
-        }
+        $image = ($request->image) ? $request->file('image')->store("/public/input/candidates") : null;
 
         $data = [
             'election_id' => $request->election,
+            'candidate_type_id'  => $request->candidate_type_id,
             'candidate_number' => $request->candidate_number,
             'chairman_name' => $request->chairman_name,
-            'vice_chairman_name' => $request->vice_chairman_name,
+            'faculty' => $request->faculty,
+            'study_program' => $request->study_program,
             'image' => $image,
             'program' => $request->program,
         ];
@@ -105,7 +97,8 @@ class CandidateController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['candidate'] = Candidate::where('candidate_type_id', $id)->get();
+        return view('admin.candidate.show', $data);
     }
 
     /**
@@ -132,7 +125,6 @@ class CandidateController extends Controller
         $request->validate([
             'edit_candidate_number' => "required|unique:candidates,candidate_number,$candidate->id",
             'edit_chairman_name'      => 'required|min:3|max:35',
-            'edit_vice_chairman_name'     => 'required|min:3|max:35',
             'edit_image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'edit_program'     => 'required',
         ],
@@ -144,36 +136,25 @@ class CandidateController extends Controller
             'edit_chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
             'edit_chairman_name.max' => 'Nama Ketua tidak boleh lebih dari 35 karakter.',
 
-            'edit_vice_chairman_name.required' => 'Nama Wakil Ketua harus di isi.',
-            'edit_vice_chairman_name.min' => 'Nama Wakil Ketua harus 3 karakter.',
-            'edit_vice_chairman_name.max' => 'Nama Wakil Ketua tidak boleh lebih dari 35 karakter.',
-
             'edit_image.image' => 'Foto harus berupa gambar.',
             'edit_image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
             'edit_program.required' => 'Kolom Program harus di isi.',
         ]);
 
-        if ($request->hasFile('edit_image')) {
-
-            $StoredImage = public_path("images/{$candidate->image}");
-            if (File::exists($StoredImage) && !empty($candidate->image)) {
-                unlink($StoredImage);
+        if($request->hasFile('edit_image')) {
+            if(Storage::exists($candidate->image) && !empty($candidate->image)) {
+                Storage::delete($candidate->image);
             }
 
-            $file = $request->file('edit_image');
-
-            $edit_image = time() . "_" . $file->getClientOriginalName();
-
-            $tujuan_upload = public_path('images/uploaded');
-
-            $file->move(public_path($tujuan_upload), $edit_image);
+            $edit_image = $request->file("edit_image")->store("/public/input/candidates");
         }
 
         $data = [
             'candidate_number'      => $request->edit_candidate_number,
             'chairman_name'         => $request->edit_chairman_name,
-            'vice_chairman_name'    => $request->edit_vice_chairman_name,
+            'faculty'               => $request->edit_faculty,
+            'study_program'         => $request->edit_study_program,
             'image'                 => $request->hasFile('edit_image') ? $edit_image : $candidate->image,
             'program'                => $request->edit_program,
         ];

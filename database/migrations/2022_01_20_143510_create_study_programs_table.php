@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropUserTableColumn extends Migration
+class CreateStudyProgramsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class DropUserTableColumn extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+        Schema::create('study_programs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('faculty_id')->constrained();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +28,6 @@ class DropUserTableColumn extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('study_programs');
     }
 }

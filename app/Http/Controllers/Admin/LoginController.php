@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Alert;
 
 class LoginController extends Controller
 {
@@ -25,7 +26,8 @@ class LoginController extends Controller
         if (auth()->attempt(array('username' => $input['username'], 'password' => $input['password']))) {
             return redirect()->route('admin.dashboard');
         } else {
-            return redirect()->route('admin.login')->with('error', 'Username atau Password salah!');
+           Alert::error('Error', 'Username atau Password yang anda masukan salah!');
+           return redirect()->back();
         }
     }
 

@@ -12,6 +12,7 @@ Data Kandidat
 @section('css')
 <!--venobox lightbox-->
 <link rel="stylesheet" href="{{ asset('highdmin/libs/magnific-popup/magnific-popup.css') }}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -43,7 +44,7 @@ Data Kandidat
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="namaKetua">Nama Ketua<span class="text-danger">*</span></label>
+                    <label for="namaKetua">Nama Kandidat<span class="text-danger">*</span></label>
                     <input type="text" name="edit_chairman_name" parsley-trigger="change"
                         placeholder="Masukkan Nama Ketua"
                         class="form-control @error('edit_chairman_name') is-invalid @enderror" id="edit_chairman_name"
@@ -55,17 +56,36 @@ Data Kandidat
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="namaWakil">Nama Wakil<span class="text-danger">*</span></label>
-                    <input type="text" name="edit_vice_chairman_name" parsley-trigger="change"
-                        placeholder="Masukkan Nama Wakil Ketua"
-                        class="form-control @error('edit_vice_chairman_name') is-invalid @enderror"
-                        id="vice_chairman_name" value="{{ $candidate->vice_chairman_name }}">
-                    @error('edit_vice_chairman_name')
-                    <div class="mt-1">
-                        <span class="text-danger">{{ $message }}</span>
-                    </div>
+                    <label for="edit_faculty">Fakultas<span class="text-danger">*</span></label>
+                    <select name="edit_faculty" class="form-control">
+                        <option value="fti">FTI</option>
+                        <option value="feb">FEB</option>
+                        <option value="fisip">FISIP</option>
+                        <option value="fkip">FKIP</option>
+                        <option value="fib">FIB</option>
+                    </select>
+
+                    @error('factulty')
+                        <div class="mt-2">
+                            <span class="text-danger">{{ $message }}</span>
+                        </div>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                    <label for="edit_study_program">Program Studi<span class="text-danger">*</span></label>
+                    <select name="edit_study_program" class="form-control">
+                        <option value="Teknik Informatika">Teknik Informatika</option>
+                        <option value="Sistem Operasi">Sistem Operasi</option>
+                    </select>
+
+                    @error('edit_study_program')
+                        <div class="mt-2">
+                            <span class="text-danger">{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+                
             </div>
         </div>
     </div>
@@ -82,7 +102,7 @@ Data Kandidat
 
                 <div class="form-group mb-0">
                     <img id="preview-image-before-upload"
-                        src="{{ asset('images/admin_component/imageNoAvailable.svg') }}" alt="preview image"
+                        src="@if(!empty($candidate->image) && Storage::exists($candidate->image)) {{ Storage::url($candidate->image) }} @endif" alt="preview image"
                         style="max-height: 250px;">
                     <p class="sub-header mt-2">Upload Foto</p>
                     <input type="file" name="edit_image" class="filestyle" data-buttonBefore="true" id="image">
@@ -101,7 +121,6 @@ Data Kandidat
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <!-- end row -->
     <!-- CKEDITOR BORDER COLOR -->
@@ -136,26 +155,18 @@ Data Kandidat
                     </div>
                     @enderror
                 </div>
+
+                <div class="form-group d-flex justify-content-end mt-4">
+                    <button class="btn btn-md btn-primary waves-effect waves-light mr-2" type="submit"><i class="fas fa-save mr-1"></i> Simpan Perubahan</button>
+                    <a href="{{ route('candidates.index') }}" class="btn btn-md btn-light waves-effect"><i class="fas fa-undo-alt mr-1"></i> Kembali</a>
+                </div>
             </div>
         </div>
     </div>
     <!-- end row -->
 
     <!-- start row -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card-box">
-                <div class="form-group text-center mb-0">
-                    <button class="btn btn-primary waves-effect waves-light mr-1" type="submit">
-                        Update
-                    </button>
-                    <a href="{{ route('candidates.index') }}" class="btn btn-light waves-effect">
-                        Kembali
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- end row -->
 </form>
 <!-- end form -->

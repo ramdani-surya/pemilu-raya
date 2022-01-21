@@ -53,7 +53,7 @@
                     <ul class="metismenu" id="side-menu">
                         <li>
                             <a href="{{ route('admin.dashboard') }}">
-                                <i class="fe-airplay"></i>
+                                <i class="fe-grid"></i>
                                 <span> Dashboard </span>
                             </a>
                         </li>
@@ -61,6 +61,12 @@
                             <a href="{{ route('elections.index') }}">
                                 <i class="fe-edit"></i>
                                 <span> Pemilu </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('faculty.index') }}">
+                                <i class="fe-airplay"></i>
+                                <span> Fakultas </span>
                             </a>
                         </li>
                         <li>

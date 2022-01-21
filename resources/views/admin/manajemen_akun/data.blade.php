@@ -69,10 +69,10 @@ Manajemen Akun
                                 <button type="button" data-role="{{ Auth::user()->role }}"
                                     class="btn btn-info btn-sm btn-edit waves-effect waves-light editButton  mr-2"
                                     data-toggle="modal" data-target="#editModal"
-                                    onclick="setEditData({{ Auth::user() }})">Edit
+                                    onclick="setEditData({{ Auth::user() }})"><i class="fas fa-edit mr-1"></i> Edit
                                 </button>
                                 <a href="{{ route('users.edit', Auth::user()->id) }}"
-                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
+                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password"><i class="fas fa-key mr-1"></i> Ubah
                                     Password</a>
                             </div>
                             <div class="form-group">
@@ -96,9 +96,9 @@ Manajemen Akun
                     <button type="button" id="createButton"
                         class="btn btn-primary btn-sm btn-create waves-light waves-effect" data-toggle="modal"
                         data-animation="slide" data-overlaySpeed="200" data-overlayColor="#36404a"
-                        data-target=".createModal">Tambah</button>
+                        data-target=".createModal"><i class="fas fa-plus-circle mr-1"></i> Tambah</button>
                     <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
-                        id="bersihkan-semua-data">Bersihkan
+                        id="bersihkan-semua-data"><i class="fas fa-dumpster mr-1"></i> Bersihkan
                     </button>
                 </div>
                 @endif
@@ -159,20 +159,20 @@ Manajemen Akun
                                 <button type="button" data-toggle="modal" data-target="#editModal"
                                     data-ids="{{ $user->id }}" data-role="{{ $user->role }}"
                                     onclick="setEditData({{ $user }})"
-                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton popup">Edit</button>
+                                    class="btn btn-warning btn-sm rounded btn-edit waves-effect waves-light editButton popup"><i class="fas fa-edit mr-1"></i> Edit</button>
                                 <form style="display: inline" action="{{ route('users.destroy', $user) }}"
                                     method="post">
                                     @csrf
                                     @method('delete')
                                     <button type="button"
                                         class="btn btn-danger btn-sm rounded waves-light waves-effect buttonHapus"
-                                        onclick="deleteAlert(this)">Hapus
+                                        onclick="deleteAlert(this)"><i class="fas fa-trash-alt mr-1"></i> Hapus
                                     </button>
                                 </form>
                             </div>
                             <div class="form-group">
                                 <a href="{{ route('users.edit', $user->id) }}"
-                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password">Ubah
+                                    class="btn btn-dark btn-sm waves-effect waves-light" id="update-password"><i class="fas fa-key mr-1"></i> Ubah
                                     Password
                                 </a>
                             </div>

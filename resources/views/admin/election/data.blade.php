@@ -21,9 +21,9 @@ Data Pemilu
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
                         data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
-                        data-overlayColor="#36404a">Tambah</a>
+                        data-overlayColor="#36404a"><i class="fas fa-plus-circle mr-1"></i> Tambah</a>
                     <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
-                        id="sa-warning">Bersihkan</button>
+                        id="sa-warning"><i class="fas fa-dumpster mr-1"></i> Bersihkan</button>
                 </div>
             </p>
             @endif
@@ -39,6 +39,7 @@ Data Pemilu
                         <th>DPT Memilih</th>
                         {{-- <th>DPT Golput</th> --}}
                         <th>Jumlah Kandidat</th>
+                        <th>Kandidat</th>
                         <th>Kandidat Terpilih</th>
                         <th>Berjalan</th>
                         <th>Tanggal</th>
@@ -64,8 +65,8 @@ Data Pemilu
                         {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
                         ({{ votersPercentage($election, 0) }})</td> --}}
                         <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                        <td>{{ "$election->chairman - $election->vice_chairman" }}
-                        </td>
+                        <th>button</th>
+                        <td>{{ "$election->chairman - $election->vice_chairman" }}</td>
                         <td>
                             @if($election->running)
                             <button type="button" class="btn btn-icon waves-effect waves-light btn-success btn-xs">
@@ -86,27 +87,27 @@ Data Pemilu
                             <div class="button-list">
                                 @if(!$election->running && !$election->archived)
                                 <a href="{{ route('elections.running', $election) }}"
-                                    class="btn btn-primary btn-rounded waves-light waves-effect">Jalankan</a>
+                                    class="btn btn-sm btn-primary btn-rounded waves-light waves-effect"><i class="fas fa-play mr-1"></i> Jalankan</a>
                                 <button type="button" onclick="disableButton(this)"
-                                    class="btn btn-purple btn-rounded waves-light waves-effect"
-                                    data-url="{{ route('elections.send_token', $election) }}">Kirim
+                                    class="btn btn-sm btn-purple btn-rounded waves-light waves-effect"
+                                    data-url="{{ route('elections.send_token', $election) }}"><i class="fas fa-share-square mr-1"></i> Kirim
                                     Email Token</button>
                                 <button type="button" data-url="{{ route('elections.archive', [$election, 1]) }}"
-                                    class="btn btn-info btn-rounded waves-light waves-effect"
-                                    onclick="archiveAlert(this)">Arsipkan</button>
-                                <button type="button" class="btn btn-pink btn-rounded waves-light waves-effect"
+                                    class="btn btn-sm btn-info btn-rounded waves-light waves-effect"
+                                    onclick="archiveAlert(this)"><i class="fas fa-archive mr-1"></i>Arsipkan</button>
+                                <button type="button" class="btn btn-sm btn-pink btn-rounded waves-light waves-effect"
                                     onclick="resetAlert(this)"
-                                    data-url="{{ route('elections.reset_voting', $election) }}">Reset
+                                    data-url="{{ route('elections.reset_voting', $election) }}"><i class="fas fa-undo mr-1"></i> Reset
                                     Voting</button>
                                 <button type="button"
-                                    class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                    class="btn btn-sm btn-warning btn-rounded btn-edit waves-effect waves-light"
                                     data-toggle="modal" data-target=".bs-example-modal-sm"
-                                    onclick="setEditData({{ $election }})">Edit</button>
+                                    onclick="setEditData({{ $election }})"><i class="fas fa-edit mr-1"></i> Edit</button>
                                 @endif
 
                                 @if($election->running && !$election->archived)
                                 <a href="{{ route('elections.running', [$election, 0]) }}"
-                                    class="btn btn-secondary btn-rounded waves-light waves-effect">Hentikan</a>
+                                    class="btn btn-sm btn-secondary btn-rounded waves-light waves-effect"><i class="fas fa-stop mr-1"></i> Hentikan</a>
                                 @endif
 
                                 @if(!$election->running || $election->archived)
@@ -114,8 +115,8 @@ Data Pemilu
                                     method="post">
                                     @csrf
                                     @method('delete')
-                                    <button type="button" class="btn btn-danger btn-rounded waves-light waves-effect"
-                                        onclick="deleteAlert(this)">Hapus</button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-rounded waves-light waves-effect"
+                                        onclick="deleteAlert(this)"><i class="fas fa-trash-alt mr-1"></i> Hapus</button>
                                 </form>
                                 @endif
                             </div>

@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\MainController as AdminController;
 use App\Http\Controllers\Admin\VoterController;
+use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\Admin\CandidateController;
+use App\Http\Controllers\Admin\CandidateTypeController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\UserController;
@@ -42,7 +44,7 @@ Route::get('/closed', [Controller::class, 'closed'])->name('closed');
 # ADMIN
 Route::prefix('login')->middleware('guest')->group(function () {
     Route::get('/admin', [LoginController::class, 'index'])->name('admin.login');
-    Route::post('/admin', [LoginController::class, 'login']);
+    Route::post('/admin', [LoginController::class, 'login'])->name('admin.post');
 });
 
 
@@ -71,9 +73,13 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
             Route::get('/{election}/reset-voting', [ElectionController::class, 'resetVoting'])->name('elections.reset_voting');
         });
 
+        Route::resource('faculty', FacultyController::class);
+
         Route::middleware('checkActiveElection')->group(function () {
             Route::resource('candidates', CandidateController::class);
+            Route::resource('candidate_types', CandidateTypeController::class);
             Route::get('/candidate/clear', [CandidateController::class, 'clear'])->name('candidates.clear');
+            Route::get('/candidate_type/clear', [CandidateTypeController::class, 'clear'])->name('candidate_types.clear');
 
             Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
             Route::prefix('voters')->group(function () {

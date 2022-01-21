@@ -5,78 +5,51 @@
 @endsection
 
 @section('css')
-    <link href="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/lightbox/simple-lightbox.css') }}" />
+
+    <style>
+        .wrap img {
+           transition: 0.3s; 
+           cursor: pointer;
+        }
+
+        .wrap img:hover {
+            transform: scale(1.2);
+        }
+    </style>
 @endsection
 
 @section('content')
     <div class="row">
-        <div class="col-12">
-            <div class="card-box table-responsive">
-                <h4 class="header-title">Data Kandidat</h4>
-                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
-                    <p class="sub-header">
-                    <div class="button-list">
-                        <a href="{{ route('candidates.create') }}"
-                            class="btn btn-primary btn-sm btn-create waves-light waves-effect"><i class="fas fa-plus-circle mr-1"></i> Tambah</a>
-                        <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
-                            id="bersihkan-semua-data"><i class="fas fa-dumpster mr-1"></i> Bersihkan</button>
+        @foreach($candidate as $candidates)
+        <div class="col-4 col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3>{{ str_pad($candidates->candidate_number, 2, '0', STR_PAD_LEFT) }} - {{ $candidates->chairman_name }}</h3>
+                    <div class="wrap mt-1" style="overflow:hidden;">
+                        <a href="{{ Storage::url($candidates->image) }}"><img src="{{ Storage::url($candidates->image) }}" title="{{ $candidates->chairman_name }}" style="height:300px;width:100%;object-fit:cover;">
                     </div>
-                    </p>
-                @endif
-
-                <!-- internal style  -->
-                <style>
-                    .wrap {
-                        margin-top: 40px;
-                    }
-
-                    .candidates_name {
-                        padding: 20px;
-                    }
-
-                </style>
-
-                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
-                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Tipe Kandidat</th>
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
-                                <th>Aksi</th>
-                            @endif
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @php
-                            $number = 1;
-                        @endphp
-                        @foreach ($candidate_type as $candidate_types)
-                            <tr>
-                                <td>{{ $number++ }}</td>
-                                <td>{{ $candidate_types->name }}</td>
-                                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
-                                    <td>
-                                        <div class="button-list">
-                                            <a href="{{ route('candidates.show', $candidate_types->id) }}" class="btn btn-purple btn-rounded btn-edit waves-effect waves-light"><i class="fas fa-info-circle mr-1"></i> Detail</a>
-                                        </div>
-                                    </td>
-                                @endif
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    <h4 class="mt-3">Fakultas {{ $candidates->faculty }}</h4>
+                    <h5 class="text-muted" style="font-size: 14px;">{{ $candidates->study_program }}</h5>
+                    <div class="button-list mt-3">
+                        <a href="{{ route('candidates.edit', $candidates->id) }}" class="btn btn-sm btn-warning btn-rounded waves-effect waves-light"><i class="fas fa-edit mr-1"></i>Edit</a>
+                        <button class="btn btn-sm btn-purple btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".programModal" onclick="showProgram({{$candidates}})"><i class="fas fa-info-circle mr-1"></i>Program</button>
+                        <form style="display: inline" action="{{ route('candidates.destroy', $candidates->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="button" class="btn btn-sm btn-danger btn-rounded waves-light waves-effect" onclick="deleteAlert(this)"><i class="fas fa-trash-alt mr-1"></i>Hapus</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+        @endforeach
     </div>
     <!-- Program modal pop up -->
     <div class="modal fade programModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
         style="display: none;">
-        <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="programTitle"></h4>
@@ -163,27 +136,10 @@
 @endsection
 
 @section('js')
-    <!-- Required datatable js -->
-    <script src="{{ asset('highdmin/libs/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    <!-- Buttons examples -->
-    <script src="{{ asset('highdmin/libs/datatables/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/dataTables.keyTable.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/dataTables.select.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/buttons.print.min.js') }}"></script>
-    <!-- Responsive examples -->
-    <script src="{{ asset('highdmin/libs/datatables/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.min.js') }}"></script>
-    <!-- Datatables init -->
-    <script src="{{ asset('highdmin/js/pages/datatables.init.js') }}"></script>
-
-    <!-- Custombox modal -->
-    <script src="{{ asset('highdmin/libs/custombox/custombox.min.js') }}"></script>
+    <script src="{{ asset('assets/lightbox/simple-lightbox.js') }}"></script>
+    <script>
+        let gallery = new SimpleLightbox('.wrap a', {});
+    </script>
     <script>
         //  passing data to program modal
         function showProgram(candidate) {

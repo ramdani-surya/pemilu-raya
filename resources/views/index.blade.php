@@ -24,7 +24,7 @@ Kandidat
             @foreach($candidates as $candidate)
                 <div class="col-md-4 px-5 mt-5 mt-md-0" data-toggle="modal"
                     data-target="#exampleModal{{ $candidate->id }}">
-                    <img src="{{ asset("images/uploaded/$candidate->image") }}" alt=""
+                    <img src="{{ Storage::url($candidate->image) }}" alt=""
                         class="img-fluid candidateImg{{ $color[$number] }}" {{ $number }}>
                     <div class="wrapperCandidate{{ $color[$number] }} text-center mt-5 p-4">
                         <h5>

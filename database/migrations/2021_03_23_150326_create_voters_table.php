@@ -21,6 +21,7 @@ class CreateVotersTable extends Migration
             $table->string('name')->nullable();
             $table->string('token');
             $table->boolean('voted')->default(0);
+            $table->string('email')->nullable();
             $table->boolean('email_sent')->default(0);
             $table->timestamps();
         });
