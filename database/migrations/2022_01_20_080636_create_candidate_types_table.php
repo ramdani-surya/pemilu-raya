@@ -16,6 +16,7 @@ class CreateCandidateTypesTable extends Migration
         Schema::create('candidate_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->timestamps();
         });
     }

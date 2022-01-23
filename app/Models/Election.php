@@ -31,19 +31,46 @@ class Election extends Model
         return $this->hasMany(Candidate::class)->orderBy('candidate_number');
     }
 
+    public function candidate_types()
+    {
+        return $this->belongsTo(CandidateType::class);
+    }
+
+    public function bpm() 
+    {
+        $candidateTypeBpm = CandidateType::where('name', 'BPM')->first();
+        return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidateTypeBpm->id);
+    }
+
+    public function bem()
+    {
+        $candidateTypeBem = CandidateType::where('name', 'BEM')->first();
+        return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidateTypeBem->id);
+    }
+
     public function voters()
     {
         return $this->hasMany(Voter::class)->orderBy('nim');
     }
 
-    public function votedVoters()
+    public function bpmVotedVoters()
     {
-        return $this->hasMany(Voter::class)->where('voted', 1);
+        return $this->hasMany(Voter::class)->where('bpm_voted', 1);
     }
 
-    public function unvotedVoters()
+    public function bpmUnvotedVoters()
     {
-        return $this->hasMany(Voter::class)->where('voted', 0);
+        return $this->hasMany(Voter::class)->where('bpm_voted', 0);
+    }
+
+    public function bemVotedVoters()
+    {
+        return $this->hasMany(Voter::class)->where('bem_voted', 1);
+    }
+
+    public function bemUnvotedVoters()
+    {
+        return $this->hasMany(Voter::class)->where('bem_voted', 0);
     }
 
     public function votings()

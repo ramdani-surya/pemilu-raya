@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\Candidate;
 use App\Models\CandidateType;
 use App\Models\Election;
+use App\Models\StudyProgram;
+use App\Models\Faculty;
 use Alert;
 use File;
 use Storage;
+use Str;
 
 class CandidateController extends Controller
 {
@@ -36,7 +39,14 @@ class CandidateController extends Controller
     public function create()
     {
         $data['candidate_type'] = CandidateType::all();
+        $data['faculty'] = Faculty::all();
         return view('admin.candidate.create', $data);
+    }
+
+    public function getStudyProgram($id)
+    {
+        $study_program = StudyProgram::where('faculty_id',$id)->get();
+        return response()->json($study_program);
     }
 
     /**
@@ -70,6 +80,7 @@ class CandidateController extends Controller
         ]);
 
         $image = ($request->image) ? $request->file('image')->store("/public/input/candidates") : null;
+        $slug = CandidateType::where('id', $request->candidate_type_id)->first();
 
         $data = [
             'election_id' => $request->election,
@@ -95,9 +106,10 @@ class CandidateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $data['candidate'] = Candidate::where('candidate_type_id', $id)->get();
+        $candidate_type = CandidateType::where('slug', $slug)->first();
+        $data['candidate'] = Candidate::where('candidate_type_id', $candidate_type->id)->get();
         return view('admin.candidate.show', $data);
     }
 
@@ -148,9 +160,12 @@ class CandidateController extends Controller
             }
 
             $edit_image = $request->file("edit_image")->store("/public/input/candidates");
-        }
+        }   
+
+        $edit_slug = CandidateType::where('id', $request->edit_candidate_type_id)->first();
 
         $data = [
+            'candidate_type_id'  => $request->edit_candidate_type_id,
             'candidate_number'      => $request->edit_candidate_number,
             'chairman_name'         => $request->edit_chairman_name,
             'faculty'               => $request->edit_faculty,

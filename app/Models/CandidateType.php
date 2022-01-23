@@ -12,11 +12,16 @@ class CandidateType extends Model
     protected $table = "candidate_types";
 
     protected $fillable = [
-        'name'
+        'election_id', 'name', 'slug'
     ];
 
     public function candidates()
     {
         return $this->hasMany(Candidate::class);
+    }
+    
+    public function election()
+    {
+        return $this->belongsTo(Election::class);
     }
 }

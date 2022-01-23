@@ -52,6 +52,48 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function checkElectionName(Request $request) 
+    {
+        if($request->Input('name')){
+            $name = Election::where('name',$request->Input('name'))->first();
+            if($name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_name')){
+            $edit_name = Election::where('name',$request->Input('edit_name'))->first();
+            if($edit_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
+    public function checkElectionPeriod(Request $request) 
+    {
+        if($request->Input('period')){
+            $period = Election::where('period',$request->Input('period'))->first();
+            if($period){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_period')){
+            $edit_period = Election::where('period',$request->Input('edit_period'))->first();
+            if($edit_period){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -81,7 +123,7 @@ class ElectionController extends Controller
         $data = [
             'name'         => $request->edit_name,
             'period'       => $request->edit_period,
-            'running_date' => $request->date,
+            'running_date' => $request->edit_date,
         ];
 
         $election->update($data)

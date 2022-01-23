@@ -14,4 +14,9 @@ class StudyProgram extends Model
     protected $fillable = [
         'faculty_id', 'name'
     ];
+
+    public function faculties()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
+    }
 }

@@ -47,13 +47,35 @@ function tglIndo($date)
     return $date[0] . ' ' . $bln[(int) $date[1]] . ' ' . $date[2];
 }
 
-function votersPercentage(Election $election, $voted=1, $label=true)
+function bpmVotersPercentage(Election $election, $voted=1, $label=true)
 {
+    // remionder have to change voted_voter etc to bpm or bem. votedvoters = voter total when archived
     $totalVoters   = $election->total_voters ?? count($election->voters);
-    $votedVoters   = $election->voted_voters ?? count($election->votedVoters);
-    $unvotedVoters = $election->unvoted_voters ?? count($election->unvotedVoters);
+    $bpmVotedVoters   = $election->voted_voters ?? count($election->bpmVotedVoters);
+    $bpmUnvotedVoters = $election->unvoted_voters ?? count($election->bpmUnvotedVoters);
 
-    $vote = $voted ? $votedVoters  : $unvotedVoters;
+    $vote = $voted ? $bpmVotedVoters  : $bpmUnvotedVoters;
+
+    try {
+        $percentage = round(($vote / $totalVoters) * 100, 2);
+    } catch (\Throwable $th) {
+        $percentage = 0;
+    }
+
+    if ($label)
+        $percentage = "$percentage%";
+
+    return  $percentage;
+}
+
+function bemVotersPercentage(Election $election, $voted=1, $label=true)
+{
+    // remionder have to change voted_voter etc to bpm or bem. votedvoters = voter total when archived
+    $totalVoters   = $election->total_voters ?? count($election->voters);
+    $bemVotedVoters   = $election->voted_voters ?? count($election->bemVotedVoters);
+    $bemUnvotedVoters = $election->unvoted_voters ?? count($election->bemUnvotedVoters);
+
+    $vote = $voted ? $bemVotedVoters  : $bemUnvotedVoters;
 
     try {
         $percentage = round(($vote / $totalVoters) * 100, 2);

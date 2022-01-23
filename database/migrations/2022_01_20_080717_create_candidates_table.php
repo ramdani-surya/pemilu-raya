@@ -19,7 +19,7 @@ class CreateCandidatesTable extends Migration
             $table->foreignId('candidate_type_id')->constrained();
             $table->integer('candidate_number');
             $table->string('chairman_name');
-            $table->string('vice_chairman_name');
+            $table->string('vice_chairman_name')->nullable();
             $table->string('image')->nullable();
             $table->text('program')->nullable();
             $table->text('vision')->nullable();

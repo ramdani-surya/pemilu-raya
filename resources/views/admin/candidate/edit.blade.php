@@ -1,6 +1,10 @@
 @extends('admin.layouts.master')
 
-@section('subtitle')
+@section('title_menu')
+    Kandidat
+@endsection
+
+@section('title')
 Data Kandidat
 @endsection
 

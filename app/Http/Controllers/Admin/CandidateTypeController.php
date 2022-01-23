@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Candidate;
 use App\Models\CandidateType;
 use Alert;
+use Str;
 
 class CandidateTypeController extends Controller
 {
@@ -38,7 +40,9 @@ class CandidateTypeController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'name' => $request->candidate_type_name
+            'name' => $request->candidate_type_name,
+            'election_id' => $request->election_id,
+            'slug' => Str::slug($request->candidate_type_name)
         ];
 
         CandidateType::create($data)
@@ -54,9 +58,9 @@ class CandidateTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+       
     }
 
     /**
@@ -83,6 +87,7 @@ class CandidateTypeController extends Controller
 
         $data = [
             'name' => $request->edit_candidate_type_name ? $request->edit_candidate_type_name : $candidate_type->name,
+            'slug' => Str::slug($request->candidate_type_name)
         ];
 
         $candidate_type->update($data)

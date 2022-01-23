@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('faculty.index') }}">
+                            <a href="{{ route('faculties.index') }}">
                                 <i class="fe-airplay"></i>
                                 <span> Fakultas </span>
                             </a>

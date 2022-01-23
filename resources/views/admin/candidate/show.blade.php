@@ -1,6 +1,10 @@
 @extends('admin.layouts.master')
 
-@section('subtitle')
+@section('title_menu')
+    Kandidat
+@endsection
+
+@section('title')
     Data Kandidat
 @endsection
 
@@ -21,6 +25,22 @@
 @endsection
 
 @section('content')
+<p class="sub-header">
+    <div class="d-flex justify-content-between">
+        <div class="button-list">
+            <a href="{{ route('candidates.create') }}"
+                class="btn btn-primary btn-sm btn-create waves-light waves-effect"><i class="fas fa-plus-circle mr-1"></i> Tambah</a>
+            <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
+                id="bersihkan-semua-data"><i class="fas fa-dumpster mr-1"></i> Bersihkan</button>
+        </div>
+        <div class="filter">
+            <select name="" class="form-control">
+                <option value="">2022-2023</option>
+            </select>
+        </div>
+    </div>
+    
+    </p>
     <div class="row">
         @foreach($candidate as $candidates)
         <div class="col-4 col-sm-3">

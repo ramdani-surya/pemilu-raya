@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Voter;
 
 class MainController extends Controller
 {
@@ -14,13 +14,19 @@ class MainController extends Controller
         if (getActiveElection()) {
             $data = $this->getVotingData();
         } else {
-            $data['candidates'] = [];
-            $data['candidateVotings'] = [];
+            $data['bpmCandidates'] = [];
+            $data['bpmCandidateVotings'] = [];
+
+            $data['bemCandidates'] = [];
+            $data['bemCandidateVotings'] = [];
         }
 
-        array_pop($data['candidates']);
-        array_pop($data['candidateVotings']);
+        array_pop($data['bpmCandidates']);
+        array_pop($data['bpmCandidateVotings']);
 
+        array_pop($data['bemCandidates']);
+        array_pop($data['bemCandidateVotings']);
+        $data['votergang'] = Voter::with(['election.candidate_types'])->get();
         return view('admin.dashboard.data', $data);
     }
 
@@ -29,18 +35,27 @@ class MainController extends Controller
         // set data buat widget
         $data = [
             'total_voter' => count(getActiveElection()->voters),
-            'has_voted'   => [
-                'total'      => count(getActiveElection()->votedVoters),
-                'percentage' => votersPercentage(getActiveElection()),
+            'bpm_has_voted'   => [
+                'total'      => count(getActiveElection()->bpmVotedVoters),
+                'percentage' => bpmVotersPercentage(getActiveElection()),
             ],
-            'unvoted' => [
-                'total'      => count(getActiveElection()->unvotedVoters),
-                'percentage' => votersPercentage(getActiveElection(), 0),
+            'bpm_unvoted' => [
+                'total'      => count(getActiveElection()->bpmUnvotedVoters),
+                'percentage' => bpmVotersPercentage(getActiveElection(), 0),
+            ],
+            'bem_has_voted'   => [
+                'total'      => count(getActiveElection()->bemVotedVoters),
+                'percentage' => bemVotersPercentage(getActiveElection()),
+            ],
+            'bem_unvoted' => [
+                'total'      => count(getActiveElection()->bemUnvotedVoters),
+                'percentage' => bemVotersPercentage(getActiveElection(), 0),
             ],
             'total_candidate' => count(getActiveElection()->candidates),
         ];
 
-        $data['votings'] = $this->getVotingData()['candidateVotings'];
+        $data['bpmVotings'] = $this->getVotingData()['bpmCandidateVotings'];
+        $data['bemVotings'] = $this->getVotingData()['bemCandidateVotings'];
 
         return response()->json($data);
     }
@@ -48,22 +63,35 @@ class MainController extends Controller
     // set data buat chart
     private function getVotingData()
     {
-        $candidates = [];
-        $candidateVotings = [];
+        $bpmCandidates = [];
+        $bpmCandidateVotings = [];
+
+        $bemCandidates = [];
+        $bemCandidateVotings = [];
 
         if (getActiveElection()) {
-            foreach (getActiveElection()->candidates as $candidate) {
-                $candidates[] = "$candidate->chairman_name - $candidate->vice_chairman_name";
-                $candidateVotings[] = count($candidate->votings);
+            foreach (getActiveElection()->bpm as $candidate) {
+                $bpmCandidates[] = "$candidate->chairman_name";
+                $bpmCandidateVotings[] = count($candidate->votings);
             }
 
-            $candidates[] = 'Belum Memilih';
-            $candidateVotings[] = count(getActiveElection()->unvotedVoters);
+             foreach (getActiveElection()->bem as $candidate) {
+                $bemCandidates[] = "$candidate->chairman_name";
+                $bemCandidateVotings[] = count($candidate->votings);
+            }
+
+            $bpmCandidates[] = 'Belum Memilih';
+            $bpmCandidateVotings[] = count(getActiveElection()->bpmUnvotedVoters);
+
+            $bemCandidates[] = 'Belum Memilih';
+            $bemCandidateVotings[] = count(getActiveElection()->bemUnvotedVoters);
         }
 
-        $votingData['candidates'] = $candidates;
-        $votingData['candidateVotings'] = $candidateVotings;
+        $votingData['bpmCandidates'] = $bpmCandidates;
+        $votingData['bpmCandidateVotings'] = $bpmCandidateVotings;
 
+        $votingData['bemCandidates'] = $bemCandidates;
+        $votingData['bemCandidateVotings'] = $bemCandidateVotings;
         return $votingData;
     }
 }

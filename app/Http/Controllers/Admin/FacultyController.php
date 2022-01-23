@@ -18,7 +18,8 @@ class FacultyController extends Controller
     public function index()
     {
         $data['faculty'] = Faculty::all();
-        return view('admin.faculty.faculty', $data);
+        $data['study_program'] = StudyProgram::all();
+        return view('admin.faculty.data', $data);
     }
 
     /**
@@ -37,9 +38,39 @@ class FacultyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function checkFacultyName(Request $request) 
+    {
+        if($request->Input('faculty_name')){
+            $faculty_name = Faculty::where('name',$request->Input('faculty_name'))->first();
+            if($faculty_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_faculty_name')){
+            $edit_faculty_name = Faculty::where('name',$request->Input('edit_faculty_name'))->first();
+            if($edit_faculty_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
     public function store(Request $request)
     {
-        //
+        $data = [
+            'name' => $request->faculty_name
+        ];
+
+        Faculty::create($data)
+        ? Alert::success('Sukses', "Faculty tetap berhasil disimpan.")
+        : Alert::error('Error', "Faculty tetap gagal disimpan!");
+
+        return redirect()->back();
     }
 
     /**
@@ -73,7 +104,18 @@ class FacultyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $faculty = Faculty::findOrFail($id);
+        
+        $data = [
+            'name' => $request->edit_faculty_name
+        ];
+
+        $faculty->update($data)
+        ? Alert::success('Sukses', "Faculty tetap berhasil diubah.")
+        : Alert::error('Error', "Faculty tetap gagal diubah!");
+
+        return redirect()->back();
+
     }
 
     /**
@@ -84,6 +126,23 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $faculty = Faculty::find($id);
+
+        $faculty->delete()
+        ? Alert::success('Sukses', "Faculty tetap berhasil dihapus.")
+        : Alert::error('Error', "Faculty tetap gagal dihapus!");
+
+        return redirect()->back();
+    }
+
+    public function clear()
+    {
+        $faculty = Faculty::all();
+
+        Faculty::destroy($faculty)
+            ? Alert::success('Sukses', 'Data Faculty berhasil dibersihkan.')
+            : Alert::error('Error', 'Data Faculty gagal dibersihkan.');
+
+        return redirect(route('faculties.index'));
     }
 }

@@ -1,6 +1,10 @@
 @extends('admin.layouts.master')
 
-@section('subtitle')
+@section('title_menu')
+    Kandidat
+@endsection
+
+@section('title')
     Data Kandidat
 @endsection
 
@@ -41,16 +45,6 @@
                         </p>
                         <div class="row">
                             <div class="col-sm-10">
-                                {{-- <input type="text" name="candidate_type" parsley-trigger="change"
-                                    placeholder="Masukkan Nama Kandidat"
-                                    class="form-control @error('candidate_type') is-invalid @enderror" id="candidate_type"
-                                    value="{{ old('candidate_type') }}">
-
-                                @error('candidate_type')
-                                    <div class="mt-1">
-                                        <span class="text-danger">{{ $message }}</span>
-                                    </div>
-                                @enderror --}}
                                 <select name="candidate_type_id" class="form-control">
                                     <option value="">Pilih Tipe Kandidat</option>
                                     @foreach ($candidate_type as $candidate_types)
@@ -110,12 +104,11 @@
 
                     <div class="form-group">
                         <label for="factulty">Fakultas<span class="text-danger">*</span></label>
-                        <select name="faculty" class="form-control">
-                            <option value="fti">FTI</option>
-                            <option value="feb">FEB</option>
-                            <option value="fisip">FISIP</option>
-                            <option value="fkip">FKIP</option>
-                            <option value="fib">FIB</option>
+                        <select name="faculty" id="faculty" class="form-control">
+                            <option hidden>Pilih Fakultas</option>
+                            @foreach($faculty as $faculties)
+                                <option value="{{ $faculties->id }}">{{ $faculties->name }}</option>
+                            @endforeach
                         </select>
 
                         @error('factulty')
@@ -126,16 +119,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="study_program">Program Studi<span class="text-danger">*</span></label>
-                        <select name="study_program" class="form-control">
-                            <option value="teknik_informatika">Teknik Informatika</option>
-                        </select>
+                        <label for="study_program">Program Study<span class="text-danger">*</span></label>
+                        <select class="form-control" name="study_program" id="study_program"></select>
 
                         @error('study_program')
                             <div class="mt-2">
                                 <span class="text-danger">{{ $message }}</span>
                             </div>
                         @enderror
+
                     </div>
                 </div>
             </div>
@@ -288,6 +280,7 @@
                                 @csrf
 
                                 <div class="form-group">
+                                    <input type="hidden" class="form-control" name="election_id" value="{{ getActiveElection()->id }}">
                                     <label for="name">Nama Tipe Kandidat</label>
                                     <input type="text" class="form-control" name="candidate_type_name"
                                         placeholder="Masukan Tipe Kandidat">
@@ -393,7 +386,37 @@
     <script src="{{ asset('highdmin/libs/bootstrap-filestyle2/bootstrap-filestyle.min.js') }}"></script>
     <!-- Ckeditor js -->
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+    <script>
+        $(document).ready(function() {
+        $('#faculty').on('change', function() {
+           var facultyId = $(this).val();
+           if(facultyId) {
+               $.ajax({
+                   url: '/admin/get-study-program/'+facultyId,
+                   type: "GET",
+                   data : {"_token":"{{ csrf_token() }}"},
+                   dataType: "json",
+                   success:function(data)
+                   {
+                     if(data){
+                        $('#study_program').empty();
+                        $('#study_program').append('<option hidden>Pilih Program Studi</option>'); 
+                        $.each(data, function(key, course){
+                            $('select[name="study_program"]').append('<option value="'+ key +'">' + course.name+ '</option>');
+                        });
+                    }else{
+                        $('#study_program').empty();
+                    }
+                 }
+               });
+           }else{
+             $('#study_program').empty();
+           }
+        });
+        });
+    </script>
     <script>
         function addCandidateType() {
             $("#candidateTypeModal").modal('hide');
