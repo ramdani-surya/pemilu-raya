@@ -31,6 +31,16 @@ class VoterController extends Controller
     public function index()
     {
         $data['voters']   = $this->activeElection->voters;
+        // if ($request->ajax()) {
+        //     $data = $this->activeElection->voters;
+        //     return Datatables::of($data)->addIndexColumn()
+        //         ->addColumn('action', function($row){
+        //             $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
+        //             return $btn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
         $data['election'] = $this->activeElection;
 
         return view('admin.voter.data', $data);

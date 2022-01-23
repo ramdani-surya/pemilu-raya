@@ -16,7 +16,8 @@ class Voter extends Authenticatable
         'nim',
         'name',
         'token',
-        'voted',
+        'bpm_voted',
+        'bem_voted',
         'email',
         'email_sent',
     ];

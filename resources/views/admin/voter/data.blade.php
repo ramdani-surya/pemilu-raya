@@ -10,6 +10,7 @@ Daftar Pemilih Tetap
 <link href="{{ asset('highdmin/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/custombox/custombox.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('highdmin/libs/tooltipster/tooltipster.bundle.min.css') }}" rel="stylesheet" type="text/css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -25,9 +26,9 @@ Daftar Pemilih Tetap
                 <div class="button-list">
                     <a href="#custom-modal" class="btn btn-primary btn-sm btn-create waves-light waves-effect"
                         data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
-                        data-overlayColor="#36404a">Tambah</a>
+                        data-overlayColor="#36404a"><i class="fas fa-plus-circle mr-1"></i> Tambah</a>
                     <a href="{{ route('voters.clear') }}"
-                        class="btn btn-danger btn-sm waves-light waves-effect">Bersihkan</a>
+                        class="btn btn-danger btn-sm waves-light waves-effect"><i class="fas fa-dumpster mr-1"></i> Bersihkan</a>
                     <div class="row">
                         <div class="col-md-12">
                             <form action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data"
@@ -100,13 +101,13 @@ Daftar Pemilih Tetap
                                 <div class="button-list" style="display: flex">
                                     @if(!$voter->voted)
                                         <button type="button"
-                                            class="btn btn-warning btn-rounded btn-edit waves-effect waves-light"
+                                            class="btn btn-sm btn-warning btn-rounded btn-edit waves-effect waves-light"
                                             data-toggle="modal" data-target=".bs-example-modal-sm"
-                                            onclick="setEditData({{ $voter }})">Edit</button>
+                                            onclick="setEditData({{ $voter }})"><i class="fas fa-edit mr-1"></i> Edit</button>
                                         <button type="button"
                                             data-url="{{ route('voters.reset_token', [$voter, '']) }}"
-                                            class="btn btn-pink btn-rounded waves-effect waves-light"
-                                            onclick="resetTokenAlert(this)">Reset Token</button>
+                                            class="btn btn-sm btn-pink btn-rounded waves-effect waves-light"
+                                            onclick="resetTokenAlert(this)"><i class="fas fa-undo mr-1"></i> Reset Token</button>
                                     @endif
 
                                     <form action="{{ route('voters.destroy', $voter) }}"
@@ -114,7 +115,7 @@ Daftar Pemilih Tetap
                                         @csrf
                                         @method('delete')
                                         <button type="submit"
-                                            class="btn btn-danger btn-rounded waves-light waves-effect">Hapus</button>
+                                            class="btn btn-sm btn-danger btn-rounded waves-light waves-effect"><i class="fas fa-trash-alt mr-1"></i> Hapus</button>
                                     </form>
                                 </div>
                             </td>
