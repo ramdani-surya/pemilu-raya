@@ -30,6 +30,12 @@ class MainController extends Controller
         return view('admin.dashboard.data', $data);
     }
 
+    public function show($type) {
+        $candidate_type = $type;
+
+        return view('admin.dashboard.show', $data);
+    }
+
     public function dashboardApi()
     {
         // set data buat widget

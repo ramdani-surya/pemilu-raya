@@ -47,6 +47,27 @@ function tglIndo($date)
     return $date[0] . ' ' . $bln[(int) $date[1]] . ' ' . $date[2];
 }
 
+function voterAllPercentage(Election $election, $voted=1, $label=true)
+{
+    $totalVoters   = $election->total_voters ?? count($election->voters);
+    $allVoted   = $election->voted_voters ?? count($election->allVoted);
+    $allUnvoted = $election->unvoted_voters ?? count($election->allUnvoted);
+
+    $vote = $voted ? $allVoted  : $allUnvoted;
+
+    try {
+        $percentage = round(($vote / $totalVoters) * 100, 2);
+    } catch (\Throwable $th) {
+        $percentage = 0;
+    }
+
+    if ($label)
+        $percentage = "$percentage%";
+
+    return  $percentage;
+}
+
+
 function bpmVotersPercentage(Election $election, $voted=1, $label=true)
 {
     // remionder have to change voted_voter etc to bpm or bem. votedvoters = voter total when archived

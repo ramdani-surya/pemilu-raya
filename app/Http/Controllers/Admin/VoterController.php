@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Alert;
-
+use Datatables;
 class VoterController extends Controller
 {
     private $activeElection;
@@ -41,6 +41,9 @@ class VoterController extends Controller
         //         ->rawColumns(['action'])
         //         ->make(true);
         // }
+
+        
+
         $data['election'] = $this->activeElection;
 
         return view('admin.voter.data', $data);
@@ -52,6 +55,49 @@ class VoterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function checkDptNim(Request $request) 
+    {
+        if($request->Input('nim')){
+            $nim = Voter::where('nim',$request->Input('nim'))->first();
+            if($nim){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_nim')){
+            $edit_nim = Voter::where('nim',$request->Input('edit_nim'))->first();
+            if($edit_nim){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
+    public function checkDptEmail(Request $request) 
+    {
+        if($request->Input('email')){
+            $email = Voter::where('email',$request->Input('email'))->first();
+            if($email){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_email')){
+            $edit_email = Voter::where('email',$request->Input('edit_email'))->first();
+            if($edit_email){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -161,6 +207,9 @@ class VoterController extends Controller
     {
         $request->validate([
             'file' => 'required|mimes:xlsx'
+        ],
+        [
+            'file.mimes' => 'File yang di upload harus berupa file dengan tipe: xlsx.'
         ]);
 
         Excel::import(new VotersImport, $request->file('file'))

@@ -10,13 +10,13 @@
 
 @section('css')
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
 @endsection
 
 @section('content')
 <div class="page-titles">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0)">Kandidat</a></li>
-        <li class="breadcrumb-item active"><a href="javascript:void(0)">Data Kandidat</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url()->current() }}">Kandidat</a></li>
     </ol>
 </div>
 <!-- row -->
@@ -28,18 +28,38 @@
             <div class="card-header">
                 <h4 class="card-title">Data Kandidat</h4>
                 <div class="button-list">
-                    <button type="button" data-toggle="modal" data-target="#addElection" class="btn btn-primary btn-xs"
-                        data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
-                        data-overlayColor="#36404a"><i class="fa fa-plus-circle mr-1"></i> Tambah</button>
-                    <button type="button" class="btn btn-danger btn-xs"
-                        id="clearAll"><i class="fa fa-trash-o mr-1"></i> Bersihkan</button>
+                    <a href="{{ route('candidates.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle mr-1"></i> Tambahkan Kandidat</a>
                 </div>
-            </div>
-            <div class="card-body">
-               
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="row">
+    @foreach($candidate_type as $types)
+    
+        <div class="col-sm-6">
+            <a href="{{ route('candidates.show', $types->slug) }}">
+                <div class="card avtivity-card">
+                    <div class="card-body">
+                        <div class="media ">
+                            
+                            <div class="media-body">
+                                <p class="fs-14 mb-2">{{ $types->election->name }}</p>
+                                <span class="title text-black font-w600">{{ $types->name }}</span>
+                            </div>
+                        </div>
+                        <div class="progress" style="height:5px;">
+                            <div class="progress-bar bg-secondary" style="height:5px;" id="bemSudahMemilihBar" role="progressbar">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="effect light bg-primary"></div>
+                </div>
+            </a>
+        </div>
+    @endforeach
 </div>
 @endsection
 
