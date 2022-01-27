@@ -14,6 +14,8 @@ use Alert;
 use File;
 use Storage;
 use Str;
+use Validator;
+use Illuminate\Validation\Rule;
 
 class CandidateController extends Controller
 {
@@ -43,10 +45,31 @@ class CandidateController extends Controller
         return view('admin.candidate.create', $data);
     }
 
+    public function createIn($slug)
+    {
+        $data['slug'] = $slug;
+        $data['candidate'] = Candidate::all();
+        $data['candidate_type'] = CandidateType::all();
+        $data['faculty'] = Faculty::all();
+        return view('admin.candidate.create', $data);
+    }
+
     public function getStudyProgram($id)
     {
         $study_program = StudyProgram::where('faculty_id',$id)->get();
         return response()->json($study_program);
+    }
+
+    public function getCandidateNumber($id)
+    {
+        $get_candidate_number = Candidate::where('candidate_type_id', $id)->orderBy('updated_at', 'desc')->first();
+        
+        if(isset($get_candidate_number)) {
+            $candidate_number = $get_candidate_number->candidate_number + 1;
+        } else {
+            $candidate_number = 1;
+        }
+        return response()->json($candidate_number);
     }
 
     /**
@@ -59,27 +82,37 @@ class CandidateController extends Controller
     {
         $this->validate($request, [
             'election' => 'required',
-            'candidate_number' => "required|numeric|unique:candidates",
+            'candidate_number' => ['required',Rule::unique('candidates')->where(function ($query) use ($request) {
+                return $query->where('candidate_type_id', '=', $request->candidate_type_id);
+            })],
+            'candidate_type_id' => "required",
+            'faculty_id' => "required",
+            'study_program_id' => "required",
             'chairman_name' => 'required|string|min:3|max:35',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'program' => 'required',
         ],
         [
             'election.required' => 'Election harus di isi.',
             'candidate_number.required' => 'Nomor Kandidat harus di isi.',
             'candidate_number.unique' => 'Nomor Kandidat sudah digunakan.',
+            
+            'candidate_type_id.required' => 'Tipe Kandidat harus di isi.',
+
+            'faculty_id.required' => 'Fakultas harus di isi.',
+            'study_program_id.required' => 'Program Studi harus di isi.',
 
             'chairman_name.required' => 'Nama Ketua harus di isi.',
             'chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
             'chairman_name.max' => 'Nama Ketua tidak boleh lebih dari 35 karakter.',
 
+            'image.required' => 'Foto harus di isi.',
             'image.image' => 'Foto harus berupa gambar.',
             'image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
             'program.required' => 'Kolom Program harus di isi.',
         ]);
 
-        $image = ($request->image) ? $request->file('image')->store("/public/input/candidates") : null;
         $slug = CandidateType::where('id', $request->candidate_type_id)->first();
 
         $data = [
@@ -87,9 +120,9 @@ class CandidateController extends Controller
             'candidate_type_id'  => $request->candidate_type_id,
             'candidate_number' => $request->candidate_number,
             'chairman_name' => $request->chairman_name,
-            'faculty' => $request->faculty,
-            'study_program' => $request->study_program,
-            'image' => $image,
+            'faculty_id' => $request->faculty_id,
+            'study_program_id' => $request->study_program_id,
+            'image' => $request->file('image')->store("/public/input/candidates"),
             'program' => $request->program,
         ];
 
@@ -97,7 +130,7 @@ class CandidateController extends Controller
             ? Alert::success('Sukses', "Kandidat berhasil ditambahkan.")
             : Alert::error('Error', "Kandidat gagal ditambahkan!");
 
-        return redirect()->back();
+        return redirect()->route('candidates.show', $request->candidateTypeUrl);
     }
 
     /**
@@ -109,6 +142,7 @@ class CandidateController extends Controller
     public function show($slug)
     {
         $candidate_type = CandidateType::where('slug', $slug)->first();
+        $data['candidate_type2'] = CandidateType::where('slug', $slug)->first();
         $data['candidate'] = Candidate::where('candidate_type_id', $candidate_type->id)->get();
         return view('admin.candidate.show', $data);
     }
@@ -119,9 +153,13 @@ class CandidateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Candidate $candidate)
+    public function edit($id,$candidateType)
     {
-        return view('admin.candidate.edit', compact('candidate'));
+        $data['candidate'] = Candidate::find($id);
+        $data['candidate_type'] = CandidateType::all();
+        $data['faculty'] = Faculty::all();
+        $data['candidateType'] = $candidateType;
+        return view('admin.candidate.edit', $data);
     }
 
     /**
@@ -133,16 +171,22 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-
         $request->validate([
-            'edit_candidate_number' => "required|unique:candidates,candidate_number,$candidate->id",
+          
+            'edit_faculty_id' => "required",
+            'edit_study_program_id' => "required",
             'edit_chairman_name'      => 'required|min:3|max:35',
-            'edit_image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'edit_image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'edit_program'     => 'required',
         ],
         [
             'edit_candidate_number.required' => 'Nomor Kandidat harus di isi.',
             'edit_candidate_number.unique' => 'Nomor Kandidat sudah digunakan.',
+
+            'edit_candidate_type_id.required' => 'Tipe Kandidat harus di isi.',
+
+            'edit_faculty_id.required' => 'Fakultas harus di isi.',
+            'edit_study_program_id.required' => 'Program Studi harus di isi.',
 
             'edit_chairman_name.required' => 'Nama Ketua harus di isi.',
             'edit_chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
@@ -165,14 +209,15 @@ class CandidateController extends Controller
         $edit_slug = CandidateType::where('id', $request->edit_candidate_type_id)->first();
 
         $data = [
-            'candidate_type_id'  => $request->edit_candidate_type_id,
-            'candidate_number'      => $request->edit_candidate_number,
+            'candidate_type_id'  => $request->edit_candidate_type_id ? $edit_candidate_type_id : $candidate->candidate_type_id,
+            'candidate_number'      => $request->edit_candidate_number ? $edit_candidate_number : $candidate->candidate_number,
             'chairman_name'         => $request->edit_chairman_name,
-            'faculty'               => $request->edit_faculty,
-            'study_program'         => $request->edit_study_program,
+            'faculty_id'               => $request->edit_faculty_id,
+            'study_program_id'         => $request->edit_study_program_id,
             'image'                 => $request->hasFile('edit_image') ? $edit_image : $candidate->image,
             'program'                => $request->edit_program,
         ];
+
         $candidate->update($data)
             ? Alert::success('Sukses', "Kandidat berhasil diubah.")
             : Alert::error('Error', "Kandidat gagal diubah!");

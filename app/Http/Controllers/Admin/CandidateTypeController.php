@@ -37,6 +37,28 @@ class CandidateTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function checkCandidateType(Request $request) 
+    {
+        if($request->Input('candidate_type_name')){
+            $candidate_type_name = CandidateType::where('name',$request->Input('candidate_type_name'))->first();
+            if($candidate_type_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_candidate_type_name')){
+            $edit_candidate_type_name = CandidateType::where('name',$request->Input('edit_candidate_type_name'))->first();
+            if($edit_candidate_type_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
     public function store(Request $request)
     {
         $data = [

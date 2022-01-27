@@ -16,8 +16,8 @@ class Candidate extends Model
         'chairman_name',
         'image',
         'program',
-        'faculty',
-        'study_program'
+        'faculty_id',
+        'study_program_id'
     ];
 
     public function election()
@@ -29,4 +29,21 @@ class Candidate extends Model
     {
         return $this->hasMany(Voting::class);
     }
+
+    public function faculties()
+    {
+        return $this->hasMany(Faculty::class);
+    }
+
+    public function studyPrograms()
+    {
+        return $this->hasMany(StudyProgram::class);
+    }
+
+    public function candidateTypes()
+    {
+        return $this->belongsTo(CandidateType::class, 'candidate_type_id');
+    }
+
+    
 }

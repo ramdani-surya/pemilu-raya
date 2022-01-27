@@ -53,6 +53,17 @@ class Election extends Model
         return $this->hasMany(Voter::class)->orderBy('nim');
     }
 
+
+    public function allVoted()
+    {
+        return $this->hasMany(Voter::class)->where('voted', 1);
+    }
+
+    public function allUnvoted()
+    {
+        return $this->hasMany(Voter::class)->where('voted', 0);
+    }
+
     public function bpmVotedVoters()
     {
         return $this->hasMany(Voter::class)->where('bpm_voted', 1);

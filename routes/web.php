@@ -57,6 +57,7 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
    
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/show/{type}', [AdminController::class, 'show'])->name('admin.dashboard.show');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
         Route::resource('users', UserController::class)->except('create');
@@ -85,12 +86,18 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
 
         Route::middleware('checkActiveElection')->group(function () {
             Route::resource('candidates', CandidateController::class);
+            Route::get('candidates/create-in/{slug}', [CandidateController::class, 'createIn'])->name('candidates.createIn');
+            Route::get('candidates/edit/{id}/{candidateType}', [CandidateController::class, 'edit'])->name('candidates.editIn');
             Route::get('get-study-program/{id}', [CandidateController::class, 'getStudyProgram']);
-            Route::resource('candidate_types', CandidateTypeController::class);
+            Route::get('get-candidate-number/{id}', [CandidateController::class, 'getCandidateNumber']);
             Route::get('/candidate/clear', [CandidateController::class, 'clear'])->name('candidates.clear');
+            Route::resource('candidate_types', CandidateTypeController::class);
+            Route::post('candidate_type/check-candidate-type', [CandidateTypeController::class, 'checkCandidateType'])->name('checkCandidateType');
             Route::get('/candidate_type/clear', [CandidateTypeController::class, 'clear'])->name('candidate_types.clear');
 
             Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
+            Route::post('voter/check-dpt-nim', [VoterController::class, 'checkDptNim'])->name('checkDptNim');
+            Route::post('voter/check-dpt-email', [VoterController::class, 'checkDptEmail'])->name('checkDptEmail');
             Route::prefix('voters')->group(function () {
                 Route::get('/clear', [VoterController::class, 'clear'])->name('voters.clear');
                 Route::post('/import', [VoterController::class, 'import'])->name('voters.import');
