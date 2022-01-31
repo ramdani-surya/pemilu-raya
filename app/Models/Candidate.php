@@ -12,12 +12,12 @@ class Candidate extends Model
     protected $fillable = [
         'election_id',
         'candidate_type_id',
+        'faculty_id',
+        'study_program_id',
         'candidate_number',
         'chairman_name',
         'image',
         'program',
-        'faculty_id',
-        'study_program_id'
     ];
 
     public function election()

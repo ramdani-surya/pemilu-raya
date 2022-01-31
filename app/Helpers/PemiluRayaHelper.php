@@ -13,9 +13,14 @@ function generateToken()
     return Str::random(6);
 }
 
-function getActiveElection()
+function getActiveElection($where = null)
 {
-    return Election::where('archived', 0)->first();
+    // return Election::when($where, function($q,$where){
+    //     return $q->where($where);
+    // })->where('archived', 0)->first();
+
+    return Election::where('status', 1)->first();
+
 }
 
 function getRunningElection()

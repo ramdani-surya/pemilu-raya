@@ -70,6 +70,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('candidate_types.index') }}">
+                                <i class="fe-airplay"></i>
+                                <span> Tipe Kandidat </span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('candidates.index') }}">
                                 <i class="fe-users"></i>
                                 <span> Kandidat </span>

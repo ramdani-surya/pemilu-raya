@@ -15,6 +15,7 @@ class CreateFacultiesTable extends Migration
     {
         Schema::create('faculties', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('election_id')->constrained();
             $table->string('name');
             $table->timestamps();
         });

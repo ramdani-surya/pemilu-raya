@@ -42,8 +42,7 @@
 @section('content')
     <div class="page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Fakultas</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Data Fakultas</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Fakultas</a></li>
         </ol>
     </div>
 
@@ -56,15 +55,20 @@
                             <a href="#fakultas" class="nav-link active" data-toggle="tab" aria-expanded="false">Fakultas</a>
                         </li>
                         <li class="nav-item">
+                            @if($faculty->isEmpty())
+                            <a href="#studyProgram" class="nav-link" data-toggle="tab" aria-expanded="false" onclick="openStudyProgram(this)">Program
+                                Studi</a>
+                            @else 
                             <a href="#studyProgram" class="nav-link" data-toggle="tab" aria-expanded="false">Program
                                 Studi</a>
+                            @endif
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
                         <div id="fakultas" class="tab-pane active">
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <div class="button-list" style="margin-bottom: 28px;">
                                     <button type="button" data-toggle="modal" data-target="#addFaculty"
                                         class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
@@ -80,7 +84,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Nama Fakultas</th>
-                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                             <th>Aksi</th>
                                         @endif
                                     </tr>
@@ -94,7 +98,7 @@
                                         <tr>
                                             <td>{{ $number++ }}</td>
                                             <td>{{ $faculties->name }}</td>
-                                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                                 <td>
                                                     <div class="button-list">
                                                         <button type="button" data-toggle="modal"
@@ -120,7 +124,7 @@
                             </table>
                         </div>
                         <div id="studyProgram" class="tab-pane">
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                             <div class="button-list" style="margin-bottom: 28px;">
                                 <button type="button" data-toggle="modal" data-target="#addStudyProgram"
                                     class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
@@ -135,9 +139,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Fakultas</th>
                                         <th>Program Studi</th>
-                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                        <th>Fakultas</th>
+                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                             <th>Aksi</th>
                                         @endif
                                     </tr>
@@ -150,9 +154,9 @@
                                     @foreach ($study_program as $study_programs)
                                         <tr>
                                             <td>{{ $number++ }}</td>
-                                            <td>{{ $study_programs->faculties->name }}</td>
                                             <td>{{ $study_programs->name }}</td>
-                                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                            <td>{{ $study_programs->faculties->name }}</td>
+                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                                 <td>
                                                     <div class="button-list">
                                                         <button type="button" data-toggle="modal"
@@ -194,6 +198,8 @@
                     <div class="modal-body">
                         <form action="{{ route('faculties.store') }}" method="post" id="addFacultyForm">
                             @csrf
+                            <input type="hidden" class="form-control" name="election_id"
+                            value="{{ getActiveElection()->id }}">
                             <div class="form-group">
                                 <label for="faculty_name">Nama Fakultas</label>
                                 <input type="text" class="form-control" name="faculty_name"
@@ -253,7 +259,8 @@
                     <div class="modal-body">
                         <form action="{{ route('study-programs.store') }}" method="post" id="addStudyProgramForm">
                             @csrf
-
+                            <input type="hidden" class="form-control" name="election_id_2"
+                            value="{{ getActiveElection()->id }}">
                             <div class="form-group">
                                 <label for="faculty_id">Fakultas</label>
                                 <select name="faculty_id" class="form-control">
@@ -505,6 +512,20 @@
                     }
                 })
             });
+
+            function openStudyProgram(e) {
+                Swal.fire({
+                    title: "Info",
+                    text: `Buat fakultas baru terlebih dahulu!`,
+                    type: "info",
+                    timer: 3000,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                }).then(function(t) {
+                        window.location.href = "{{ route('faculties.index') }}"
+                })
+            }
 
             function deleteFacultyAlert(e) {
                 Swal.fire({

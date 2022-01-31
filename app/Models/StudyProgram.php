@@ -12,7 +12,7 @@ class StudyProgram extends Model
     protected $table = "study_programs";
 
     protected $fillable = [
-        'faculty_id', 'name'
+        'faculty_id', 'election_id', 'name'
     ];
 
     public function faculties()

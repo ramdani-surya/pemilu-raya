@@ -29,6 +29,7 @@ class CreateElectionsTable extends Migration
             $table->date('running_date')->nullable();
             $table->boolean('running')->default(0);
             $table->boolean('archived')->default(0);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

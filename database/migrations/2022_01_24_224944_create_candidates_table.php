@@ -15,10 +15,10 @@ class CreateCandidatesTable extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->constrained();
-            $table->foreignId('candidate_type_id')->constrained();
-            $table->foreignId('faculty_id')->constrained();
-            $table->foreignId('study_program_id')->constrained();
+            $table->foreignId('election_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('candidate_type_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('faculty_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('study_program_id')->constrained()->onUpdate('cascade');
             $table->integer('candidate_number');
             $table->string('chairman_name');
             $table->string('vice_chairman_name')->nullable();

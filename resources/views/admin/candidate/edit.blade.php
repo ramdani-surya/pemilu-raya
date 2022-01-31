@@ -257,7 +257,7 @@
                                             onclick="editCandidateType({{ $candidate_types }})"><i
                                                 class="fa fa-edit mr-1"></i>Edit</button>
                                         <form style="display: inline"
-                                            action="{{ route('candidate_types.destroy', $candidate_types->id) }}"
+                                            action="{{ route('candidate-types.destroy', $candidate_types->id) }}"
                                             method="post">
                                             @csrf
                                             @method('delete')
@@ -284,7 +284,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('candidate_types.store') }}" method="post" id="addCandidateTypeForm">
+                    <form action="{{ route('candidate-types.store') }}" method="post" id="addCandidateTypeForm">
                         @csrf
 
                         <div class="form-group">
@@ -530,7 +530,7 @@
                 cancelButtonText: "Batal"
             }).then(function(t) {
                 if (t.value) {
-                    window.location.href = "{{ route('candidate_types.clear') }}"
+                    window.location.href = "{{ route('candidate-types.clear') }}"
                 }
             })
         });

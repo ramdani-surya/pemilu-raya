@@ -36,7 +36,7 @@
                   <form action="{{ route('admin.post') }}" method="POST" class="mt-5">
                     @csrf
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="form2Example11">Username</label>
+                      <label class="form-label" for="username">Username</label>
                       <input type="text" name="username" class="form-control" placeholder="Username"/>
                     </div>
   

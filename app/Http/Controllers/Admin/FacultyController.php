@@ -17,8 +17,8 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $data['faculty'] = Faculty::all();
-        $data['study_program'] = StudyProgram::all();
+        $data['faculty'] = getActiveElection()->faculties;
+        $data['study_program'] = getActiveElection()->studyPrograms;
         return view('admin.faculty.data', $data);
     }
 
@@ -63,6 +63,7 @@ class FacultyController extends Controller
     public function store(Request $request)
     {
         $data = [
+            'election_id' => $request->election_id,
             'name' => $request->faculty_name
         ];
 
