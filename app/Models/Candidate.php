@@ -32,12 +32,12 @@ class Candidate extends Model
 
     public function faculties()
     {
-        return $this->hasMany(Faculty::class);
+        return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 
     public function studyPrograms()
     {
-        return $this->hasMany(StudyProgram::class);
+        return $this->belongsTo(StudyProgram::class, 'study_program_id');
     }
 
     public function candidateTypes()

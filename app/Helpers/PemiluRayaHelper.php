@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Candidate;
 use App\Models\Election;
 use Illuminate\Support\Str;
 
@@ -23,9 +24,18 @@ function getActiveElection($where = null)
 
 }
 
-function getRunningElection()
+function getRunningElection($type = '')
 {
     return Election::where('running', 1)->first();
+}
+
+function getRunningCandidates($election_id = '', $type = '')
+{
+    return Candidate::when($election_id, function ($q, $election_id) {
+        return $q->where('election_id', $election_id);
+    })->when($type, function ($q, $type) {
+        return $q->where('candidate_type_id', $type);
+    })->orderBy('candidate_number')->get();
 }
 
 function replaceEachChar($string, $replace)

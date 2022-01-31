@@ -13,9 +13,11 @@ class Controller extends BaseController
 
     public function index()
     {
-        $candidates = getRunningElection()->candidates;
+        $election_id = getRunningElection()->id;
+        $data['bem'] = getRunningCandidates($election_id,1);
+        $data['bpm'] = getRunningCandidates($election_id,2);
 
-        return view('index', compact('candidates'));
+        return view('index', $data);
     }
 
     public function hasVoted()

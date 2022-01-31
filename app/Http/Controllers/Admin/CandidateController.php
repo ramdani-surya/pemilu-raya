@@ -111,6 +111,7 @@ class CandidateController extends Controller
 
             'image.required' => 'Foto harus di isi.',
             'image.image' => 'Foto harus berupa gambar.',
+            'image.mimes' => 'Format foto harus jpeg,png,jpg,gif dan svg.',
             'image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
             'program.required' => 'Kolom Program harus di isi.',
@@ -123,8 +124,8 @@ class CandidateController extends Controller
             'candidate_type_id'  => $request->candidate_type_id,
             'candidate_number' => $request->candidate_number,
             'chairman_name' => $request->chairman_name,
+            'study_program_id' => $request->study_program_id,
             'faculty_id' => $request->faculty_id,
-            
             'image' => $request->file('image')->store("/public/input/candidates"),
             'program' => $request->program,
         ];

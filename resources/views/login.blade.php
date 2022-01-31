@@ -33,18 +33,18 @@
                     <form action="{{route('authenticate')}}" method="POST">
                         @csrf
                         <div class="mb-3 input-group">
-                            <input type="text" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
+                            <input type="text" name="nim" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
                             <i class="bi bi-person input-group-text form-style"></i>
                         </div>
                         <div class="mb-3 input-group">
-                            <input type="password" class="form-control form-control-lg form-style" placeholder="Masukan Token">
+                            <input type="password" name="token" class="form-control form-control-lg form-style" placeholder="Masukan Token">
                             <i class="bi bi-eye-slash input-group-text form-style"></i>
                         </div>
                         <div id="emailHelp" class="form-text ps-4 mb-3">
                             Tidak dapat token? 
                         </div>
                         <div class="d-grid gap-2 mb-3">
-                            <a href="main-page.html" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</a>
+                            <button type="submit" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</button>
                         </div>
                         <h5 class="text-center text-kecil">
                             Build with passion by <font class="tahu">TAHU</font><font class="ngoding">NGODING</font>
