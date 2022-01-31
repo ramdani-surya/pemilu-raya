@@ -32,7 +32,9 @@ class Controller extends BaseController
             return redirect(route('closed'));
         }
 
-        return view('coming_soon');
+        $data['date'] = getActiveElection()->running_date;
+
+        return view('coming_soon',$data);
     }
 
     public function closed()

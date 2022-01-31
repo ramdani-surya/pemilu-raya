@@ -99,10 +99,15 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
             Route::post('voter/check-dpt-nim', [VoterController::class, 'checkDptNim'])->name('checkDptNim');
             Route::post('voter/check-dpt-email', [VoterController::class, 'checkDptEmail'])->name('checkDptEmail');
             Route::prefix('voters')->group(function () {
-                Route::get('/clear', [VoterController::class, 'clear'])->name('voters.clear');
-                Route::post('/import', [VoterController::class, 'import'])->name('voters.import');
-                Route::get('/download-format', [VoterController::class, 'downloadFormat'])->name('voters.download_format');
-                Route::get('/{voter}/reset-token/{sendEmail}', [VoterController::class, 'resetToken'])->name('voters.reset_token');
+                Route::prefix('api')->group(function() {
+                    Route::get('list', [VoterController::class, 'indexApi'])->name('api-voters.list');
+                    Route::post('send-email', [VoterController::class, 'sendEmailApi'])->name('api-voters.send-email');
+                });
+                Route::get('email', [VoterController::class, 'email'])->name('voters.email');
+                Route::get('clear', [VoterController::class, 'clear'])->name('voters.clear');
+                Route::post('import', [VoterController::class, 'import'])->name('voters.import');
+                Route::get('download-format', [VoterController::class, 'downloadFormat'])->name('voters.download_format');
+                Route::get('{voter}/reset-token/{sendEmail}', [VoterController::class, 'resetToken'])->name('voters.reset_token');
             });
         });
     });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\VotersImport;
 use App\Mail\TokenMail;
+use App\Mail\TahungodingMail;
 use App\Models\Voter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Alert;
 use Datatables;
+use Illuminate\Support\Facades\Validator;
+
 class VoterController extends Controller
 {
     private $activeElection;
@@ -30,7 +33,7 @@ class VoterController extends Controller
      */
     public function index()
     {
-        $data['voters']   = $this->activeElection->voters;
+        $data['voters']   = $this->activeElection->voters->sortBy('created_at');
         // if ($request->ajax()) {
         //     $data = $this->activeElection->voters;
         //     return Datatables::of($data)->addIndexColumn()
@@ -42,11 +45,17 @@ class VoterController extends Controller
         //         ->make(true);
         // }
 
-        
-
         $data['election'] = $this->activeElection;
 
         return view('admin.voter.data', $data);
+    }
+
+    public function indexApi()
+    {
+
+        $voters = $this->activeElection->voters ?: 0;
+
+        return $voters;
     }
 
     /**
@@ -103,6 +112,7 @@ class VoterController extends Controller
         $request->validate([
             'nim'      => 'required|string|unique:voters,nim',
             'name'     => 'required|string',
+            'email'    => 'required|email:filter'
         ], config('validation_messages'));
 
         $data = [
@@ -110,7 +120,7 @@ class VoterController extends Controller
             'nim'         => $request->nim,
             'name'        => $request->name,
             'token'       => Str::random(6),
-            'email'       => emailStmik($request->nim),
+            'email'       => $request->email,
         ];
 
         Auth::user()->storedVoters()->create($data)
@@ -226,7 +236,7 @@ class VoterController extends Controller
      */
     public function downloadFormat()
     {
-        return Storage::download('public/DPT_Pemilu_Raya.xlsx');
+        return Storage::download('DPT_FORMAT.xlsx');
     }
 
     /**
@@ -249,5 +259,44 @@ class VoterController extends Controller
             : Alert::error('Error', "Daftar Pemilih Tetap gagal dibersihkan!");
 
         return redirect(route('voters.index'));
+    }
+
+    public function email()
+    {
+        return view('admin.voter.email');
+    }
+
+    public function sendEmailApi(Request $request)
+    {
+
+        $validation = Validator::make($request->all(), [
+            'id' => 'required',
+            'type' => 'required'
+        ]);
+
+        if ($validation->fails()) {
+            return [
+                'status' => false,
+                'data' => $validation->errors()
+            ];die;
+        }
+
+        $voter = Voter::find($request->id);
+
+        try {
+            Mail::to($voter)->send(new TahungodingMail($voter));
+            $voter->update(['email_sent' => 1]);
+
+            return [
+                'status' => true,
+                'data' => $voter
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => 'false',
+                'data' => $e
+            ];
+        }
+
     }
 }

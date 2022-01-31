@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 
 @section('title')
     Data Daftar Pemilih Tetap
@@ -102,10 +102,8 @@ Daftar Pemilih Tetap
                                 <th>#</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
-                                <th>Token</th>
                                 <th>Memilih</th>
                                 <th>Email</th>
-                                <th>Terakhir Diedit</th>
                                 @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                                 <th>Aksi</th>
                                 @endif
@@ -121,42 +119,36 @@ Daftar Pemilih Tetap
                                     <td>{{ $voter->nim }}</td>
                                     <td>{{ $voter->name }}</td>
                                     <td>
-                                        {{ replaceEachChar($voter->token, '*') }}
-                                        @if($voter->email_sent)
-                                            <i class="fe-check-square text-success" data-toggle="tooltip" data-placement="top"
-                                                data-original-title="Terkirim" style="font-weight: bold;"></i>
-                                        @endif
-                                    </td>
-                                    <td>
                                         @if($voter->voted)
                                             <button type="button"
                                                 class="btn btn-icon waves-effect waves-light btn-success btn-xs">
                                                 <i class="fa fa-check"></i>
                                             </button>
+                                        @else 
+                                            <span class="badge badge-outline-warning"> Belum milihih</span>
                                         @endif
                                     </td>
-                                    <td>{{ $voter->email }}</td>
-                                    <td>{{ $voter->storedByUser->name }}</td>
+                                    <td>{{ $voter->email }} {!!($voter->email_sent == 1) ? "<i class='fa fa-check text-success' title='Email Sudah Dikirim'></i>" : null!!} </td>
                                     @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
                                     <td>
                                         <div class="button-list" style="display: flex">
                                             @if(!$voter->voted)
                                                 <button type="button"
-                                                    class="btn btn-xs btn-warning text-white"
-                                                    data-toggle="modal" data-target="#editVoter"
-                                                    onclick="setEditData({{ $voter }})"><i class="fa fa-edit mr-1"></i> Edit</button>
+                                                    class="btn btn-primary shadow btn-xs sharp mr-1"
+                                                    data-toggle="modal" data-target="#editVoter" title="Edit Data"
+                                                    onclick="setEditData({{ $voter }})"><i class="fa fa-pencil"></i></button>
                                                 <button type="button"
                                                     data-url="{{ route('voters.reset_token', [$voter, '']) }}"
-                                                    class="btn btn-xs btn-dark"
-                                                    onclick="resetTokenAlert(this)"><i class="fa fa-undo mr-1"></i> Reset Token</button>
+                                                    class="btn btn-info shadow btn-xs sharp mr-1" title="Reset Token"
+                                                    onclick="resetTokenAlert(this)"><i class="fa fa-undo mr-1"></i></button>
                                             @endif
         
                                             <form action="{{ route('voters.destroy', $voter) }}"
                                                 method="post" style="display: inline" class="form-delete">
                                                 @csrf
                                                 @method('delete')
-                                                <button type="button" class="btn btn-xs btn-danger"
-                                                onclick="deleteAlert(this)"><i class="fa fa-trash mr-1"></i> Hapus</button>
+                                                <button type="button" title="Hapus Data" class="btn btn-danger shadow btn-xs sharp"
+                                                onclick="deleteAlert(this)"><i class="fa fa-trash"></i></button>
                                             </form>
                                         </div>
                                     </td>
@@ -201,10 +193,19 @@ Daftar Pemilih Tetap
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <label for="email">Email</label>
+                                <input class="form-control" type="text" id="email" name="email" value="{{ old('email') }}" required>
+                                @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary" id="tambahButton">Simpan Data</button>
+                    <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-sm btn-primary" id="tambahButton">Simpan Data</button>
                 </div>
                 </form>
             </div>
@@ -253,8 +254,8 @@ Daftar Pemilih Tetap
                             </div>
                         </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary" id="editButton">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-sm btn-primary" id="editButton">Simpan Perubahan</button>
                 </div>
                 </form>
             </div>
@@ -280,6 +281,7 @@ Daftar Pemilih Tetap
     {{-- Sweetalert --}}
     <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}"></script>
     <script>
+        var election = "{{$election}}";
         const updateLink = $('#voterEditForm').attr('action');
         const idForm = $('#editElectionForm').attr('id');
         const checkDptNimId = $('#checkDptNim').attr('id');
@@ -422,51 +424,51 @@ Daftar Pemilih Tetap
             }
         </script>
 
-<script>
-    $(function () {
-        $('label .buttonText').text('Impor (.xlsx)');
+    <script>
+        $(function () {
+            $('label .buttonText').text('Impor (.xlsx)');
 
-        $('.form-delete').on('submit', function () {
-            return confirm(`Yakin hapus pemilih tetap tersebut?`)
+            $('.form-delete').on('submit', function () {
+                return confirm(`Yakin hapus pemilih tetap tersebut?`)
+            });
+
+            $('#import').change(function () {
+                Swal.fire({
+                    title: "Import Data DPT?",
+                    text: `Apakah anda yakin untuk mengimport data dpt?`,
+                    type: "warning",
+                    showCancelButton: !0,
+                    confirmButtonColor: "rgb(11, 42, 151)",
+                    cancelButtonColor: "rgb(209, 207, 207)",
+                    confirmButtonText: "Ya, import!",
+                    cancelButtonText: "Batal"
+                }).then(function (t) {
+                    if (t.value) {
+                        $('#form-import').submit();
+                    }
+                })
+            
+            });
         });
 
-        $('#import').change(function () {
+        function resetTokenAlert(e) {
             Swal.fire({
-                title: "Import Data DPT?",
-                text: `Apakah anda yakin untuk mengimport data dpt?`,
-                type: "warning",
+                title: "Reset dan kirim token?",
+                text: `Kirim email token setelah token direset.`,
+                type: "question",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
-                cancelButtonColor: "rgb(209, 207, 207)",
-                confirmButtonText: "Ya, import!",
-                cancelButtonText: "Batal"
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak, reset saja."
             }).then(function (t) {
-                if (t.value) {
-                    $('#form-import').submit();
-                }
+                let url = e.dataset.url,
+                    sendEmail = (t.value) ? true : false;
+
+                window.location.href = `${url}/${sendEmail}`
             })
-           
-        });
-    });
-
-    function resetTokenAlert(e) {
-        Swal.fire({
-            title: "Reset dan kirim token?",
-            text: `Kirim email token setelah token direset.`,
-            type: "question",
-            showCancelButton: !0,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya",
-            cancelButtonText: "Tidak, reset saja."
-        }).then(function (t) {
-            let url = e.dataset.url,
-                sendEmail = (t.value) ? true : false;
-
-            window.location.href = `${url}/${sendEmail}`
-        })
-    }
-</script>
+        }
+    </script>
 
     <script>
         $("#clearAll").click(function () {

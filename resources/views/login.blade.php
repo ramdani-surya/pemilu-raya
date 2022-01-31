@@ -14,41 +14,44 @@
 @endsection
 
 @section('content')
-<section>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 mt-md-5 mt-4 order-md-1 order-2 text-md-left text-center">
-                <h1 class="font-weight-bold title titleSection">
-                    {{ getRunningElection()->name }}
-                </h1>
-                <form class="wrapperForm" action="{{ route('authenticate') }}" method="post">
-                    @csrf
-                    <div class="form-group d-md-block d-flex justify-content-center text-center">
-                        <input type="text" class="form-control login" placeholder="NIM" name="nim"
-                            value="{{ Request::all()['nim'] ?? old('nim') }}" required>
-                        @error('nim')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+<main>
+    <section class="section-login">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="{{asset('front/assets/image/Group112.png')}}" class="img-fluid mb-4" alt="">
+                    <h1 class="text-besar mb-5 overflow">
+                        Pemilihan Umum Raya Mahasiswa<br>
+                        Universitas Sebelas April 2022/2023
+                    </h1>
+                    <div class="mb-3 d-sm-block d-md-none">
+                        <img src="assets/image/Illustrasi.png" class="img-fluid" alt="">
                     </div>
-                    <div class="form-group d-md-block d-flex justify-content-center text-center mtMd1c5">
-                        <input type="text" class="form-control login" placeholder="TOKEN" name="token"
-                            value="{{ Request::all()['token'] ?? old('token') }}" required>
-                        @error('token')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn login mtMd0c4">Submit</button>
-                </form>
-                <p class="textCopy mt-md-5 mt-3">
-                    Build with passion by
-                    <img src="{{ asset('images/admin_component/Logo_Tahu_Ngoding.png') }}"
-                        class="logoTahuNgoding" />
-                </p>
-            </div>
-            <div class="col-md-6 d-md-block d-flex justify-content-center order-md-2 order-1">
-                <img src="{{ asset('images/admin_component/Ilustrator.png') }}" class="ilustratorImg" />
+                    <form action="">
+                        <div class="mb-3 input-group">
+                            <input type="text" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
+                            <i class="bi bi-person input-group-text form-style"></i>
+                        </div>
+                        <div class="mb-3 input-group">
+                            <input type="password" class="form-control form-control-lg form-style" placeholder="Masukan Token">
+                            <i class="bi bi-eye-slash input-group-text form-style"></i>
+                        </div>
+                        <div id="emailHelp" class="form-text ps-4 mb-3">
+                            Tidak dapat token? 
+                        </div>
+                        <div class="d-grid gap-2 mb-3">
+                            <a href="main-page.html" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</a>
+                        </div>
+                        <h5 class="text-center text-kecil">
+                            Build with passion by <font class="tahu">TAHU</font><font class="ngoding">NGODING</font>
+                        </h5>
+                    </form>
+                </div>
+                <div class="col-md-7 text-end d-none d-md-block">
+                    <img src="{{asset('front/assets/image/Illustrasi.png')}}" class="img-fluid" alt="">
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</main>
 @endsection

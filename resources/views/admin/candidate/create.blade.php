@@ -1,4 +1,4 @@
-@extends('layouts.master', ['slug' => $slug])
+@extends('admin.layouts.master', ['slug' => $slug])
 
 @section('title_menu')
     Kandidat
