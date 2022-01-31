@@ -60,6 +60,7 @@ class StudyProgramController extends Controller
     {
         $data = [
             'faculty_id' => $request->faculty_id,
+            'election_id' => $request->election_id_2,
             'name' => $request->study_program_name
         ];
 

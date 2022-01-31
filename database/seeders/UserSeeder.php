@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'username' => 'tahungoding',
             'email' => 'tahungoding@gmail.com',
             'password' => Hash::make('password'),
-            'role' => 'admin'
+            'role' => 'super_admin'
         ]);
     }
 }

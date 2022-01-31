@@ -16,6 +16,7 @@ class CreateStudyProgramsTable extends Migration
         Schema::create('study_programs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id')->constrained();
+            $table->foreignId('election_id')->constrained();
             $table->string('name');
             $table->timestamps();
         });

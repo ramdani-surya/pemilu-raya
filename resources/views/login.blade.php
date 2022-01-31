@@ -5,6 +5,9 @@
 @endsection
 
 @section('css')
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
 <style>
     .text-danger {
         float: left;
@@ -25,9 +28,10 @@
                         Universitas Sebelas April 2022/2023
                     </h1>
                     <div class="mb-3 d-sm-block d-md-none">
-                        <img src="assets/image/Illustrasi.png" class="img-fluid" alt="">
+                        <img src="{{asset('front/assets/image/Illustrasi.png')}}" class="img-fluid" alt="">
                     </div>
-                    <form action="">
+                    <form action="{{route('authenticate')}}" method="POST">
+                        @csrf
                         <div class="mb-3 input-group">
                             <input type="text" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
                             <i class="bi bi-person input-group-text form-style"></i>

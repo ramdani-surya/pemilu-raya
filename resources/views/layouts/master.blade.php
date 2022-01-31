@@ -12,6 +12,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+    @yield('css') 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('front/assets/css/main.css')}} ">
 
@@ -84,7 +85,7 @@
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="assets/image/close.png" alt=""></a>
+                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="{{asset('front/assets/image/close.png')}}" alt=""></a>
                     <div class="text-center">
                         <h5 class="text-top mt-5">
                             Syarat dan Ketentuan
@@ -200,7 +201,7 @@
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="assets/image/close.png" alt=""></a>
+                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="{{asset('front/assets/image/close.png')}}" alt=""></a>
                     <div class="text-center">
                         <h5 class="text-top mt-5">
                             Informasi
@@ -254,7 +255,7 @@
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="assets/image/close.png" alt=""></a>
+                    <a href="#" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="{{asset('front/assets/image/close.png')}}" alt=""></a>
                     <div class="text-center">
                         <h5 class="text-top mt-5">
                             Petunjuk

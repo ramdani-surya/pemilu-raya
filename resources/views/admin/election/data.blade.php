@@ -35,14 +35,17 @@
             color: #F94687;
             border: 1px solid #F94687;
         }
+
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
+            background-color: #7A1F31 !important;
+        }
     </style>
 @endsection
 
 @section('content')
     <div class="page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Pemilu</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Data Pemilu</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Pemilu</a></li>
         </ol>
     </div>
     <!-- row -->
@@ -53,6 +56,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Data Pemilu</h4>
+                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                     <div class="button-list">
                         <button type="button" data-toggle="modal" data-target="#addElection" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
@@ -60,6 +64,7 @@
                         <button type="button" class="btn btn-danger btn-xs"
                             id="clearAll"><i class="fa fa-trash-o mr-1"></i> Bersihkan</button>
                     </div>
+                    @endif
                 </div>
                 <div class="card-body">
                     {{-- <div class="table-responsive"> --}}
@@ -77,7 +82,7 @@
                                 <th>Berjalan</th>
                                 <th>Tanggal</th>
                                 <th>Diarsipkan</th>
-                                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                     <th>Aksi</th>
                                 @endif
                             </tr>
@@ -113,10 +118,19 @@
                                     </button>
                                     @endif
                                 </td>
-                                @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <td>
                                     <div class="button-list mt-1">
-                                        @if(!$election->running && !$election->archived)
+                                        @if($election->status == 1)
+                                        <button type="button" onclick="deactivation(this)" data-url="{{ route('elections.deactivation', $election) }}"
+                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Nonaktif</button>
+                                        @elseif($election->status == 0)
+                                            <button type="button" onclick="activation(this)" data-url="{{ route('elections.activation', $election) }}"
+                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Aktivasi</button>
+                                        @endif
+
+                                        @if(!$election->running && !$election->archived && $election->status == 1)
+                                           
                                         <button type="button" onclick="runElection(this)" data-url="{{ route('elections.running', $election) }}"
                                             class="btn btn-xs btn-primary"><i class="fa fa-play mr-1"></i> Jalankan</button>
                                         <button type="button"  onclick="sendToken(this)"
@@ -133,15 +147,18 @@
                                         <button type="button"
                                             class="btn btn-xs btn-warning text-white"
                                             data-toggle="modal" data-target="#editElection"
-                                            onclick="setEditData({{ $election }})"><i class="fa fa-edit mr-1"></i> Edit</button>
+                                            onclick="setEditData({{ $election }})"><i class="fa fa-edit mr-1"></i> Edit</button>                                                                               
+                                        @else
+                                            
                                         @endif
-        
+
+                                      
                                         @if($election->running && !$election->archived)
                                         <a href="{{ route('elections.running', [$election, 0]) }}"
                                             class="btn btn-xs btn-secondary" onclick="stopElection(this)"><i class="fa fa-stop mr-1"></i> Hentikan</a>
                                         @endif
         
-                                        @if(!$election->running || $election->archived)
+                                        @if(!$election->running || $election->archived && $election->status == 1)
                                         <form style="display: inline" action="{{ route('elections.destroy', $election) }}"
                                             method="post">
                                             @csrf
@@ -416,7 +433,7 @@
                 ini!`,
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, hapus!",
                 cancelButtonText: "Batal"
@@ -427,15 +444,32 @@
             })
         });
 
-        function runElection(e) {
+        function activation(e) {
             Swal.fire({
-                title: "Jalankan Pemilu?",
-                text: "Pemilu akan dimulai dan DPT dapat memilih kandidat yang tersedia!",
+                title: "Aktifkan Pemilu?",
+                text: "Apakah and yakin untuk mengaktifkan pemilu?",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
-                confirmButtonText: "Ya, jalankan!",
+                confirmButtonText: "Ya, aktifkan!",
+                cancelButtonText: "Batal"
+            }).then(function (t) {
+                if (t.value) {
+                    window.location.href = `${e.dataset.url}`
+                }
+            })
+        }
+
+        function deactivation(e) {
+            Swal.fire({
+                title: "Nonaktifkan Pemilu?",
+                text: "Apakah and yakin untuk menonaktifkan pemilu?",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#7A1F31",
+                cancelButtonColor: "rgb(209, 207, 207)",
+                confirmButtonText: "Ya, nonaktifkan!",
                 cancelButtonText: "Batal"
             }).then(function (t) {
                 if (t.value) {
@@ -450,7 +484,7 @@
                 text: "Pemilu akan dihentikan dan DPT tidak dapat memilih kandidat!",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, hentikan!",
                 cancelButtonText: "Batal"
@@ -467,7 +501,7 @@
                 text: "Token akan dikirim ke semua email DPT yang terdaftar!",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, kirim!",
                 cancelButtonText: "Batal"
@@ -484,7 +518,7 @@
                 text: "Hasil perolehan suara akan dihapus!",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, reset!",
                 cancelButtonText: "Batal"
@@ -502,7 +536,7 @@
                 aksi ini!`,
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, hapus!",
                 cancelButtonText: "Batal"
@@ -521,7 +555,7 @@
                     Kandidat dengan voting terbesar akan menjadi kandidat terpilih!`,
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "rgb(11, 42, 151)",
+                confirmButtonColor: "#7A1F31",
                 cancelButtonColor: "rgb(209, 207, 207)",
                 confirmButtonText: "Ya, arsipkan!",
                 cancelButtonText: "Batal"

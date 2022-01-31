@@ -18,7 +18,9 @@ class CandidateTypeController extends Controller
      */
     public function index()
     {
-        //
+        $data['candidate_type'] = getActiveElection()->candidateTypeData;
+
+        return view('admin.candidate_type.data', $data);
     }
 
     /**

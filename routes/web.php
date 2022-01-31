@@ -58,6 +58,8 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/show/{type}', [AdminController::class, 'show'])->name('admin.dashboard.show');
+        Route::get('/setting', [LoginController::class, 'setting'])->name('admin.setting');
+        Route::put('/setting/update/{user}', [LoginController::class, 'update_account'])->name('admin.update-account');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
         Route::resource('users', UserController::class)->except('create');
@@ -69,6 +71,8 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
         Route::resource('elections', ElectionController::class)->except('create', 'edit');
         Route::post('election/check-election-name', [ElectionController::class, 'checkElectionName'])->name('checkElectionName');
         Route::post('election/check-election-period', [ElectionController::class, 'checkElectionPeriod'])->name('checkElectionPeriod');
+        Route::get('election/activate/{election}', [ElectionController::class, 'activation'])->name('elections.activation');
+        Route::get('election/deactivate/{election}', [ElectionController::class, 'deactivation'])->name('elections.deactivation');
         Route::prefix('election')->group(function () {
             Route::get('/clear', [ElectionController::class, 'clear'])->name('elections.clear');
             Route::get('/{election}/running/{runningStatus?}', [ElectionController::class, 'running'])->name('elections.running');
@@ -77,24 +81,28 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
             Route::get('/{election}/reset-voting', [ElectionController::class, 'resetVoting'])->name('elections.reset_voting');
         });
 
-        Route::resource('faculties', FacultyController::class);
-        Route::post('faculty/check-faculty-name', [FacultyController::class, 'checkFacultyName'])->name('checkFacultyName');
-        Route::get('faculty/clear', [FacultyController::class, 'clear'])->name('faculties.clear');
-        Route::resource('study-programs', StudyProgramController::class);
-        Route::post('study-program/check-study-program-name', [StudyProgramController::class, 'checkStudyProgramName'])->name('checkStudyProgramName');
-        Route::get('study-program/clear', [StudyProgramController::class, 'clear'])->name('study-programs.clear');
-
         Route::middleware('checkActiveElection')->group(function () {
-            Route::resource('candidates', CandidateController::class);
-            Route::get('candidates/create-in/{slug}', [CandidateController::class, 'createIn'])->name('candidates.createIn');
-            Route::get('candidates/edit/{id}/{candidateType}', [CandidateController::class, 'edit'])->name('candidates.editIn');
-            Route::get('get-study-program/{id}', [CandidateController::class, 'getStudyProgram']);
-            Route::get('get-candidate-number/{id}', [CandidateController::class, 'getCandidateNumber']);
-            Route::get('/candidate/clear', [CandidateController::class, 'clear'])->name('candidates.clear');
-            Route::resource('candidate_types', CandidateTypeController::class);
-            Route::post('candidate_type/check-candidate-type', [CandidateTypeController::class, 'checkCandidateType'])->name('checkCandidateType');
-            Route::get('/candidate_type/clear', [CandidateTypeController::class, 'clear'])->name('candidate_types.clear');
+            Route::resource('faculties', FacultyController::class);
+            Route::post('faculty/check-faculty-name', [FacultyController::class, 'checkFacultyName'])->name('checkFacultyName');
+            Route::get('faculty/clear', [FacultyController::class, 'clear'])->name('faculties.clear');
+            Route::resource('study-programs', StudyProgramController::class);
+            Route::post('study-program/check-study-program-name', [StudyProgramController::class, 'checkStudyProgramName'])->name('checkStudyProgramName');
+            Route::get('study-program/clear', [StudyProgramController::class, 'clear'])->name('study-programs.clear');
 
+            Route::resource('candidate-types', CandidateTypeController::class);
+            Route::post('candidate-type/check-candidate-type', [CandidateTypeController::class, 'checkCandidateType'])->name('checkCandidateType');
+            Route::get('/candidate-type/clear', [CandidateTypeController::class, 'clear'])->name('candidate-types.clear');
+
+            Route::group(['middleware' => ['checkFaculty', 'checkStudyProgram', 'checkCandidateType']], function() {
+                Route::resource('candidates', CandidateController::class);
+                Route::get('candidates/create-in/{slug}', [CandidateController::class, 'createIn'])->name('candidates.createIn');
+                Route::get('candidates/edit/{id}/{candidateType}', [CandidateController::class, 'edit'])->name('candidates.editIn');
+                Route::get('candidate-filter', [CandidateController::class, 'filter'])->name('candidates.filter');
+                Route::get('get-study-program/{id}', [CandidateController::class, 'getStudyProgram']);
+                Route::get('get-candidate-number/{id}', [CandidateController::class, 'getCandidateNumber']);
+                Route::get('/candidate/clear', [CandidateController::class, 'clear'])->name('candidates.clear');
+            });
+        
             Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
             Route::post('voter/check-dpt-nim', [VoterController::class, 'checkDptNim'])->name('checkDptNim');
             Route::post('voter/check-dpt-email', [VoterController::class, 'checkDptEmail'])->name('checkDptEmail');

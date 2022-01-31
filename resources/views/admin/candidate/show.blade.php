@@ -28,9 +28,11 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Data Kandidat</h4>
+                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                 <div class="button-list">
                     <a href="{{ route('candidates.createIn', $candidate_type2->slug) }}" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle mr-1"></i> Tambahkan Kandidat</a>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -40,7 +42,7 @@
 <div class="row">
     @foreach($candidate as $candidates)
     
-    <div class="col-4 col-sm-4">
+    <div class="col-md-4 col-sm-4">
         <div class="card">
             <div class="card-header">
                 <h3>{{ str_pad($candidates->candidate_number, 2, '0', STR_PAD_LEFT) }} - {{ $candidates->chairman_name }}</h3>

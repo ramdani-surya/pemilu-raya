@@ -42,18 +42,17 @@ Daftar Manajemen Akun
 @section('content')
     <div class="page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Manajemen Akun</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Data User</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Manajemen Akun</a></li>
         </ol>
     </div>
     <!-- row -->
-
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Data User</h4>
+                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                     <div class="button-list">
                         <button type="button" data-toggle="modal" data-target="#addUserModal" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
@@ -61,6 +60,7 @@ Daftar Manajemen Akun
                         <button type="button" class="btn btn-danger btn-xs"
                             id="clearAll"><i class="fa fa-trash-o mr-1"></i> Bersihkan</button>
                     </div>
+                    @endif
                 </div>
                 <div class="card-body">
                     {{-- <div class="table-responsive"> --}}
@@ -206,17 +206,29 @@ Daftar Manajemen Akun
                                 </script>
                             </div>
                         </div>
-    
+                        
+                        @if(Auth::user()->role == 'super_admin')
+                        <div class="form-group">
+                            <div class="col-12">
+                                <label for="period">Role</label>
+                                <select class="form-control mb-1" name="role" id="role">
+                                    <option value="super_admin">Super Admin</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="saksi">Saksi</option>
+                                </select>
+                            </div>
+                        </div>
+                        @elseif(Auth::user()->role == 'admin')
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Role</label>
                                 <select class="form-control mb-1" name="role" id="role">
                                     <option value="admin">Admin</option>
-                                    <option value="panitia">Panitia</option>
                                     <option value="saksi">Saksi</option>
                                 </select>
                             </div>
                         </div>
+                        @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
@@ -281,14 +293,14 @@ Daftar Manajemen Akun
                         </div>
                     </div>
 
-                    @if(Auth::user()->role == 'admin')
+                    @if(Auth::user()->role == 'super_admin')
                     <div class="form-group">
                         <div class="col-12">
                             <label for="role">Role</label>
                             <select class="form-control mb-1 @error('edit_role') is-invalid @enderror" name="edit_role"
                                 id="edit_role" required>
+                                <option value="super_admin">Super Admin</option>
                                 <option value="admin">Admin</option>
-                                <option value="panitia">Panitia</option>
                                 <option value="saksi">Saksi</option>
                             </select>
 
@@ -297,7 +309,7 @@ Daftar Manajemen Akun
                             @enderror
                         </div>
                     </div>
-                    @elseif(Auth::user()->role == 'panitia')
+                    @elseif(Auth::user()->role == 'admin')
                     <div class="form-group">
                         <div class="col-12">
                             <label for="role">Role</label>
@@ -308,7 +320,8 @@ Daftar Manajemen Akun
                                 <option value="{{ old('edit_role') }}">{{ old('edit_role') }}</option>
                                 @else
                                 <option value="">Pilih Role</option>
-                                <option value="panitia">Panitia</option>
+                                <option value="admin">Admin</option>
+                                <option value="saksi">Saksi</option>
                                 @endif
                             </select>
 

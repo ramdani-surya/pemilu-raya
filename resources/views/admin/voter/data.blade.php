@@ -41,8 +41,7 @@ Daftar Pemilih Tetap
 @section('content')
     <div class="page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Daftar Pemilih Tetap</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Data Daftar Pemilih Tetap</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Daftar Pemilih Tetap</a></li>
         </ol>
     </div>
     <!-- row -->
@@ -104,7 +103,7 @@ Daftar Pemilih Tetap
                                 <th>Nama</th>
                                 <th>Memilih</th>
                                 <th>Email</th>
-                                @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <th>Aksi</th>
                                 @endif
                             </tr>
@@ -128,8 +127,8 @@ Daftar Pemilih Tetap
                                             <span class="badge badge-outline-warning"> Belum milihih</span>
                                         @endif
                                     </td>
-                                    <td>{{ $voter->email }} {!!($voter->email_sent == 1) ? "<i class='fa fa-check text-success' title='Email Sudah Dikirim'></i>" : null!!} </td>
-                                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'panitia')
+                                    <td>{{ $voter->email }}</td>
+                                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                     <td>
                                         <div class="button-list" style="display: flex">
                                             @if(!$voter->voted)
