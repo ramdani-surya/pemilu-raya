@@ -24,6 +24,7 @@ class Election extends Model
         'running_date',
         'running',
         'archived',
+        'status',
     ];
 
     public function candidates()
@@ -31,9 +32,24 @@ class Election extends Model
         return $this->hasMany(Candidate::class)->orderBy('candidate_number');
     }
 
-    public function candidate_types()
+    public function faculties()
     {
-        return $this->belongsTo(CandidateType::class);
+        return $this->hasMany(Faculty::class);
+    }
+
+    public function studyPrograms()
+    {
+        return $this->hasMany(StudyProgram::class);
+    }
+
+    public function candidateTypeData()
+    {
+        return $this->hasMany(CandidateType::class);
+    }
+
+    public function candidateTypes()
+    {
+        return $this->hasMany(CandidateType::class)->has('candidates');
     }
 
     public function bpm() 

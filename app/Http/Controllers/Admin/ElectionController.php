@@ -133,6 +133,36 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function activation(Election $election)
+    {
+        $allElection = Election::all();
+
+        foreach($allElection as $allElectionLoop) {
+            $allElectionLoop->update(['status' => '3']);
+        }
+
+        $election->update(['status' => 1])
+        ? Alert::success('Sukses', 'Pemilu telah berhasil di aktifkan.')
+        : Alert::error('Error', 'Pemilu gagal di aktfikan.');
+
+        return redirect(route('elections.index'));
+    }
+
+    public function deactivation(Election $election)
+    {
+        $allElection = Election::all();
+
+        foreach($allElection as $allElectionLoop) {
+            $allElectionLoop->update(['status' => '0']);
+        }
+
+        $election->update(['status' => 0])
+        ? Alert::success('Sukses', 'Pemilu telah berhasil di nonaktfikan.')
+        : Alert::error('Error', 'Pemilu gagal di nonaktfikan.');
+
+        return redirect(route('elections.index'));
+    }
+
     public function running(Election $election, $runningStatus=1)
     {
         $action = ($runningStatus === 1)
@@ -163,6 +193,11 @@ class ElectionController extends Controller
             : Alert::error('Error', 'Hasil voting pemilu gagal direset.');
 
         return redirect(route('elections.index'));
+    }
+
+    public function status()
+    {
+        
     }
 
     /**

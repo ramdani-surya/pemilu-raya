@@ -26,10 +26,8 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $data['candidates'] = getActiveElection()->candidates;
-        $data['candidate_type'] = CandidateType::has('candidates')->get();
-
-
+        $data['candidate_type'] = getActiveElection()->candidateTypes;
+        $data['election'] = Election::all();
         return view('admin.candidate.data', $data);
     }
 
@@ -43,6 +41,11 @@ class CandidateController extends Controller
         $data['candidate_type'] = CandidateType::all();
         $data['faculty'] = Faculty::all();
         return view('admin.candidate.create', $data);
+    }
+
+    public function filter($request)
+    {
+        
     }
 
     public function createIn($slug)
@@ -121,7 +124,7 @@ class CandidateController extends Controller
             'candidate_number' => $request->candidate_number,
             'chairman_name' => $request->chairman_name,
             'faculty_id' => $request->faculty_id,
-            'study_program_id' => $request->study_program_id,
+            
             'image' => $request->file('image')->store("/public/input/candidates"),
             'program' => $request->program,
         ];
@@ -144,6 +147,11 @@ class CandidateController extends Controller
         $candidate_type = CandidateType::where('slug', $slug)->first();
         $data['candidate_type2'] = CandidateType::where('slug', $slug)->first();
         $data['candidate'] = Candidate::where('candidate_type_id', $candidate_type->id)->get();
+        // $data['candidate'] = getActiveEle;
+        $data['candidates'] = Candidate::with(['election' => function ($query) {
+            $query->select('id', 'status')->where('status',1);
+        }])->get();
+        
         return view('admin.candidate.show', $data);
     }
 

@@ -64,6 +64,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'loggedIn' => \App\Http\Middleware\LoggedIn::class,
         'checkActiveElection' => \App\Http\Middleware\CheckActiveElection::class,
+        'checkFaculty' => \App\Http\Middleware\CheckFaculty::class,
+        'checkStudyProgram' => \App\Http\Middleware\CheckStudyProgram::class,
+        'checkCandidateType' => \App\Http\Middleware\CheckCandidateType::class,
         'comingSoon' => \App\Http\Middleware\ComingSoon::class,
         'hasVoted' => \App\Http\Middleware\HasVoted::class,
     ];
