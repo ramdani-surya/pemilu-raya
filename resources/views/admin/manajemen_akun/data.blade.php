@@ -90,7 +90,19 @@ Daftar Manajemen Akun
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td><span class="badge badge-success font-15">{{ str_replace('_', ' ', $user->role) }}</span></td>
+                                <td>
+                                    @php
+                                        $color = 'secondary';
+                                        if($user->role == 'super_admin'){
+                                            $color = 'warning';
+                                        }elseif ($user->role == 'panitia'){
+                                            $color = 'primary';
+                                        }elseif ($user->role == 'admin') {
+                                            $color = 'success';
+                                        }
+                                    @endphp
+                                    <span class="badge badge-{{$color}} font-15">{{ ucwords(str_replace('_', ' ', $user->role)) }}</span>
+                                </td>
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <td>
                                     <div class="form-group">
