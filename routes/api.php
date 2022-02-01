@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController as AdminController;
+use App\Http\Controllers\Admin\VoterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('admin/dashboard', [AdminController::class, 'dashboardApi'])->name('dashboard_api');
+
+Route::get('voters', [VoterController::class, 'indexApi'])->name('api-voter.index');
+Route::post('voters/send-email', [VoterController::class, 'sendEmailApi'])->name('api-voter.send-email');

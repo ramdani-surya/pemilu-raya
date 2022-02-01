@@ -5,64 +5,86 @@ Cooming Soon
 @endsection
 
 @section('content')
-<section>
-    <div class="mtM10 mt5 container d-flex justify-content-center">
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <img src="{{ asset('images/admin_component/Logo_Panitia.png') }}" alt=""
-                        class="wM80 w60">
+<main>
+    <section class="section-countdown">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1 class="text-besar text-center">
+                    Portal Pemilu Raya <br>
+                    Akan Dibuka Dalam Waktu
+                </h1>
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="countdown-hari">
+                            <h1 class="text-center py-4 px-3 hari">04</h1>
+                        </div>
+                        <p class="text-center text-muted">
+                            Hari
+                        </p>
+                    </div>
+                    <div class="col">
+                        <div class="countdown-hari">
+                            <h1 class="text-center py-4 px-3 jam">12</h1>
+                        </div>
+                        <p class="text-center text-muted">
+                            Jam
+                        </p>
+                    </div>
+                    <div class="col">
+                        <div class="countdown-hari">
+                            <h1 class="text-center py-4 px-3 menit">38</h1>
+                        </div>
+                        <p class="text-center text-muted">
+                            Menit
+                        </p>
+                    </div>
+                    <div class="col">
+                        <div class="countdown-hari">
+                            <h1 class="text-center py-4 px-3 detik">55</h1>
+                        </div>
+                        <p class="text-center text-muted">
+                            Detik
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-8 pt-4">
-                    <h1 class="title titleSection spacingM0c3 fSM4 font-weight-bold text-md-left text-center"
-                        style="font-size:4rem;" id="title">
-                        Coming Soon
-                    </h1>
-                    <h1 class="title titleSection spacingM0c3 font-weight-bold text-md-left text-center" id="countdown">
-                    </h1>
-                    <input type="hidden" id="running_date" value="{{ getActiveElection()->running_date ?? null }}">
-                </div>
+                
+                <h5 class="mt-3 text-center text-kecil">
+                    Build with passion by <a href="http://instagram.com/tahungoding" style="all:unset;cursor:pointer"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
+                </h5>
             </div>
+            <div class="col-md-4"></div>
         </div>
-    </div>
-</section>
+    </section>
+</main>
 @endsection
 
 @section('js')
 
 <script>
-    let running_date = $('#running_date').val();
+        const countdown = () => {
+        const countDate = new Date("{{$date}}").getTime();
+        // console.log(countDate);
+        const now = new Date().getTime();
+        const gap = countDate - now;
 
-    if (running_date !== '') {
-        // Set the date we're counting down to
-        let countDownDate = new Date(running_date).getTime();
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
 
-        // Update the count down every 1 second
-        setInterval(function () {
-                // Get today's date and time
-                let now = new Date().getTime();
+        const textDay = Math.floor(gap / day);
+        const textHour = Math.floor((gap % day) / hour);
+        const textMinute = Math.floor((gap % hour) / minute);
+        const textSecond = Math.floor((gap % minute) / second);
 
-                // Find the distance between now and the count down date
-                let distance = countDownDate - now;
+        document.querySelector(".hari").innerText = textDay;
+        document.querySelector(".jam").innerText = textHour;
+        document.querySelector(".menit").innerText = textMinute;
+        document.querySelector(".detik").innerText = textSecond;
+    };
 
-                // Time calculations for days, hours, minutes and seconds
-                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="countdown"
-                $('#countdown').text(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(x);
-                    $('#countdown').text('');
-                    $('#title').text('Pemilu Telah Berakhir');
-                }
-            },
-            1000);
-    }
+    setInterval(countdown,1000);
 
 </script>
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 
 @section('title_menu')
     Pemilu
@@ -442,6 +442,23 @@
                 }
             })
         });
+
+        function runElection(e) {
+            Swal.fire({
+                title: "Jalankan Pemilu?",
+                text: "Apakah and yakin untuk mengjalankan pemilu?",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#7A1F31",
+                cancelButtonColor: "rgb(209, 207, 207)",
+                confirmButtonText: "Ya, Jalankan!",
+                cancelButtonText: "Batal"
+            }).then(function (t) {
+                if (t.value) {
+                    window.location.href = `${e.dataset.url}`
+                }
+            })
+        }
 
         function activation(e) {
             Swal.fire({
