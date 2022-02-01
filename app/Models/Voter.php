@@ -21,6 +21,7 @@ class Voter extends Authenticatable
         'bem_voted',
         'email',
         'faculty_id',
+        'study_program_id',
         'email_sent',
     ];
 
