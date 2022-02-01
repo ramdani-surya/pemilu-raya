@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'checkFaculty' => \App\Http\Middleware\CheckFaculty::class,
         'checkStudyProgram' => \App\Http\Middleware\CheckStudyProgram::class,
         'checkCandidateType' => \App\Http\Middleware\CheckCandidateType::class,
+        'checkCandidate' => \App\Http\Middleware\CheckCandidate::class,
         'comingSoon' => \App\Http\Middleware\ComingSoon::class,
         'hasVoted' => \App\Http\Middleware\HasVoted::class,
     ];

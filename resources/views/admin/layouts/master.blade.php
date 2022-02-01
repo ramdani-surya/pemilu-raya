@@ -664,10 +664,6 @@
 						</a>
 					</li>
                 </ul>
-				<div class="copyright">
-					<p><strong>Pemilu Raya 2022</strong> © 2022 All Rights Reserved</p>
-					<p>Made with <span class="heart"></span> by Tahungoding</p>
-				</div>
 			</div>
         </div>
         <!--**********************************
