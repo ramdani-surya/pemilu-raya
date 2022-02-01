@@ -11,6 +11,7 @@ use App\Models\Election;
 use App\Models\StudyProgram;
 use App\Models\Faculty;
 use Alert;
+use App\Models\Voter;
 use File;
 use Storage;
 use Str;
@@ -126,6 +127,8 @@ class CandidateController extends Controller
             'chairman_name' => $request->chairman_name,
             'study_program_id' => $request->study_program_id,
             'faculty_id' => $request->faculty_id,
+            'vision' => $request->vision,
+            'mission' => $request->mission,
             'image' => $request->file('image')->store("/public/input/candidates"),
             'program' => $request->program,
         ];
@@ -281,8 +284,11 @@ class CandidateController extends Controller
     {
         $data = [
             'election_id' => $candidate->election_id,
-            'voter_id'    => Auth::guard('voter')->id(),
+            'voter_id'    => Auth::guard('voter')->id()
         ];
+
+        $voter = Voter::find(Auth::guard('voter')->id());
+        $data['faculty_id'] = $voter->faculties->id;
 
         $update = strtolower($candidate->candidateTypes->name).'_voted';
 
