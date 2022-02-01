@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CandidateType;
+use Alert;
 
 class Election extends Model
 {
@@ -55,14 +56,17 @@ class Election extends Model
 
     public function bpm() 
     {
-        $candidateTypeBpm = CandidateType::where('name', 'BPM')->first();
-        return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidateTypeBpm->id);
+            $candidateTypeBpm = CandidateType::where('name', 'BPM')->first() ?: 0;
+            $candidate_id = $candidateTypeBpm ? $candidateTypeBpm->id :0 ;
+            return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidate_id);
+            
     }
-
+        
     public function bem()
     {
-        $candidateTypeBem = CandidateType::where('name', 'BEM')->first();
-        return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidateTypeBem->id);
+        $candidateTypeBem = CandidateType::where('name', 'BEM')->first() ?: 0;
+        $candidate_id = $candidateTypeBem ? $candidateTypeBem->id :0 ;
+        return $this->hasMany(Candidate::class)->orderBy('candidate_number')->where('candidate_type_id', $candidate_id);
     }
 
     public function voters()

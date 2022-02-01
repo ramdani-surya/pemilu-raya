@@ -16,7 +16,7 @@ class CreateVotersTable extends Migration
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->nullable();
-            $table->foreignId('election_id')->constrained();
+            $table->foreignId('election_id')->constrained()->onDelete('cascade');
             $table->string('nim');
             $table->string('name')->nullable();
             $table->string('token');

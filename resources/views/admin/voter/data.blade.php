@@ -124,7 +124,7 @@ Daftar Pemilih Tetap
                                                 <i class="fa fa-check"></i>
                                             </button>
                                         @else 
-                                            <span class="badge badge-outline-warning"> Belum milihih</span>
+                                            <span class="badge badge-outline-warning"> Belum Memilih</span>
                                         @endif
                                     </td>
                                     <td>{{ $voter->email }}</td>
