@@ -7,10 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Pemilu Raya - Login</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('front/assets/image/unsap1.png')}}">
     <link rel="manifest" href="{{ asset('images/site.webmanifest') }}">    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
@@ -28,7 +25,7 @@
                 <div class="card-body p-md-5 mx-md-4">
   
                   <div class="text-center">
-                    <img src="{{ asset('images/admin_component/tahu.png')}}" style="width: 100px;" alt="logo">
+                    <img src="{{asset('front/assets/image/unsap1.png')}}" style="width: 100px;" alt="logo">
                     <br><br>
                     <h5 class="login-heading mt-3">LOGIN ADMIN</h5>
                   </div>

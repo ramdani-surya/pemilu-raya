@@ -35,6 +35,6 @@ class TokenMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject($this->voter->election->name)
-            ->view('email.token_mailing');
+            ->view('email.token_mailing_token');
     }
 }

@@ -113,6 +113,7 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
                 Route::post('import', [VoterController::class, 'import'])->name('voters.import');
                 Route::get('download-format', [VoterController::class, 'downloadFormat'])->name('voters.download_format');
                 Route::get('{voter}/reset-token/{sendEmail}', [VoterController::class, 'resetToken'])->name('voters.reset_token');
+                Route::get('{voter}/send-token', [VoterController::class, 'sendToken'])->name('voters.send_token');
             });
         });
     });

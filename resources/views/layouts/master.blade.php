@@ -265,13 +265,31 @@
                             <div class="px-5 py-5 content-modal">
                                 <ol>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
+                                        Cek email anda yang telah didaftarkan pada panitia
                                     </li><br>
                                     <li>
-                                       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
+                                        Login menggunakan username dan token yang telah didapatkan
                                     </li><br>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
+                                        Pada bagian navigasi terdapat tiga menu yaitu informasi, petunjuk, syarat dan ketentuan
+                                    </li><br>
+                                    <li>
+                                        Silahkan klik menu klik menu-menu tersebut untuk mencari tahu informasi dan memudahkan anda untuk dalam menggunakan sistem
+                                    </li><br>
+                                    <li>
+                                        Setelah masuk halaman utama, klik tombol BEM atau <i>scroll</i>  ke bawah untuk masuk ke sesi pemilihan BEM 
+                                    </li><br>
+                                    <li>
+                                        Pada halaman yang sama, klik tombol BPM atau <i>scroll</i>  ke bawah untuk masuk ke sesi pemilihan BPM
+                                    </li><br>
+                                    <li>
+                                        Untuk memilih kandidat BEM yang anda inginkan, klik tombol Visi & Misi terlebih dahulu kemudian pahami isi didalamnya setelah itu <i>scroll</i> ke bawah dan klik button pilih jika anda sudah yakin
+                                    </li><br>
+                                    <li>
+                                        Lakukan hal yang sama dengan pemilihan BEM pada sesi pemilihan BPM
+                                    </li><br>
+                                    <li>
+                                        Jika sudah memilih kedua kandidat, silahkan <i>Logout</i> dari system dengan cara klik tombol <i>Logout?</i> dibagian <i>greeting section</i>
                                     </li>
                                 </ol>
                             </div>
@@ -284,13 +302,31 @@
                             <div class="px-3 py-3 content-modal">
                                 <ol>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
+                                        Cek email anda yang telah didaftarkan pada panitia
                                     </li><br>
                                     <li>
-                                       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
+                                        Login menggunakan username dan token yang telah didapatkan
                                     </li><br>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
+                                        Pada bagian navigasi terdapat tiga menu yaitu informasi, petunjuk, syarat dan ketentuan
+                                    </li><br>
+                                    <li>
+                                        Silahkan klik menu klik menu-menu tersebut untuk mencari tahu informasi dan memudahkan anda untuk dalam menggunakan sistem
+                                    </li><br>
+                                    <li>
+                                        Setelah masuk halaman utama, klik tombol BEM atau <i>scroll</i>  ke bawah untuk masuk ke sesi pemilihan BEM 
+                                    </li><br>
+                                    <li>
+                                        Pada halaman yang sama, klik tombol BPM atau <i>scroll</i>  ke bawah untuk masuk ke sesi pemilihan BPM
+                                    </li><br>
+                                    <li>
+                                        Untuk memilih kandidat BEM yang anda inginkan, klik tombol Visi & Misi terlebih dahulu kemudian pahami isi didalamnya setelah itu <i>scroll</i> ke bawah dan klik button pilih jika anda sudah yakin
+                                    </li><br>
+                                    <li>
+                                        Lakukan hal yang sama dengan pemilihan BEM pada sesi pemilihan BPM
+                                    </li><br>
+                                    <li>
+                                        Jika sudah memilih kedua kandidat, silahkan <i>Logout</i> dari system dengan cara klik tombol <i>Logout?</i> dibagian <i>greeting section</i>
                                     </li>
                                 </ol>
                             </div>

@@ -53,9 +53,10 @@ class VoterController extends Controller
     public function indexApi()
     {
 
-        $voters = $this->activeElection->voters ?: 0;
+        $id = $this->activeElection->id ?: 0;
+        $voters = Voter::where('election_id',$id)->where('email_sent',0)->get();
 
-        return $voters;
+        return response()->json($voters);
     }
 
     /**
@@ -169,6 +170,16 @@ class VoterController extends Controller
      * @param  Boolean $sendEmail
      * @return \Illuminate\Http\Response
      */
+    public function sendToken(Voter $voter)
+    {
+        // gunakan filter_var() untuk jika value parameter adalah string
+        Mail::to($voter)->send(new TokenMail($voter));
+
+        $voter->update(['email_sent' => 1]);
+
+        return redirect(route('voters.index'));
+    }
+
     public function resetToken(Voter $voter, $sendEmail)
     {
         $data = [
@@ -283,20 +294,25 @@ class VoterController extends Controller
 
         $voter = Voter::find($request->id);
 
-        try {
-            Mail::to($voter)->send(new TahungodingMail($voter));
-            $voter->update(['email_sent' => 1]);
-
-            return [
-                'status' => true,
-                'data' => $voter
-            ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 'false',
-                'data' => $e
-            ];
+        if ($voter->email_sent != 1) {
+            try {
+                Mail::to($voter)->send(new TahungodingMail($voter));
+                $voter->update(['email_sent' => 1]);
+    
+                return [
+                    'status' => true,
+                    'data' => $voter
+                ];
+            } catch (\Exception $e) {
+                return [
+                    'status' => false,
+                    'data' => $e
+                ];
+            }
+        }else{
+            return ['status' => false];
         }
+
 
     }
 }

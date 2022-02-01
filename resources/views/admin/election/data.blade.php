@@ -67,7 +67,6 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    {{-- <div class="table-responsive"> --}}
                     <table id="example4" class="table dt-responsive" style="width:100%">
                         <thead>
                             <tr>
@@ -130,13 +129,10 @@
                                         @endif
 
                                         @if(!$election->running && !$election->archived && $election->status == 1)
-                                           
                                         <button type="button" onclick="runElection(this)" data-url="{{ route('elections.running', $election) }}"
                                             class="btn btn-xs btn-primary"><i class="fa fa-play mr-1"></i> Jalankan</button>
-                                        <button type="button"  onclick="sendToken(this)"
-                                            class="btn btn-xs btn-info"
-                                            data-url="{{ route('elections.send_token', $election) }}"><i class="fa fa-share-square mr-1"></i> Kirim
-                                            Email Token</button>
+                                            <a target="_blank" href="{{url('admin/voters/send-email')}}" class="btn btn-xs btn-info"><i class="fa fa-share-square mr-1"></i> Kirim
+                                                Email Token</a>
                                         <button type="button" data-url="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-xs btn-secondary"
                                             onclick="archiveAlert(this)"><i class="fa fa-archive mr-1"></i>Arsipkan</button>

@@ -122,13 +122,13 @@
     }
 
     function sendEmail(params) {
-        alert(params);
         $('#kirimEmail').hide();
         $('#processEmail').show();
 
         fetch("{{route('api-voters.list')}}")
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 data.forEach((e,i) => {
                     
                     var number = i + 1;
@@ -141,6 +141,7 @@
 
                     postData("{{route('api-voters.send-email')}}", {
                         id: e.id,
+                        type: params,
                         _token: "{{csrf_token()}}"
                     })
                     .then(data_email => {

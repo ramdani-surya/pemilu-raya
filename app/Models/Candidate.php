@@ -34,7 +34,7 @@ class Candidate extends Model
 
     public function ftiVotings()
     {
-        $fti = Faculty::where('slug', 'fakultas-teknik-informatika')->first();
+        $fti = Faculty::where('slug', 'fakultas-teknologi-informasi')->first();
         return $this->hasMany(Voting::class)->where('faculty_id', $fti->id);
     }
 

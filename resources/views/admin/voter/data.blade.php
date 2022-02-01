@@ -85,8 +85,8 @@ Daftar Pemilih Tetap
                                     </div>
                                     
                                     <div class="col-auto" style="margin-top: 12px; padding-left:0px">
-                                        <a href="{{ route('voters.download_format') }}"
-                                            class="btn btn-xs btn-secondary">Download Format</a>
+                                        <a href="{{ url('DPT_FORMAT.xlsx') }}" download
+                                            class="btn btn-xs btn-secondary"><i class="fa fa-download"></i> Format</a>
                                     </div>
                                     
                                 </div>
@@ -118,16 +118,23 @@ Daftar Pemilih Tetap
                                     <td>{{ $voter->nim }}</td>
                                     <td>{{ $voter->name }}</td>
                                     <td>
-                                        @if($voter->voted)
+                                        @if($voter->bem_voted == 1)
                                             <button type="button"
-                                                class="btn btn-icon waves-effect waves-light btn-success btn-xs">
+                                                class="btn btn-icon waves-effect waves-light btn-primary btn-xs">
                                                 <i class="fa fa-check"></i>
                                             </button>
-                                        @else 
-                                            <span class="badge badge-outline-warning"> Belum milihih</span>
+                                        @endif
+                                        @if($voter->bpm_voted == 1)
+                                            <button type="button"
+                                                class="btn btn-icon waves-effect waves-light btn-info btn-xs">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        @endif
+                                        @if ($voter->bem_voted != 1 && $voter->bpm_voted != 1)
+                                            <span class="badge badge-outline-warning">Belum Memilih</span>
                                         @endif
                                     </td>
-                                    <td>{{ $voter->email }}</td>
+                                    <td>{{ $voter->email }} {!! ($voter->email_sent == 1) ? '<i class="fa fa-check"></i>' : null !!}</td>
                                     @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                     <td>
                                         <div class="button-list" style="display: flex">
@@ -136,10 +143,18 @@ Daftar Pemilih Tetap
                                                     class="btn btn-primary shadow btn-xs sharp mr-1"
                                                     data-toggle="modal" data-target="#editVoter" title="Edit Data"
                                                     onclick="setEditData({{ $voter }})"><i class="fa fa-pencil"></i></button>
-                                                <button type="button"
-                                                    data-url="{{ route('voters.reset_token', [$voter, '']) }}"
-                                                    class="btn btn-info shadow btn-xs sharp mr-1" title="Reset Token"
-                                                    onclick="resetTokenAlert(this)"><i class="fa fa-undo mr-1"></i></button>
+                                                    @if ($voter->email_sent == 1)
+                                                        <button type="button"
+                                                            data-url="{{ route('voters.reset_token', [$voter, '']) }}"
+                                                            class="btn btn-info shadow btn-xs sharp mr-1" title="Reset Token"
+                                                            onclick="resetTokenAlert(this)"><i class="fa fa-undo mr-1"></i></button>
+                                                    @else 
+                                                        <button type="button"
+                                                            data-url="{{ route('voters.send_token', [$voter, '']) }}"
+                                                            class="btn btn-info shadow btn-xs sharp mr-1" title="Kirim Token"
+                                                            onclick="sendTokenAlert(this)"><i class="fa fa-paper-plane mr-1"></i></button>
+
+                                                    @endif
                                             @endif
         
                                             <form action="{{ route('voters.destroy', $voter) }}"
@@ -449,12 +464,31 @@ Daftar Pemilih Tetap
             });
         });
 
+        function sendTokenAlert(e) {
+            Swal.fire({
+                title: "Kirim token?",
+                text: `Kirim email token setelah token direset.`,
+                type: "question",
+                showCancelButton: 1,
+                confirmButtonColor: "#7A1F31",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak."
+            }).then(function (t) {
+
+                if (t.value) {
+                    // alert(e.dataset.url);
+                    window.location.href = `${url}`
+                }
+
+            })
+        }
+
         function resetTokenAlert(e) {
             Swal.fire({
                 title: "Reset dan kirim token?",
                 text: `Kirim email token setelah token direset.`,
                 type: "question",
-                showCancelButton: !0,
+                showCancelButton: 1,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Ya",
