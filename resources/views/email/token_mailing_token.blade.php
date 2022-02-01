@@ -15,21 +15,20 @@
         <br>
         <br>
 
-        Kami dari panitia {{ $voter->election->name }} STMIK Sumedang memberitahukan NIM dan token
-        yang
-        akan digunakan pada saat pemilu raya nanti, datanya sebagai berikut :
+        Kami dari panitia {{ $voter->election->name }} Universitas Sebelas April Sumedang memberitahukan NIM dan token
+        yang akan digunakan pada saat pemilu raya nanti, datanya sebagai berikut :
 
         <br>
         <br>
 
-        NIM : <b>{{ $voter->nim }}</b> <br>
+        NIM / NPM : <b>{{ $voter->nim }}</b> <br>
         Token : <b>{{ $voter->token }}</b>
 
         <br>
         <br>
 
         bisa di isi di link <a
-            href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">pemiluraya.stmik-sumedang.ac.id/</a>
+            href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">pemira.unsap.ac.id/</a>
         pada saat
         waktu
         pemilihan berlangsung.

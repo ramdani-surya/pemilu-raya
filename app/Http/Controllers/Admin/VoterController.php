@@ -296,7 +296,7 @@ class VoterController extends Controller
 
         if ($voter->email_sent != 1) {
             try {
-                Mail::to($voter)->send(new TahungodingMail($voter));
+                Mail::to($voter)->send(new TokenMail($voter));
                 $voter->update(['email_sent' => 1]);
     
                 return [

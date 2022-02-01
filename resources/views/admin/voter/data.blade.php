@@ -474,9 +474,8 @@ Daftar Pemilih Tetap
                 confirmButtonText: "Ya",
                 cancelButtonText: "Tidak."
             }).then(function (t) {
-
+                let url = e.dataset.url;
                 if (t.value) {
-                    // alert(e.dataset.url);
                     window.location.href = `${url}`
                 }
 
