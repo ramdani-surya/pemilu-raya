@@ -20,6 +20,7 @@ class Voter extends Authenticatable
         'bpm_voted',
         'bem_voted',
         'email',
+        'faculty_id',
         'email_sent',
     ];
 
@@ -40,6 +41,6 @@ class Voter extends Authenticatable
 
     public function faculties()
     {
-        return $this->belongsTo(Faculty::class);
+        return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 }
