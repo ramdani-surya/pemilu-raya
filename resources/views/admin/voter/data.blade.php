@@ -120,13 +120,13 @@ Daftar Pemilih Tetap
                                     <td>
                                         @if($voter->bem_voted == 1)
                                             <button type="button"
-                                                class="btn btn-icon waves-effect waves-light btn-primary btn-xs">
+                                                class="btn btn-primary btn-xs" data-toggle="tooltip" title="Sudah Memilih BEM">
                                                 <i class="fa fa-check"></i>
                                             </button>
                                         @endif
                                         @if($voter->bpm_voted == 1)
                                             <button type="button"
-                                                class="btn btn-icon waves-effect waves-light btn-info btn-xs">
+                                                class="btn btn-info btn-xs" data-toggle="tooltip" title="Sudah Memilih BPM">
                                                 <i class="fa fa-check"></i>
                                             </button>
                                         @endif

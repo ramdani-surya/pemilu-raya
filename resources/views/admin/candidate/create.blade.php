@@ -178,9 +178,9 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="mision">Misi<span class="text-danger">*</span></label>
-                                    <textarea class="ckeditor form-control" name="mision">{{ old('mision') }}</textarea>
-                                    @error('mision')
+                                    <label for="mission">Misi<span class="text-danger">*</span></label>
+                                    <textarea class="ckeditor form-control" name="mission">{{ old('mission') }}</textarea>
+                                    @error('mission')
                                         <style>
                                             .cke_chrome {
                                                 border: 1px solid #F94687 !important;

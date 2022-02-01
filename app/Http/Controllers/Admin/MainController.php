@@ -75,9 +75,6 @@ class MainController extends Controller
 
             return view('admin.dashboard.bem_faculty', $data);
         }
-            
-
-        
 
         // if($data['ftiCandidateVotings'][0] == 0 && $data['ftiCandidateVotings'][1] == 0) {
         //     $data['ftiCandidateVotings'];
@@ -139,7 +136,10 @@ class MainController extends Controller
                 'total'      => count(getActiveElection()->bemUnvotedVoters),
                 'percentage' => bemVotersPercentage(getActiveElection(), 0),
             ],
-            'total_candidate' => count(getActiveElection()->candidates),
+            'total_candidate' => [
+                'bem' => count(getActiveElection()->bemCandidates),
+                'bpm' => count(getActiveElection()->bpmCandidates),
+            ]
         ];
 
         $data['bpmVotings'] = $this->getVotingData()['bpmCandidateVotings'];
@@ -236,7 +236,8 @@ class MainController extends Controller
 
         if (getActiveElection()) {
 
-             foreach (getActiveElection()->bem as $candidate) {
+            
+            foreach (getActiveElection()->bem as $candidate) {
                 $bemCandidates[] = "$candidate->chairman_name";
                 $ftiCandidateVotings[] = count($candidate->ftiVotings);
                 $febCandidateVotings[] = count($candidate->febVotings);
@@ -245,12 +246,12 @@ class MainController extends Controller
                 $fibCandidateVotings[] = count($candidate->fibVotings);
                 $fikCandidateVotings[] = count($candidate->fikVotings);
             }
-
-            $bpmCandidates[] = 'Belum Memilih';
-            $bpmCandidateVotings[] = count(getActiveElection()->bpmUnvotedVoters);
-
+            
+            $bemCandidates[] = 'Belum Memilih';
+            $bemCandidateVotings[] = count(getActiveElection()->bemUnvotedVoters);
+            
         }
-
+        
         $votingData['bemCandidates'] = $bemCandidates;
         $votingData['ftiCandidateVotings'] = $ftiCandidateVotings;
         $votingData['febCandidateVotings'] = $febCandidateVotings;

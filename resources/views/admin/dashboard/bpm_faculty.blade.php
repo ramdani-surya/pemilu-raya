@@ -15,8 +15,6 @@
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @endsection
 
-
-
     @section('content')
 
         <div class="row">

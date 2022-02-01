@@ -105,6 +105,16 @@ class Election extends Model
         return $this->hasMany(Voter::class)->where('bem_voted', 0);
     }
 
+    public function bemCandidates()
+    {
+        return $this->hasMany(Candidate::class)->where('candidate_type_id', 1);
+    }
+
+    public function bpmCandidates()
+    {
+        return $this->hasMany(Candidate::class)->where('candidate_type_id', 2);
+    }
+
     public function votings()
     {
         return $this->hasMany(Voting::class);

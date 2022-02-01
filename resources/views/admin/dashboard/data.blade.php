@@ -40,13 +40,12 @@ Dashboard
                                 <i class="fas fa-user-friends" style="color: #27BC48; font-size: 20px;"></i>
                             </span>
                             <div class="media-body">
-                                <p class="fs-14 mb-2">Jumalah Pemilih</p>
+                                <p class="fs-14 mb-2">Jumlah Pemilih</p>
                                 <span class="title text-black font-w600" id="bpmTotalVoter"></span>
                             </div>
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-success" style="width: 100%; height:5px;" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -67,7 +66,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-secondary" style="height:5px;" id="bpmSudahMemilihBar" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -88,7 +86,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-danger" style="height:5px;" id="bpmBelumMemilihBar" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -109,7 +106,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-warning" style="width: 100%; height:5px;" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -156,13 +152,12 @@ Dashboard
                                 <i class="fas fa-user-friends" style="color: #27BC48; font-size: 20px;"></i>
                             </span>
                             <div class="media-body">
-                                <p class="fs-14 mb-2">Jumalah Pemilih</p>
+                                <p class="fs-14 mb-2">Jumlah Pemilih</p>
                                 <span class="title text-black font-w600" id="bemTotalVoter"></span>
                             </div>
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-success" style="width: 100%; height:5px;" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -183,7 +178,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-secondary" style="height:5px;" id="bemSudahMemilihBar" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -204,7 +198,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-danger" style="height:5px;" id="bemBelumMemilihBar" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -225,7 +218,6 @@ Dashboard
                         </div>
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar bg-warning" style="width: 100%; height:5px;" role="progressbar">
-                                <span class="sr-only">42% Complete</span>
                             </div>
                         </div>
                     </div>
@@ -368,19 +360,20 @@ Dashboard
                 $('#bpmSudahMemilihBar').css({'width' : `${data.bpm_has_voted.percentage}`});
                 $('#bpmUnvoted').text(`${data.bpm_unvoted.total} (${data.bpm_unvoted.percentage})`);
                 $('#bpmBelumMemilihBar').css({'width' : `${data.bpm_unvoted.percentage}`});
-                $('#bpmTotalCandidate').text(data.total_candidate);
+                $('#bpmTotalCandidate').text(data.total_candidate.bpm);
 
                 $('#bemTotalVoter').text(data.total_voter);
                 $('#bemHasVoted').text(`${data.bem_has_voted.total} (${data.bem_has_voted.percentage})`);
                 $('#bemSudahMemilihBar').css({'width' : `${data.bem_has_voted.percentage}`});
                 $('#bemUnvoted').text(`${data.bem_unvoted.total} (${data.bem_unvoted.percentage})`);
                 $('#bemBelumMemilihBar').css({'width' : `${data.bem_unvoted.percentage}`});
-                $('#bemTotalCandidate').text(data.total_candidate);
+                $('#bemTotalCandidate').text(data.total_candidate.bem);
 
                 data.bpmVotings.pop()
                 data.bemVotings.pop()
 
-                removeData()
+                // removeBpmData()
+                // removeBemData()
                 addBpmData(data.bpmVotings)
                 addBemData(data.bemVotings)
                 
