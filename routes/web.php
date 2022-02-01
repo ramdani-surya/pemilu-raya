@@ -53,8 +53,10 @@ Route::prefix('login')->middleware('guest')->group(function () {
 Route::group(['middleware' => ['loggedIn', 'web']], function () {
    
     Route::prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/show/{candidate_type}', [AdminController::class, 'show'])->name('admin.dashboard.show');
+        Route::group(['middleware' => ['checkFaculty', 'checkStudyProgram', 'checkCandidateType', 'checkCandidate']], function() {
+            Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+            Route::get('/show/{candidate_type}', [AdminController::class, 'show'])->name('admin.dashboard.show');
+        });
         Route::get('/setting', [LoginController::class, 'setting'])->name('admin.setting');
         Route::put('/setting/update/{user}', [LoginController::class, 'update_account'])->name('admin.update-account');
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
