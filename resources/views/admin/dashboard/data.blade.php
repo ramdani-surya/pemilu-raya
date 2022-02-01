@@ -119,15 +119,17 @@ Dashboard
         </div>
     </div>
     <div class="col-xl-6 col-xxl-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">BPM Chart</h4>
+        <a href="{{ route('admin.dashboard.show', 'bpm') }}">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">BPM Chart</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="bpm_chart"  data-bpmcandidates="{{ implode(',', $bpmCandidates) }}"
+                    data-bpmvotings="{{ implode(',', $bpmCandidateVotings) }}"></canvas>
+                </div>
             </div>
-            <div class="card-body">
-                <canvas id="bpm_chart"  data-bpmcandidates="{{ implode(',', $bpmCandidates) }}"
-                data-bpmvotings="{{ implode(',', $bpmCandidateVotings) }}"></canvas>
-            </div>
-        </div>
+        </a>
     </div>
 </div>
 
@@ -233,7 +235,7 @@ Dashboard
         </div>
     </div>
     <div class="col-xl-6 col-xxl-12">
-        {{-- <a href="{{ route('admin.dashboard.show', $bem = 'bem') }}"> --}}
+        <a href="{{ route('admin.dashboard.show', 'bem') }}">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">BEM Chart</h4>
@@ -243,6 +245,7 @@ Dashboard
                     data-bemvotings="{{ implode(',', $bemCandidateVotings) }}"></canvas>
                 </div>
             </div>
+        </a>
         {{-- </a> --}}
     </div>
 </div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Faculty;
 use App\Models\StudyProgram;
 use Alert;
+use Str;
 
 class FacultyController extends Controller
 {
@@ -64,7 +65,9 @@ class FacultyController extends Controller
     {
         $data = [
             'election_id' => $request->election_id,
-            'name' => $request->faculty_name
+            'name' => $request->faculty_name,
+            'slug' => Str::slug($request->faculty_name)
+
         ];
 
         Faculty::create($data)
@@ -108,7 +111,8 @@ class FacultyController extends Controller
         $faculty = Faculty::findOrFail($id);
         
         $data = [
-            'name' => $request->edit_faculty_name
+            'name' => $request->edit_faculty_name,
+            'slug' => Str::slug($request->edit_faculty_name)
         ];
 
         $faculty->update($data)

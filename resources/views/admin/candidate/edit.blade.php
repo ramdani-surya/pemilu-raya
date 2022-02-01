@@ -56,8 +56,7 @@
         </ol>
     </div>
     <!-- row -->
-
-
+    {{-- candidate row --}}
     <form action="{{ route('candidates.update', $candidate->id) }}" method="post" class="parsley-examples"
         enctype="multipart/form-data">
         @csrf
@@ -220,121 +219,7 @@
             </div>
         </div>
     </form>
-    <div class="modal fade" id="candidateTypeModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Data Tipe Kandidat</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="button-list mb-3">
-                        <button type="button" data-toggle="modal" data-target="#addCandidateTypeModal"
-                            onclick="addCandidateType()"
-                            class="btn btn-primary btn-sm btn-create waves-light waves-effect"><i
-                                class="fa fa-plus-circle mr-1"></i> Tambah</button>
-                        @if (count($candidate_type))
-                            <button type="button" class="btn btn-danger btn-sm waves-light waves-effect" id="clearAll"><i
-                                    class="fa fa-trash-o mr-1"></i> Bersihkan</button>
-                        @else
-                            <button type="button" class="btn btn-danger btn-sm waves-light waves-effect"
-                                id="bersihkan-semua-data" disabled><i class="fa fa-trash-o mr-1"></i>
-                                Bersihkan</button>
-                        @endif
-                    </div>
-                    @foreach ($candidate_type as $candidate_types)
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div class="day">
-                                        {{ $candidate_types->name }}
-                                    </div>
-                                    <div class="button-list">
-                                        <button type="button" data-toggle="modal"
-                                            data-target="#editCandidateTypeModal{{ $candidate_types->id }}"
-                                            class="btn btn-warning btn-sm text-white"
-                                            onclick="editCandidateType({{ $candidate_types }})"><i
-                                                class="fa fa-edit mr-1"></i>Edit</button>
-                                        <form style="display: inline"
-                                            action="{{ route('candidate-types.destroy', $candidate_types->id) }}"
-                                            method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="deleteAlert(this)"><i class="fa fa-trash mr-1"></i> Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="addCandidateTypeModal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Tipe Kandidat</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('candidate-types.store') }}" method="post" id="addCandidateTypeForm">
-                        @csrf
-
-                        <div class="form-group">
-                            <input type="hidden" class="form-control" name="election_id"
-                                value="{{ getActiveElection()->id }}">
-                            <label for="name">Nama Tipe Kandidat</label>
-                            <input type="text" class="form-control" name="candidate_type_name"
-                                placeholder="Masukan Tipe Kandidat">
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-sm btn-primary" id="tambahButton">Simpan Data</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    @foreach ($candidate_type as $candidate_types)
-        <div class="modal fade" id="editCandidateTypeModal{{ $candidate_types->id }}">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Tipe Kandidat</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('candidate_types.update', $candidate_types->id) }}" method="post"
-                            id="editCandidateTypeForm{{ $candidate_types->id }}">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" id="checkCandidateType{{ $candidate_types->id }}"
-                                value="{{ $candidate_types->name }}">
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="edit_candidate_type_name"
-                                    value="{{ $candidate_types->name }}" placeholder="Masukan Tipe Kandidat">
-                            </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-sm btn-primary" id="editCandidateTypeButton">Simpan
-                            Data</button>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
+    
 @endsection
 
 @section('js')
@@ -442,81 +327,6 @@
     </script>
 
     <script>
-        function addCandidateType() {
-            $("#candidateTypeModal").modal('hide');
-        }
-
-        $('#addCandidateTypeModal').on('hidden.bs.modal', function(event) {
-            $("#candidateTypeModal").modal('show');
-        })
-    </script>
-
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $("#addCandidateTypeForm").validate({
-            rules: {
-                candidate_type_name: {
-                    required: true,
-                    remote: {
-                        url: "{{ route('checkCandidateType') }}",
-                        type: "post",
-                    }
-                }
-            },
-            messages: {
-                candidate_type_name: {
-                    required: "Tipe Kandidat harus di isi.",
-                    remote: "Tipe Kandidat sudah tersedia."
-                }
-            },
-            submitHandler: function(form) {
-                $("#tambahButton").prop('disabled', true);
-                form.submit();
-            }
-        });
-
-        function editCandidateType(data) {
-            $('#editCandidateTypeModal' + data.id).on('hidden.bs.modal', function() {
-                $('#candidateTypeModal').modal('show');
-            });
-            $('#candidateTypeModal').modal('hide');
-
-            $("#editCandidateTypeForm" + data.id).validate({
-                rules: {
-                    edit_candidate_type_name: {
-                        required: true,
-                        remote: {
-                            param: {
-                                url: "{{ route('checkCandidateType') }}",
-                                type: "post",
-                            },
-                            depends: function(element) {
-                                // compare name in form to hidden field
-                                return ($(element).val() !== $('#checkCandidateType' + data.id).val());
-                            },
-                        }
-                    }
-                },
-                messages: {
-                    edit_candidate_type_name: {
-                        required: "Tipe Kandidat harus di isi.",
-                        remote: "Tipe Kandidat sudah tersedia."
-                    }
-                },
-                submitHandler: function(form) {
-                    $("#editCandidateTypeButton").prop('disabled', true);
-                    form.submit();
-                }
-            });
-        }
-    </script>
-
-    <script>
         $("#clearAll").click(function() {
             Swal.fire({
                 title: "Bersihkan data tipe kandidat?",
@@ -554,3 +364,4 @@
         }
     </script>
 @endsection
+

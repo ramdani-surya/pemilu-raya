@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Election;
+use App\Models\Voting;
 use Illuminate\Support\Str;
 
 function emailStmik($nim)
@@ -21,6 +22,11 @@ function getActiveElection($where = null)
 
     return Election::where('status', 1)->first();
 
+}
+
+function getVotingFaculty($faculty)
+{
+    return Voting::where('faculty_id', $faculty)->first();
 }
 
 function getRunningElection()
