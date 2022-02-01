@@ -337,14 +337,12 @@
         <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
         <script src="{{ asset('js/custom.min.js') }}"></script>
         <script src="{{ asset('js/deznav-init.js') }}"></script>
-
+        
         <!-- Datatable -->
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/fixedheader/3.2.1/js/dataTables.fixedHeader.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap.min.js"></script>
-        <script src="{{ asset('js/plugins-init/datatables.init.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
         {{-- Navbar Pills Keep Active --}}

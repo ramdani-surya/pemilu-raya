@@ -70,7 +70,5 @@
 <script src="{{ asset('js/custom.min.js') }}"></script>
 <script src="{{ asset('js/deznav-init.js') }}"></script>
 
-<!-- Datatable -->
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 @endsection
