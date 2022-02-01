@@ -23,6 +23,8 @@ class Voter extends Authenticatable
         'faculty_id',
         'study_program_id',
         'email_sent',
+        'creator',
+        'updator'
     ];
 
     public function election()

@@ -53,7 +53,7 @@ Tipe Kandidat
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Data Tipe Kandidat</h4>
-                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                     <div class="button-list">
                         <button type="button" data-toggle="modal" data-target="#addCandidateTypeModal" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
@@ -70,7 +70,7 @@ Tipe Kandidat
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>
-                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <th>Aksi</th>
                                 @endif
                             </tr>
@@ -86,7 +86,7 @@ Tipe Kandidat
                             <tr>
                                 <td>{{ $increment++ }} </td>
                                 <td>{{ $candidate_types->name }}</td>
-                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <td>
                                     <div class="form-group">
                                         <button type="button" data-toggle="modal"

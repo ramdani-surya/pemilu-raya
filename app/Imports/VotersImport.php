@@ -30,7 +30,8 @@ class VotersImport implements ToModel
                             'email'       => $row[1],
                             'faculty_id'  => $row[5],
                             'study_program_id'  => $row[3],
-                            'semester'    => $row[4]
+                            'semester'    => $row[4],
+                            'creator'     => Auth::id()
                         ]);
                     }
                 }

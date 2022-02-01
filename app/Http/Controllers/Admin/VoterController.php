@@ -34,7 +34,14 @@ class VoterController extends Controller
      */
     public function index()
     {
-        $data['voters']   = $this->activeElection->voters->sortBy('created_at');
+        $activeElectionId = $this->activeElection->id;
+        $facultyId = null;
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'saksi') {
+            $facultyId = Auth::user()->faculty_id;
+        }
+        $data['voters']   = Voter::when($facultyId, function($q,$facultyId){
+                                return $q->where('faculty_id',$facultyId);
+                            })->where('election_id',$activeElectionId)->orderBy('name')->get();
         // if ($request->ajax()) {
         //     $data = $this->activeElection->voters;
         //     return Datatables::of($data)->addIndexColumn()
@@ -47,7 +54,9 @@ class VoterController extends Controller
         // }
 
         $data['election']   = $this->activeElection;
-        $data['faculties']  = Faculty::all();
+        $data['faculties']  = Faculty::when($facultyId, function($q,$facultyId){
+                                return $q->where('id',$facultyId);
+                            })->where('election_id',$activeElectionId)->get();
 
         return view('admin.voter.data', $data);
     }
@@ -126,6 +135,7 @@ class VoterController extends Controller
             'token'       => Str::random(6),
             'faculty_id'  => $request->faculty_id,
             'email'       => $request->email,
+            'creator'     => Auth::user()->id
         ];
 
         Auth::user()->storedVoters()->create($data)
@@ -159,7 +169,8 @@ class VoterController extends Controller
             'nim'           => $request->edit_nim,
             'name'          => $request->edit_name,
             'email'         => $request->edit_email,
-            'faculty_id'    => $request->edit_faculty_id
+            'faculty_id'    => $request->edit_faculty_id,
+            'updator'       => Auth::user()->id
         ];
 
         $voter->update($data)
@@ -181,7 +192,7 @@ class VoterController extends Controller
         // gunakan filter_var() untuk jika value parameter adalah string
         Mail::to($voter)->send(new TokenMail($voter));
 
-        $voter->update(['email_sent' => 1]);
+        $voter->update(['email_sent' => 1,'updator' => Auth::user()->id]);
 
         return redirect(route('voters.index'));
     }
@@ -201,7 +212,7 @@ class VoterController extends Controller
         if (filter_var($sendEmail, FILTER_VALIDATE_BOOLEAN)) {
             Mail::to($voter)->send(new TokenMail($voter));
 
-            $voter->update(['email_sent' => 1]);
+            $voter->update(['email_sent' => 1,'updator' => Auth::user()->id]);
         }
 
         return redirect(route('voters.index'));
@@ -303,7 +314,7 @@ class VoterController extends Controller
         if ($voter->email_sent != 1) {
             try {
                 Mail::to($voter)->send(new TokenMail($voter));
-                $voter->update(['email_sent' => 1]);
+                $voter->update(['email_sent' => 1, 'updator' => Auth::user()->id]);
     
                 return [
                     'status' => true,

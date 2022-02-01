@@ -27,7 +27,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Data Kandidat</h4>
-                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                 <div class="button-list">
                     <a href="{{ route('candidates.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle mr-1"></i> Tambahkan Kandidat</a>
                 </div>

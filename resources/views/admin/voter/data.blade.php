@@ -50,49 +50,53 @@ Daftar Pemilih Tetap
     <div class="row">
         <div class="col-12">
             <div class="card">
+                @if (Auth::user()->role != 'saksi')
                 <div class="card-header">
-                    <div class="wrap">
-                        <h4 class="card-title">Data Daftar Pemilih Tetap</h4>
-                        <form action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data"
-                        id="form-import">
-                            @csrf
-                            <div class="input-group mb-3 mt-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> Import Excel</span>
+                        <div class="wrap">
+                            <h4 class="card-title">Data Daftar Pemilih Tetap</h4>
+                            <form action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data"
+                            id="form-import">
+                                @csrf
+                                <div class="input-group mb-3 mt-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> Import Excel</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" name="file" id="import" accept="xlsx"
+                                            class="custom-file-input @error('file') is-invalid @enderror">
+                                        <label class="custom-file-label">Choose file</label>
+                                    </div>
                                 </div>
-                                <div class="custom-file">
-                                    <input type="file" name="file" id="import" accept="xlsx"
-                                        class="custom-file-input @error('file') is-invalid @enderror">
-                                    <label class="custom-file-label">Choose file</label>
-                                </div>
-                            </div>
-                            @error('file')
-                                    <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </form>
-                    </div>
-                    <div class="button-list">
-                        <button type="button" data-toggle="modal" data-target="#addVoter" class="btn btn-primary btn-xs"
-                            data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
-                            data-overlayColor="#36404a"><i class="fa fa-plus-circle mr-1"></i> Tambah</button>
-                        <button type="button" class="btn btn-danger btn-xs"
-                            id="clearAll"><i class="fa fa-trash-o mr-1"></i> Bersihkan</button>
-                           
-                                <div class="form-row align-items-center">
-                                    <div class="col-auto" style="padding-right:0px">
-                                        {{-- <input type="file" class="form-control" name="file" id="import"> --}}
+                                @error('file')
+                                        <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </form>
+                        </div>
+                        <div class="button-list">
+                            <button type="button" data-toggle="modal" data-target="#addVoter" class="btn btn-primary btn-xs"
+                                data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
+                                data-overlayColor="#36404a"><i class="fa fa-plus-circle mr-1"></i> Tambah</button>
+                                @if (Auth::user()->role == 'super_admin')
+                                <button type="button" class="btn btn-danger btn-xs"
+                                    id="clearAll"><i class="fa fa-trash-o mr-1"></i> Bersihkan</button>
+                                @endif
+                            
+                                    <div class="form-row align-items-center">
+                                        <div class="col-auto" style="padding-right:0px">
+                                            {{-- <input type="file" class="form-control" name="file" id="import"> --}}
+                                            
+                                        </div>
+                                        
+                                        <div class="col-auto" style="margin-top: 12px; padding-left:0px">
+                                            <a href="{{ url('DPT_FORMAT.xlsx') }}" download
+                                                class="btn btn-xs btn-secondary"><i class="fa fa-download"></i> Format</a>
+                                        </div>
                                         
                                     </div>
-                                    
-                                    <div class="col-auto" style="margin-top: 12px; padding-left:0px">
-                                        <a href="{{ url('DPT_FORMAT.xlsx') }}" download
-                                            class="btn btn-xs btn-secondary"><i class="fa fa-download"></i> Format</a>
-                                    </div>
-                                    
-                                </div>
-                            
+                                
+                        </div>
                     </div>
-                </div>
+                    @endif
                 <div class="card-body">
                     {{-- <div class="table-responsive"> --}}
                     <table id="example4" class="table dt-responsive" style="width:100%">
@@ -103,7 +107,7 @@ Daftar Pemilih Tetap
                                 <th>Nama</th>
                                 <th>Memilih</th>
                                 <th>Email</th>
-                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia' || Auth::user()->role == 'admin')
                                 <th>Aksi</th>
                                 @endif
                             </tr>
@@ -135,7 +139,7 @@ Daftar Pemilih Tetap
                                         @endif
                                     </td>
                                     <td>{{ $voter->email }} {!! ($voter->email_sent == 1) ? '<i class="fa fa-check"></i>' : null !!}</td>
-                                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia' || Auth::user()->role == 'admin')
                                     <td>
                                         <div class="button-list" style="display: flex">
                                             @if(!$voter->voted)
@@ -335,7 +339,7 @@ Daftar Pemilih Tetap
             $('#checkDptEmail' + election.id).val(voter.email);
             $('[name="edit_nim"]').val(voter.nim);
             $('[name="edit_name"]').val(voter.name);
-            $('[name="email"]').val(voter.email);
+            $('[name="edit_email"]').val(voter.email);
             editVoterValidate(voter);
         }
     </script>

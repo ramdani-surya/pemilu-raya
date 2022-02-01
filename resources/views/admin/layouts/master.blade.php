@@ -161,11 +161,13 @@
 							<span class="nav-text">Daftar Pemilih Tetap</span>
 						</a>
                     </li>
-                    <li class="{{ request()->routeIs('users.index') ? 'mm-active' : '' }}"><a href="{{ route('users.index') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-settings-2"></i>
-							<span class="nav-text">Manajemen Akun</span>
-						</a>
-					</li>
+                    @if (Auth::user()->role == 'super_admin')
+                        <li class="{{ request()->routeIs('users.index') ? 'mm-active' : '' }}"><a href="{{ route('users.index') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Manajemen Akun</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
 			</div>
         </div>
@@ -191,7 +193,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="tahungoding.com" target="_blank">Tahungoding</a> 2022</p>
+                <p>Copyright © Designed &amp; Developed by <a href="https://instagram.com/tahungoding" target="_blank"><i><b>TAHU</b>NGODING</i></a> 2022</p>
             </div>
         </div>
         <!--**********************************

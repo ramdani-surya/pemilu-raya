@@ -52,7 +52,7 @@ Daftar Manajemen Akun
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Data User</h4>
-                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                    @if(Auth::user()->role == 'super_admin')
                     <div class="button-list">
                         <button type="button" data-toggle="modal" data-target="#addUserModal" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
@@ -144,7 +144,7 @@ Daftar Manajemen Akun
                             <div class="col-12">
                                 <label for="election">Nama Lengkap</label>
                                 <input class="form-control mb-1 @error('name') is-invalid @enderror" type="text" id="name"
-                                    placeholder="Contoh: Briana White" name="name" value="{{ old('name') }}">
+                                    placeholder="Contoh: Iqbal Rivaldi" name="name" value="{{ old('name') }}">
                             </div>
                         </div>
     
@@ -152,7 +152,7 @@ Daftar Manajemen Akun
                             <div class="col-12">
                                 <label for="period">Username</label>
                                 <input class="form-control mb-1 @error('username') is-invalid @enderror" type="text"
-                                    id="username" placeholder="Contoh: briana67" name="username"
+                                    id="username" placeholder="Contoh: iqbal1402" name="username"
                                     value="{{ old('username') }}">
                             </div>
                         </div>
@@ -211,24 +211,36 @@ Daftar Manajemen Akun
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Role</label>
-                                <select class="form-control mb-1" name="role" id="role">
+                                <select class="form-control mb-1" onchange="showFaculty(this.value)" name="role" id="role">
                                     <option value="super_admin">Super Admin</option>
                                     <option value="admin">Admin</option>
                                     <option value="saksi">Saksi</option>
+                                    <option value="panitia">Panitia</option>
                                 </select>
                             </div>
                         </div>
-                        @elseif(Auth::user()->role == 'admin')
+                        @elseif(Auth::user()->role == 'panitia')
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Role</label>
-                                <select class="form-control mb-1" name="role" id="role">
+                                <select class="form-control mb-1" onchange="showFaculty(this.value)" name="role" id="role">
                                     <option value="admin">Admin</option>
                                     <option value="saksi">Saksi</option>
                                 </select>
                             </div>
                         </div>
                         @endif
+                        <div class="form-group" id="faculty" style="display: none">
+                            <div class="col-12">
+                                <label for="faculty_id">Fakultas</label>
+                                <select name="faculty_id" class="form-control mb-1" id="faculty_id">
+                                    <option value="">-- Pilih Fakultas --</option>
+                                    @foreach ($faculties as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
@@ -351,6 +363,17 @@ Daftar Manajemen Akun
                         </div>
                     </div>
                     @endif
+                    <div class="form-group" id="edit_faculty" style="display: none">
+                        <div class="col-12">
+                            <label for="edit_faculty_id">Fakultas</label>
+                            <select name="edit_faculty_id" class="form-control mb-1" id="edit_faculty_id">
+                                <option value="">-- Pilih Fakultas --</option>
+                                @foreach ($faculties as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary" id="editButton">Simpan Perubahan</button>
@@ -553,6 +576,12 @@ Daftar Manajemen Akun
             $('[name="edit_username"]').val(user.username);
             $('[name="edit_email"]').val(user.email);
             $('[name="edit_role"]').val(user.role);
+            if (user.faculty_id != null) {
+                $('#edit_faculty').show();
+                $('[name="edit_faculty_id"]').val(user.faculty_id);
+            }else{
+                $('#edit_faculty').hide();
+            }
         }
         
         // passing data to select option tag
@@ -651,5 +680,13 @@ Daftar Manajemen Akun
                 }
             })
         });
+
+        function showFaculty(val) {
+            if (val == 'admin' || val == 'saksi') {
+                $('#faculty').show();
+            }else{
+                $('#faculty').hide();
+            }
+        }
     </script>
 @endsection

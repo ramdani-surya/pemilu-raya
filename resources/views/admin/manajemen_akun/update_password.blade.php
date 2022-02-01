@@ -26,8 +26,6 @@
         </ol>
     </div>
     <!-- start form -->
-    <form action="{{ route('candidates.store') }}" method="post" enctype="multipart/form-data" name="myForm">
-        @csrf
         <!-- start row -->
         <div class="row">
             <div class="col-lg-12">
@@ -36,81 +34,84 @@
                         <h4 class="card-title">Update Password</h4>
                     </div>
                     <div class="card-body">
-                        @if(Auth::user()->role == 'panitia')
-                        <div class="form-group">
-                            <label for="passwordLama">Password Lama<span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input type="password" name="password_lama" parsley-trigger="change"
-                                    placeholder="Masukkan Nomor Kandidat"
-                                    class="form-control @error('password_lama') is-invalid @enderror" id="password_lama"
-                                    value="{{ old('password_lama') }}">
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-secondary fas fa-eye @error('password_lama') btn-danger @enderror toggle-password-lama"
-                                        type="button"></button>
+                        <form action="{{route('users.updatePassword', $user)}}" method="POST">
+                            @csrf
+                            @if(Auth::user()->role == 'super_admin')
+                            <div class="form-group">
+                                <label for="passwordLama">Password Lama<span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="password_lama" parsley-trigger="change"
+                                        placeholder="Masukkan Nomor Kandidat"
+                                        class="form-control @error('password_lama') is-invalid @enderror" id="password_lama"
+                                        value="{{ old('password_lama') }}">
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-secondary fas fa-eye @error('password_lama') btn-danger @enderror toggle-password-lama"
+                                            type="button"></button>
+                                    </div>
                                 </div>
-                            </div>
-                            @error('password_lama')
-                            <div class="mt-1">
-                                <span class="text-danger">{{ $message }}</span>
-                            </div>
-                            @enderror
-                        </div>
-                        @endif
-
-                        <div class="form-group">
-                            <label for="passwordBaru">Password Baru<span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input type="password" name="password_baru" parsley-trigger="change"
-                                    placeholder="Masukkan Password Baru"
-                                    class="form-control @error('password_baru') is-invalid @enderror" id="password_baru"
-                                    value="{{ old('password_baru') }}">
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-secondary fa fa-eye @error('password_baru') btn-danger @enderror toggle-password-baru"
-                                        type="button"></button>
+                                @error('password_lama')
+                                <div class="mt-1">
+                                    <span class="text-danger">{{ $message }}</span>
                                 </div>
+                                @enderror
                             </div>
-
-                            @error('password_baru')
-                            <div class="mt-1">
-                                <span class="text-danger">{{ $message }}</span>
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="konfirmasiPasswordBaru">Konfirmasi Password Baru<span
-                                    class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input type="password" name="konfirmasi_password_baru" parsley-trigger="change"
-                                    placeholder="Masukkan Konfirmasi Password Baru"
-                                    class="form-control @error('konfirmasi_password_baru') is-invalid @enderror"
-                                    id="konfirmasi_password_baru" value="{{ old('konfirmasi_password_baru') }}">
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-secondary fa fa-eye @error('konfirmasi_password_baru') btn-danger @enderror toggle-konfirmasi-password-baru"
-                                        type="button"></button>
+                            @endif
+    
+                            <div class="form-group">
+                                <label for="passwordBaru">Password Baru<span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="password_baru" parsley-trigger="change"
+                                        placeholder="Masukkan Password Baru"
+                                        class="form-control @error('password_baru') is-invalid @enderror" id="password_baru"
+                                        value="{{ old('password_baru') }}">
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-secondary fa fa-eye @error('password_baru') btn-danger @enderror toggle-password-baru"
+                                            type="button"></button>
+                                    </div>
                                 </div>
+    
+                                @error('password_baru')
+                                <div class="mt-1">
+                                    <span class="text-danger">{{ $message }}</span>
+                                </div>
+                                @enderror
                             </div>
-
-                            @error('konfirmasi_password_baru')
-                            <div class="mt-1">
-                                <span class="text-danger">{{ $message }}</span>
+    
+                            <div class="form-group">
+                                <label for="konfirmasiPasswordBaru">Konfirmasi Password Baru<span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="konfirmasi_password_baru" parsley-trigger="change"
+                                        placeholder="Masukkan Konfirmasi Password Baru"
+                                        class="form-control @error('konfirmasi_password_baru') is-invalid @enderror"
+                                        id="konfirmasi_password_baru" value="{{ old('konfirmasi_password_baru') }}">
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-secondary fa fa-eye @error('konfirmasi_password_baru') btn-danger @enderror toggle-konfirmasi-password-baru"
+                                            type="button"></button>
+                                    </div>
+                                </div>
+    
+                                @error('konfirmasi_password_baru')
+                                <div class="mt-1">
+                                    <span class="text-danger">{{ $message }}</span>
+                                </div>
+                                @enderror
                             </div>
-                            @enderror
-                        </div>
-                        <div class="form-group d-flex justify-content-end mt-5">
-                            <button class="btn btn-md btn-primary waves-effect waves-light mr-2" type="submit"><i
-                                    class="fa fa-save mr-1"></i> Simpan Perubahan</button>
-                            <a href="{{ route('users.index') }}"
-                                class="btn btn-md btn-light waves-effect"><i class="fa fa-undo mr-1"></i> Kembali</a>
-                        </div>
+    
+                            <div class="form-group d-flex justify-content-end mt-5">
+                                <button class="btn btn-md btn-primary waves-effect waves-light mr-2" type="submit"><i
+                                        class="fa fa-save mr-1"></i> Simpan Perubahan</button>
+                                <a href="{{ route('users.index') }}"
+                                    class="btn btn-md btn-light waves-effect"><i class="fa fa-undo mr-1"></i> Kembali</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
 @endsection
 
 @section('js')

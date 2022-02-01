@@ -28,7 +28,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Data Kandidat</h4>
-                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                 <div class="button-list">
                     <a href="{{ route('candidates.createIn', $candidate_type2->slug) }}" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle mr-1"></i> Tambahkan Kandidat</a>
                 </div>
@@ -49,10 +49,11 @@
             </div>
             <div class="card-body">
                 <div class="wrap mt-1" style="overflow:hidden;">
-                    <a href="{{ Storage::url($candidates->image) }}"><img src="{{ Storage::url($candidates->image) }}" title="{{ $candidates->chairman_name }}" style="height:300px;width:100%;object-fit:cover;">
+                    <a href="{{ Storage::url($candidates->image) }}"><img src="{{ Storage::url($candidates->image) }}" title="{{ $candidates->chairman_name }}" style="height:300px;width:100%;object-fit:contain;">
                 </div>
-                <h4 class="mt-3">Fakultas {{ $candidates->faculty }}</h4>
-                <h5 class="text-muted" style="font-size: 14px;">{{ $candidates->study_program }}</h5>
+                <h4 class="mt-3">{{ $candidates->faculties->name }}</h4>
+                <h5 class="text-muted" style="font-size: 14px;">{{ $candidates->studyPrograms->name }}</h5>
+                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                 <div class="button-list mt-3">
                     <a href="{{ route('candidates.editIn', ['id' => $candidates->id, 'candidateType' => $candidate_type2->slug]) }}" class="btn btn-sm btn-warning text-white mt-1"><i class="fa fa-edit mr-1"></i>Edit</a>
                     <button class="btn btn-sm btn-secondary mt-1" data-toggle="modal" data-target="#program{{ $candidates->id }}"><i class="fa fa-info-circle mr-1"></i>Program</button>
@@ -62,6 +63,7 @@
                         <button type="button" class="btn btn-sm btn-danger mt-1" onclick="deleteAlert(this)"><i class="fa fa-trash mr-1"></i>Hapus</button>
                     </form>
                 </div>
+                @endif
             </div>
         </div>
     </div>

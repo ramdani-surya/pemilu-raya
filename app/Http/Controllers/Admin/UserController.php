@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Rules\MatchOldPassword;
 use App\Models\User;
 use Alert;
+use App\Models\Faculty;
 use Validator;
 
 class UserController extends Controller
@@ -25,6 +26,7 @@ class UserController extends Controller
         }
         
         $data['users'] = User::orderBy('id')->get();
+        $data['faculties'] = Faculty::all();
 
         return view('admin.manajemen_akun.data', $data);
     }
@@ -54,14 +56,14 @@ class UserController extends Controller
             'role' => 'required',
         ]);
 
-
-
         $data = [
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'faculty_id' => $request->faculty_id ?: null,
             'role' => $request->role,
+            'creator' => Auth::user()->id
         ];
 
 
@@ -96,7 +98,7 @@ class UserController extends Controller
 
     public function updatePassword(Request $request, User $user) 
     {
-        if(Auth::user()->role == 'panitia')
+        if(Auth::user()->role == 'super_admin')
         {
             $this->validate($request, [
            
@@ -124,6 +126,7 @@ class UserController extends Controller
         
         $data = [
             'password' => Hash::make($request->password_baru),
+            'updator' => Auth::user()->id
         ];
 
         $user->update($data)
@@ -154,7 +157,9 @@ class UserController extends Controller
             'name' => $request->edit_name,
             'username' => $request->edit_username,
             'email' => $request->edit_email,
+            'faculty_id' => $request->edit_faculty_id,
             'role' => $request->edit_role,
+            'updator' => Auth::user()->id
         ];
 
         $user->update($data)

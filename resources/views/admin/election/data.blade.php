@@ -56,7 +56,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Data Pemilu</h4>
-                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                    @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                     <div class="button-list">
                         <button type="button" data-toggle="modal" data-target="#addElection" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
@@ -81,7 +81,7 @@
                                 <th>Berjalan</th>
                                 <th>Tanggal</th>
                                 <th>Diarsipkan</th>
-                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                     <th>Aksi</th>
                                 @endif
                             </tr>
@@ -117,7 +117,7 @@
                                     </button>
                                     @endif
                                 </td>
-                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <td>
                                     <div class="button-list mt-1">
                                         @if($election->status == 1)

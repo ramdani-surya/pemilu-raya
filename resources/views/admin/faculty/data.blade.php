@@ -68,7 +68,7 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div id="fakultas" class="tab-pane active">
-                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <div class="button-list" style="margin-bottom: 28px;">
                                     <button type="button" data-toggle="modal" data-target="#addFaculty"
                                         class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
@@ -84,7 +84,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Nama Fakultas</th>
-                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                             <th>Aksi</th>
                                         @endif
                                     </tr>
@@ -98,7 +98,7 @@
                                         <tr>
                                             <td>{{ $number++ }}</td>
                                             <td>{{ $faculties->name }}</td>
-                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                                 <td>
                                                     <div class="button-list">
                                                         <button type="button" data-toggle="modal"
@@ -124,7 +124,7 @@
                             </table>
                         </div>
                         <div id="studyProgram" class="tab-pane">
-                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                             <div class="button-list" style="margin-bottom: 28px;">
                                 <button type="button" data-toggle="modal" data-target="#addStudyProgram"
                                     class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
@@ -141,7 +141,7 @@
                                         <th>#</th>
                                         <th>Program Studi</th>
                                         <th>Fakultas</th>
-                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                             <th>Aksi</th>
                                         @endif
                                     </tr>
@@ -156,7 +156,7 @@
                                             <td>{{ $number++ }}</td>
                                             <td>{{ $study_programs->name }}</td>
                                             <td>{{ $study_programs->faculties->name }}</td>
-                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
+                                            @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                                 <td>
                                                     <div class="button-list">
                                                         <button type="button" data-toggle="modal"
