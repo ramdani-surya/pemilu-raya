@@ -216,6 +216,19 @@ Daftar Pemilih Tetap
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <label for="faculty_id">Fakultas</label>
+                                <select name="faculty_id" class="form-control" id="" required>
+                                    @foreach ($faculties as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('faculty_id')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
@@ -261,8 +274,21 @@ Daftar Pemilih Tetap
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="email">Email</label>
-                                <input class="form-control" type="text" id="email" name="email" required>
+                                <input class="form-control" type="text" id="email" name="edit_email" required>
                                 @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <label for="faculty_id">Fakultas</label>
+                                <select name="edit_faculty_id" class="form-control" id="faculty_id" required>
+                                    @foreach ($faculties as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('faculty_id')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -363,6 +389,9 @@ Daftar Pemilih Tetap
                                   type: "post",
                         }
                     },
+                    faculty_id:{
+                        required: true
+                    }
                 },
                 messages: {
                     name: {
@@ -375,6 +404,9 @@ Daftar Pemilih Tetap
                     email: {
                         required: "Email harus di isi.",
                         remote: "Email sudah tersedia.",
+                    },
+                    faculty_id:{
+                        required: "Fakultas harus diisi"
                     }
                 },
                 submitHandler: function(form) {
@@ -415,6 +447,9 @@ Daftar Pemilih Tetap
                                         },
                                     }
                         },
+                        edit_faculty_id:{
+                            required: true
+                        },
                     },
                     messages: {
                         edit_name: {
@@ -427,7 +462,10 @@ Daftar Pemilih Tetap
                         edit_email: {
                             required: "Email harus di isi.",
                             remote: "Email sudah tersedia.",
-                        }
+                        },
+                        edit_faculty_id: {
+                          required: "Fakultas harus di isi.",
+                        },
                     },
                     submitHandler: function(form) {
                         $("#editButton").prop('disabled', true);

@@ -81,7 +81,7 @@
     </nav>
 
     <!-- Modal Syarat Desktop -->
-    <div class="modal fade" id="syaratModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="syaratModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
@@ -197,7 +197,7 @@
     </div>
 
     <!-- Modal Info -->
-    <div class="modal fade" id="infoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
@@ -251,7 +251,7 @@
     </div>
 
     <!-- Modal Petunjuk -->
-    <div class="modal fade" id="petunjukModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="petunjukModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-style modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">

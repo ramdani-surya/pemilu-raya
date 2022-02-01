@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Alert;
+use App\Models\Faculty;
 use Datatables;
 use Illuminate\Support\Facades\Validator;
 
@@ -45,7 +46,8 @@ class VoterController extends Controller
         //         ->make(true);
         // }
 
-        $data['election'] = $this->activeElection;
+        $data['election']   = $this->activeElection;
+        $data['faculties']  = Faculty::all();
 
         return view('admin.voter.data', $data);
     }
@@ -111,9 +113,10 @@ class VoterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nim'      => 'required|string|unique:voters,nim',
-            'name'     => 'required|string',
-            'email'    => 'required|email:filter'
+            'nim'           => 'required|string|unique:voters,nim',
+            'name'          => 'required|string',
+            'email'         => 'required|email:filter',
+            'faculty_id'    => 'required'
         ], config('validation_messages'));
 
         $data = [
@@ -121,6 +124,7 @@ class VoterController extends Controller
             'nim'         => $request->nim,
             'name'        => $request->name,
             'token'       => Str::random(6),
+            'faculty_id'  => $request->faculty_id,
             'email'       => $request->email,
         ];
 
@@ -144,16 +148,18 @@ class VoterController extends Controller
         $messages['edit_nim.unique'] = 'NIM telah digunakan';
 
         $request->validate([
-            'edit_nim'  => "required|string|unique:voters,nim,$voter->id",
-            'edit_name' => 'required|string',
-            'email'     => "required|email|unique:voters,email,$voter->id",
+            'edit_nim'          => "required|string|unique:voters,nim,$voter->id",
+            'edit_name'         => 'required|string',
+            'edit_email'         => "required|email|unique:voters,email,$voter->id",
+            'edit_faculty_id'    => 'required'
         ], $messages);
 
         $data = [
-            'user_id' => Auth::id(),
-            'nim'     => $request->edit_nim,
-            'name'    => $request->edit_name,
-            'email'   => $request->email,
+            'user_id'       => Auth::id(),
+            'nim'           => $request->edit_nim,
+            'name'          => $request->edit_name,
+            'email'         => $request->edit_email,
+            'faculty_id'    => $request->edit_faculty_id
         ];
 
         $voter->update($data)
