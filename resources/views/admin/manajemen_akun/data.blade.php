@@ -90,8 +90,8 @@ Daftar Manajemen Akun
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td><span class="badge badge-success font-15">{{ $user->role }}</span></td>
-                                @if(Auth::user()->role == 'admin')
+                                <td><span class="badge badge-success font-15">{{ str_replace('_', ' ', $user->role) }}</span></td>
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <td>
                                     <div class="form-group">
                                         <button type="button" data-toggle="modal" data-target="#editUserModal"
