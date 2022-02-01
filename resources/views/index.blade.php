@@ -19,6 +19,8 @@ Kandidat
             <div class="row mb-5">
                 <div class="col-md-12 mb-5">
                     Hi, <b>{{Auth::user()->name}}</b> Silahkan pakai hak suaramu !
+                    <br>
+                    <a href="{{route('logout')}}" style="all:unset;cursor:pointer"><small>Logout?</small></a>
                 </div>
                 <div class="col-md-5">
                     <h1 class="text-besar mb-3">
@@ -144,40 +146,86 @@ Kandidat
                     Pemilihan Umum <br>
                     Badan Eksekutif Mahasiswa
                 </h1>
-                <div class="row" >
-                    @foreach ($bem as $item)
-                        <div class="col-md-5 mx-5 mt-5">
-                            <div class="row card-calon d-flex justify-content-center py-5">
-                                <div class="col-md-3">  
-                                    <div class="position-relative">
-                                        <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">1</label></div>
+                @if (Auth::user()->bem_voted != 1)
+                    <div class="row" >
+                        @foreach ($bem as $item)
+                            <div class="col-md-5 mx-5 mt-5">
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3">  
+                                        <div class="position-relative">
+                                            <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$item->candidate_number}}</label></div>
+                                        </div>
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($item->image){
+                                                if (Storage::exists($item->image)) {
+                                                    $path = Storage::url($item->image);
+                                                }
+                                            }
+                                        @endphp
+                                        <img src="{{$path}}" class="img-fluid img-candidate" alt="">
                                     </div>
-                                    <img src="{{asset('front')}}/assets/image/James.png" class="img-fluid" alt="">
-                                </div>
-                                <div class="col-md-7">
-                                    <label class="nama">
-                                        {{$item->chairman_name}}
-                                    </label><br>
-                                    <label class="nim">
-                                        {{$item->faculties->name}}
-                                    </label><br>
-                                    <label class="fakultas">
-                                        {{$item->studyPrograms->name}}
-                                    </label>
-                                    <div class="organisasi mt-2">
-                                        <label>Riwayat Organisasi</label>
-                                        <ol>
-                                            <li>Anggota Senat Mahasiswa FISIP 2020</li>
-                                            <li>Wakil Ketua UKM Kajian Islam 2020</li>
-                                            <li>Anggota UKM Himpunan Mahasiswa 2020</li>
-                                        </ol>
+                                    <div class="col-md-7">
+                                        <label class="nama">
+                                            {{$item->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$item->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$item->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$item->program!!}
+                                        </div>
                                     </div>
+                                    <button class="btn btn-biru col-4 mt-3" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
                                 </div>
-                                <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
                             </div>
+                        @endforeach
+                    </div>
+                @else 
+                    @if ($bem_voted)
+                        <div class="row d-flex justify-content-center" >
+                            <div class="col-md-5 mx-5 mt-5">
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$bem_voted->candidate->candidate_number}}</label></div>
+                                        </div>
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($bem_voted->candidate->image){
+                                                if (Storage::exists($bem_voted->candidate->image)) {
+                                                    $path = Storage::url($bem_voted->candidate->image);
+                                                }
+                                            }
+                                        @endphp
+                                        <img src="{{$path}}" class="img-fluid img-candidate" alt="">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="nama">
+                                            {{$bem_voted->candidate->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$bem_voted->candidate->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$bem_voted->candidate->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$bem_voted->candidate->program!!}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-center text-muted">
+                                Anda telah memilih kandidat ini pada tanggal <br>
+                                {{date('d M Y', strtotime($bem_voted->created_at))}} pada pukul {{date('H:i', strtotime($bem_voted->created_at))}}
+                            </p>
                         </div>
-                    @endforeach
-                </div>
+                    @endif
+                @endif
             </div>
         </div>
     </section>
@@ -190,127 +238,87 @@ Kandidat
                     Pemilihan Umum <br>
                     Badan Eksekutif Mahasiswa
                 </h1>
+                @if (Auth::user()->bem_voted != 1)
                 <div class="row" >
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">1</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">  
-                                <img src="{{asset('front')}}/assets/image/James.png" class="img-fluid mx-auto d-block" alt="">
+                    @foreach ($bem as $item)
+                        <div class="col-10 mx-5 mt-5">
+                            <div class="position-relative mt-3">
+                                <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$item->candidate_number}}</label></div>
                             </div>
-                            <div class="col-md-7">
-                                <label class="nama mt-2">
-                                    Ira Septiani
-                                </label><br>
-                                <label class="nim">
-                                    E1935223429
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Sosial dan Ilmu Politik
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Anggota Senat Mahasiswa FISIP 2020</li>
-                                        <li>Wakil Ketua UKM Kajian Islam 2020</li>
-                                        <li>Anggota UKM Himpunan Mahasiswa 2020</li>
-                                    </ol>
+                            <div class="row card-calon d-flex justify-content-center py-5">
+                                <div class="col-md-3"> 
+                                    @php
+                                        $path = asset('front/assets/image/James.png');
+                                        if($item->image){
+                                            if (Storage::exists($item->image)) {
+                                                $path = Storage::url($item->image);
+                                            }
+                                        }
+                                    @endphp 
+                                    <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
                                 </div>
-                            </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
-                        </div>
-                    </div>
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">2</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <img src="{{asset('front')}}/assets/image/James 2.png" class="img-fluid mx-auto d-block" alt="">
-                            </div>
-                            <div class="col-md-7">
-                                <label class="nama mt-2">
-                                    Muhammad Khaerudin
-                                </label><br>
-                                <label class="nim">
-                                    D11903962
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Ekonomi dan Bisnis
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Anggota Senat Mahasiswa FEB 2021</li>
-                                        <li>Wakil Ketua Binokasih 2021</li>
-                                        <li>Ketua Angkatan 2019</li>
-                                    </ol>
+                                <div class="col-md-7 text-center">
+                                    <label class="nama">
+                                        {{$item->chairman_name}}
+                                    </label><br>
+                                    <label class="fakultas">
+                                        {{$item->faculties->name}}
+                                    </label><br>
+                                    <label class="program">
+                                        {{$item->studyPrograms->name}}
+                                    </label>
+                                    <div class="organisasi mt-2">
+                                        {!!$item->program!!}
+                                    </div>
                                 </div>
+                                <button class="btn btn-biru col-4 mt-3" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
                             </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
                         </div>
-                    </div>
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">3</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <img src="{{asset('front')}}/assets/image/James 3.png" class="img-fluid mx-auto d-block" alt="">
-                            </div>
-                            <div class="col-md-7">
-                                <label class="nama mt-2">
-                                    Muhammad Fajar Fadillah
-                                </label><br>
-                                <label class="nim">
-                                    C119200013
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Ilmu Budaya
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Anggota BPM 2020</li>
-                                        <li>Anggota PMII 2019</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
-                        </div>
-                    </div>
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">4</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <img src="{{asset('front')}}/assets/image/James 4.png" class="img-fluid mx-auto d-block" alt="">
-                            </div>
-                            <div class="col-md-7">
-                                <label class="nama mt-2">
-                                    Muhammad Eri Rizki
-                                </label><br>
-                                <label class="nim">
-                                    A21900112
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Teknologi Informasi
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Ketua Eskul Pramuka 2016</li>
-                                        <li>Ketua UKM Kajian Islam 2020</li>
-                                        <li>Wakil Ketua Senat Mahasiswa 2021</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
+                @else 
+                    @if ($bem_voted)
+                        <div class="row" >
+                            <div class="col-10 mx-5 mt-5">
+                                <div class="position-relative mt-3">
+                                    <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$bem_voted->candidate->candidate_number}}</label></div>
+                                </div>
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3"> 
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($bem_voted->candidate->image){
+                                                if (Storage::exists($bem_voted->candidate->image)) {
+                                                    $path = Storage::url($bem_voted->candidate->image);
+                                                }
+                                            }
+                                        @endphp 
+                                        <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
+                                    </div>
+                                    <div class="col-md-7 text-center">
+                                        <label class="nama">
+                                            {{$bem_voted->candidate->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$bem_voted->candidate->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$bem_voted->candidate->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$bem_voted->candidate->program!!}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="mt-3 text-center text-muted">
+                                    Anda telah memilih kandidat ini pada tanggal <br>
+                                    {{date('d M Y', strtotime($bem_voted->created_at))}} pada pukul {{date('H:i', strtotime($bem_voted->created_at))}}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+                @endif
+                
             </div>
         </div>
     </section>
@@ -323,68 +331,86 @@ Kandidat
                     Pemilihan Umum <br>
                     Badan Perwakilan Mahasiswa
                 </h1>
-                <div class="row" >
-                    <div class="col-md-5 mx-5 mt-5">
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <div class="position-relative">
-                                    <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">1</label></div>
+                @if (Auth::user()->bpm_voted != 1)
+                    <div class="row">
+                        @foreach ($bpm as $item)
+                            <div class="col-md-5 mx-5 mt-5">
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$item->candidate_number}}</label></div>
+                                        </div>
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($item->image){
+                                                if (Storage::exists($item->image)) {
+                                                    $path = Storage::url($item->image);
+                                                }
+                                            }
+                                        @endphp 
+                                        <img src="{{$path}}" class="img-fluid img-candidate" alt="">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="nama">
+                                            {{$item->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$item->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$item->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$item->program!!}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-biru col-4 mt-3" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
                                 </div>
-                                <img src="{{asset('front')}}/assets/image/James 5.png" class="img-fluid" alt="">
                             </div>
-                            <div class="col-md-7">
-                                <label class="nama">
-                                    Sandi
-                                </label><br>
-                                <label class="nim">
-                                    D11904036
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Ekonomi dan Bisnis
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Anggota Pramuka Ambalan 2018</li>
-                                        <li>Ketua Dewan Saka Bhayangkara 2018</li>
-                                        <li>Dewan Kerja Ranting Sumedang Utara 2018</li>
-                                        <li>Dewan Kerja Cabang Sumedang 2019</li>
-                                        <li>Anggota Senat Mahasiswa 2020</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="col-md-5 mx-5 mt-5">
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <div class="position-relative">
-                                    <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">2</label></div>
+                @else 
+                    @if ($bpm_voted)
+                        <div class="row d-flex justify-content-center" >
+                            <div class="col-md-5 mx-5 mt-5">
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <div class="position-absolute top-0 start-0 translate-middle me-5 px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$bpm_voted->candidate->candidate_number}}</label></div>
+                                        </div>
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($bpm_voted->candidate->image){
+                                                if (Storage::exists($bpm_voted->candidate->image)) {
+                                                    $path = Storage::url($bpm_voted->candidate->image);
+                                                }
+                                            }
+                                        @endphp
+                                        <img src="{{$path}}" class="img-fluid img-candidate" alt="">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="nama">
+                                            {{$bpm_voted->candidate->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$bpm_voted->candidate->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$bpm_voted->candidate->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$bpm_voted->candidate->program!!}
+                                        </div>
+                                    </div>
                                 </div>
-                                <img src="{{asset('front')}}/assets/image/James 6.png" class="img-fluid" alt="">
                             </div>
-                            <div class="col-md-7">
-                                <label class="nama">
-                                    Teten Tahroni
-                                </label><br>
-                                <label class="nim">
-                                    19210120663
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Keguruan dan Ilmu Pendidikan
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Komisi I BPM FKIP 2021</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
+                            <p class="mt-4 text-center text-muted">
+                                Anda telah memilih kandidat ini pada tanggal <br>
+                                {{date('d M Y', strtotime($bpm_voted->created_at))}} pada pukul {{date('H:i', strtotime($bpm_voted->created_at))}}
+                            </p>
                         </div>
-                    </div>
-                </div>
+                    @endif
+                @endif
             </div>
         </div>
     </section>
@@ -397,68 +423,86 @@ Kandidat
                     Pemilihan Umum <br>
                     Badan Perwakilan Mahasiswa
                 </h1>
-                <div class="row" >
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">1</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">  
-                                <img src="{{asset('front')}}/assets/image/James 5.png" class="img-fluid mx-auto d-block" alt="">
-                            </div>
-                            <div class="col-md-7">
-                                <label class="nama">
-                                    Sandi
-                                </label><br>
-                                <label class="nim">
-                                    D11904036
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Ekonomi dan Bisnis
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Anggota Pramuka Ambalan 2018</li>
-                                        <li>Ketua Dewan Saka Bhayangkara 2018</li>
-                                        <li>Dewan Kerja Ranting Sumedang Utara 2018</li>
-                                        <li>Dewan Kerja Cabang Sumedang 2019</li>
-                                        <li>Anggota Senat Mahasiswa 2020</li>
-                                    </ol>
+                @if (Auth::user()->bpm_voted != 1)
+                    <div class="row" >
+                        @foreach ($bpm as $item)
+                            <div class="col-10 mx-5 mt-5">
+                                <div class="position-relative mt-3">
+                                    <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$item->candidate_number}}</label></div>
+                                </div>
+                                <div class="row card-calon d-flex justify-content-center py-5">
+                                    <div class="col-md-3">  
+                                        @php
+                                            $path = asset('front/assets/image/James.png');
+                                            if($item->image){
+                                                if (Storage::exists($item->image)) {
+                                                    $path = Storage::url($item->image);
+                                                }
+                                            }
+                                        @endphp 
+                                        <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="nama">
+                                            {{$item->chairman_name}}
+                                        </label><br>
+                                        <label class="fakultas">
+                                            {{$item->faculties->name}}
+                                        </label><br>
+                                        <label class="program">
+                                            {{$item->studyPrograms->name}}
+                                        </label>
+                                        <div class="organisasi mt-2">
+                                            {!!$item->program!!}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-biru col-4 mt-3" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
                                 </div>
                             </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="col-10 mx-5 mt-5">
-                        <div class="position-relative mt-3">
-                            <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">2</label></div>
-                        </div>
-                        <div class="row card-calon d-flex justify-content-center py-5">
-                            <div class="col-md-3">
-                                <img src="{{asset('front')}}/assets/image/James 6.png" class="img-fluid mx-auto d-block" alt="">
+                @else 
+                    @if ($bpm_voted)
+                    <div class="row" >
+                        <div class="col-10 mx-5 mt-5">
+                            <div class="position-relative mt-3">
+                                <div class="position-absolute mt-3 top-0 start-50 translate-middle-x px-3 rounded-circle py-2 border border-3" style="border-color: #0F1F3C !important;"><label class="fw-bold fs-6">{{$bpm_voted->candidate->candidate_number}}</label></div>
                             </div>
-                            <div class="col-md-7">
-                                <label class="nama">
-                                    Teten Tahroni
-                                </label><br>
-                                <label class="nim">
-                                    19210120663
-                                </label><br>
-                                <label class="fakultas">
-                                    Fakultas Keguruan dan Ilmu Pendidikan
-                                </label>
-                                <div class="organisasi mt-2">
-                                    <label>Riwayat Organisasi</label>
-                                    <ol>
-                                        <li>Komisi I BPM FKIP 2021</li>
-                                    </ol>
+                            <div class="row card-calon d-flex justify-content-center py-5">
+                                <div class="col-md-3">  
+                                    @php
+                                        $path = asset('front/assets/image/James.png');
+                                        if($bpm_voted->candidate->image){
+                                            if (Storage::exists($bpm_voted->candidate->image)) {
+                                                $path = Storage::url($bpm_voted->candidate->image);
+                                            }
+                                        }
+                                    @endphp
+                                    <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="nama">
+                                        {{$bpm_voted->candidate->chairman_name}}
+                                    </label><br>
+                                    <label class="fakultas">
+                                        {{$bpm_voted->candidate->faculties->name}}
+                                    </label><br>
+                                    <label class="program">
+                                        {{$bpm_voted->candidate->studyPrograms->name}}
+                                    </label>
+                                    <div class="organisasi mt-2">
+                                        {!!$bpm_voted->candidate->program!!}
+                                    </div>
                                 </div>
                             </div>
-                            <button class="btn btn-biru col-4 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#visiModal">Visi & Misi</button>
+                            <p class="mt-4 text-center text-muted">
+                                Anda telah memilih kandidat ini pada tanggal <br>
+                                {{date('d M Y', strtotime($bpm_voted->created_at))}} pada pukul {{date('H:i', strtotime($bpm_voted->created_at))}}
+                            </p>
                         </div>
                     </div>
-                </div>
+                    @endif
+                @endif
             </div>
         </div>
     </section>
@@ -473,91 +517,51 @@ Kandidat
                         <h5 class="text-top mt-5">
                             Visi & Misi
                         </h5>
-                        <h5 class="text-top">
-                            Ira Septiani
+                        <h5 class="text-top" id="modal_name">
+                            ---
                         </h5>
                         <!-- Desktop -->
                         <div class="mx-5 my-5 text-start d-none d-md-block">
                             <div class="px-5 py-5 content-modal">
-                                <img src="{{asset('front')}}/assets/image/James.png" class="img-fluid mx-auto d-block mb-4" alt="">
+                                <img id="modal_image" src="{{asset('front')}}/assets/image/James.png" class="img-fluid mx-auto d-block mb-4 img-candidate" alt="">
                                 <h5 class="fw-bold text-center mb-3">
                                     Visi
                                 </h5>
-                                <p class="visi mx-5 mb-5">
-                                    UNSAP JUARA (JUJUR, UNGGUL, AKTIF, RESPONSIF, ADIL) Mewujudkan BEM UNSAP yang Jujur, Unggul, Aktif, Responsif dan Adil dalam lingkup univ maupun masyarakat luas.
+                                <p class="visi mx-5 mb-5" id="modal_visi">
+                                    ---
                                 </p>
                                 <h5 class="fw-bold text-center mt-5 mb-3">
                                     Misi
                                 </h5>
-                                <ol class="visi mx-5">
-                                    <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
-                                    </li><br>
-                                    <li>
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
-                                    </li><br>
-                                    <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
-                                    </li>
-                                </ol>
+                                <div class="" id="modal_misi">
+                                    ---
+                                </div>
                             </div>
                             <div class="d-grid gap-2 mt-4">
-                                <button class="btn btn-mengerti rounded-3" type="button" data-bs-target="#pilihModal" data-bs-toggle="modal">Pilih</button>
+                                <button class="btn btn-mengerti rounded-3" type="button" onclick="electAlert()">Pilih</button>
                             </div>
                         </div>
                         <!-- Mobile -->
                         <div class="mx-3 my-3 text-start d-sm-block d-md-none">
                             <div class="px-2 py-2 content-modal">
-                                <img src="{{asset('front')}}/assets/image/James.png" class="img-fluid mx-auto d-block mb-4 mt-3" alt="">
+                                <img id="modal_mobile_image" src="{{asset('front')}}/assets/image/James.png" class="img-fluid mx-auto d-block mb-4 mt-3 img-candidate" alt="">
                                 <h5 class="fw-bold text-center mb-3">
                                     Visi
                                 </h5>
-                                <p class="visi mx-5 mb-5">
-                                    UNSAP JUARA (JUJUR, UNGGUL, AKTIF, RESPONSIF, ADIL) Mewujudkan BEM UNSAP yang Jujur, Unggul, Aktif, Responsif dan Adil dalam lingkup univ maupun masyarakat luas.
+                                <p class="visi mx-5 mb-5" id="modal_mobile_visi">
+                                    ---
                                 </p>
                                 <h5 class="fw-bold text-center mt-5 mb-3">
                                     Misi
                                 </h5>
-                                <ol class="visi mx-5">
-                                    <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
-                                    </li><br>
-                                    <li>
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
-                                    </li><br>
-                                    <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
-                                    </li>
-                                </ol>
+                                <div id="modal_mobile_misi">
+                                    ---
+                                </div>
                             </div>
                             <div class="d-grid gap-2 mt-4">
-                                <button class="btn btn-mengerti rounded-3" type="button" data-bs-target="#pilihModal" data-bs-toggle="modal">Pilih</button>
+                                <button class="btn btn-mengerti rounded-3" type="button" onclick="electAlert()">Pilih</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Pilih -->
-    <div class="modal fade" id="pilihModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-style modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <a href="milih-bem.html" class="text-decoration-none" data-bs-dismiss="modal"><img class="float-end" src="{{asset('front')}}/assets/image/close.png" alt=""></a>
-                    <img src="{{asset('front')}}/assets/image/Vector 2.png" class="img-fluid w-auto mx-auto d-block mt-5" alt="">
-                    <div class="text-center mt-3">
-                        <h5 class="fw-bold">
-                            Berhasil!
-                        </h5>
-                        <p>
-                            Terima kasih sudah <br>
-                            menggunakan hak suaramu
-                        </p>
-                    </div>
-                    <div class="d-grid gap-2 mt-4">
-                        <button class="btn btn-mengerti rounded-3" type="button"><a href="milih-bem.html" class="text-decoration-none text-white">Kembali</a></button>
                     </div>
                 </div>
             </div>
@@ -575,7 +579,8 @@ Kandidat
                     Sudah Menggunakan Hak Suaramu
                 </h5>
                 <h5 class="mt-3 text-center text-kecil mb-5">
-                    Build with passion by <font class="tahu">TAHU</font><font class="ngoding">NGODING</font>
+                    
+                    Build with passion by <a href="http://instagram.com/tahungoding" style="all:unset;cursor:pointer"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
                 </h5>
             </div>
         </div>
@@ -584,21 +589,65 @@ Kandidat
 @endsection
 
 @section('js')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function electAlert(e) {
-        let candidate = JSON.parse(e.dataset.candidate)
+
+    var id_candidate;
+
+    function visiMisi(id) {
+
+        var visi = new bootstrap.Modal(document.getElementById('visiModal'), {
+            keyboard: false
+        })
+        visi.show()
+
+        fetch("{{url('candidate-detail')}}/"+id)
+        .then(response => response.json())
+        .then(data => {
+
+            var res = data;
+
+            var modal_name = document.getElementById('modal_name');
+            var modal_image = document.getElementById('modal_image');
+            var modal_visi = document.getElementById('modal_visi');
+            var modal_misi = document.getElementById('modal_misi');
+            var modal_mobile_name = document.getElementById('modal_mobile_name');
+            var modal_mobile_image = document.getElementById('modal_mobile_image');
+            var modal_mobile_visi = document.getElementById('modal_mobile_visi');
+            var modal_mobile_misi = document.getElementById('modal_mobile_misi');
+
+            window.candidate = res.data;
+            modal_name.innerHTML = res.data.chairman_name;
+            modal_image.setAttribute("src", res.data.image); 
+            modal_visi.innerHTML = res.data.vision;
+            modal_misi.innerHTML = res.data.mission;
+            modal_mobile_image.setAttribute("src", res.data.image); 
+            modal_mobile_visi.innerHTML = res.data.vision;
+            modal_mobile_misi.innerHTML = res.data.mission;
+
+        }).catch(err => console.error(err))
+    }
+
+    function electAlert() {
 
         Swal.fire({
-            title: `Pilih kandidat ${candidate.chairman_name} - ${candidate.vice_chairman_name}?`,
+            title: `Pilih kandidat ${candidate.chairman_name} ?`,
             type: "question",
             showCancelButton: !0,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#792737",
             confirmButtonText: "Ya, Saya yakin!",
             cancelButtonText: "Tidak, batal."
         }).then(function (t) {
             if (t.value) {
-                window.location.href = `${e.dataset.url}`
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Anda berhasil memilih',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                setInterval(() => {
+                    window.location.href = `${candidate.url}`
+                }, 2000);
             }
         })
     }

@@ -225,12 +225,12 @@ body {
   font-weight: 600;
 }
 
-.section-bem .card-calon .nim {
+.section-bem .card-calon .fakultas {
   font-size: 15px;
   font-weight: normal;
 }
 
-.section-bem .card-calon .fakultas {
+.section-bem .card-calon .program {
   font-size: 13px;
 }
 
@@ -289,5 +289,10 @@ body {
 .section-footer .text-kecil .ngoding {
   font-style: italic;
   font-weight: 400;
+}
+
+.img-candidate {
+  max-height:150px;
+  object-fit:cover
 }
 /*# sourceMappingURL=main.css.map */

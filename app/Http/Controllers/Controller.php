@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController
 {
@@ -14,8 +15,10 @@ class Controller extends BaseController
     public function index()
     {
         $election_id = getRunningElection()->id;
-        $data['bem'] = getRunningCandidates($election_id,1);
-        $data['bpm'] = getRunningCandidates($election_id,2);
+        $data['bem'] = getRunningCandidates($election_id,1) ?: null;
+        $data['bpm'] = getRunningCandidates($election_id,2) ?: null;
+        $data['bem_voted'] = getVoted($election_id,Auth::user()->id,1) ?: null;
+        $data['bpm_voted'] = getVoted($election_id,Auth::user()->id,2) ?: null ?: null;
 
         return view('index', $data);
     }

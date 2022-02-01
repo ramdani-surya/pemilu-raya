@@ -32,22 +32,31 @@
                     </div>
                     <form action="{{route('authenticate')}}" method="POST">
                         @csrf
+                        @error('wrong')
+                            <small class="text-danger mr-2 mb-2 text-center">{{$message}}</small><br>
+                        @enderror
                         <div class="mb-3 input-group">
                             <input type="text" name="nim" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
                             <i class="bi bi-person input-group-text form-style"></i>
                         </div>
+                        @error('nim')
+                            <small class="text-danger mr-2 mb-2">{{$message}}</small><br>
+                        @enderror
                         <div class="mb-3 input-group">
                             <input type="password" name="token" class="form-control form-control-lg form-style" placeholder="Masukan Token">
                             <i class="bi bi-eye-slash input-group-text form-style"></i>
                         </div>
-                        <div id="emailHelp" class="form-text ps-4 mb-3">
-                            Tidak dapat token? 
-                        </div>
+                        @error('token')
+                            <small class="text-danger">{{$message}}</small><br>
+                        @enderror
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</button>
                         </div>
+                        <div id="emailHelp" class="form-text ps-4 mb-3">
+                            Tidak dapat token? 
+                        </div>
                         <h5 class="text-center text-kecil">
-                            Build with passion by <font class="tahu">TAHU</font><font class="ngoding">NGODING</font>
+                            Build with passion by <a href="https://instagram.com/tahungoding" style="all:unset;cursor: pointer;"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
                         </h5>
                     </form>
                 </div>

@@ -158,6 +158,42 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="edit_vision">Visi<span class="text-danger">*</span></label>
+                                    <textarea class="ckeditor form-control" name="edit_vision">{{ old('edit_vision',$candidate->vision) }}</textarea>
+                                    @error('edit_vision')
+                                        <style>
+                                            .cke_chrome {
+                                                border: 1px solid #F94687 !important;
+                                            }
+                                        </style>
+
+                                        <div class="mt-2">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="edit_mission">Misi<span class="text-danger">*</span></label>
+                                    <textarea class="ckeditor form-control" name="edit_mission">{{ old('edit_mission', $candidate->mission) }}</textarea>
+                                    @error('edit_mission')
+                                        <style>
+                                            .cke_chrome {
+                                                border: 1px solid #F94687 !important;
+                                            }
+                                        </style>
+
+                                        <div class="mt-2">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="edit_program">Program<span class="text-danger">*</span></label>
@@ -314,7 +350,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('candidate_types.update', $candidate_types->id) }}" method="post"
+                        <form action="{{ route('candidates.update', $candidate_types->id) }}" method="post"
                             id="editCandidateTypeForm{{ $candidate_types->id }}">
                             @csrf
                             @method('PUT')

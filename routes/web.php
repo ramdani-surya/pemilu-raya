@@ -41,17 +41,13 @@ Route::middleware(['auth:voter', 'comingSoon'])->group(function () {
 
 Route::get('/coming-soon', [Controller::class, 'comingSoon'])->name('coming_soon');
 Route::get('/closed', [Controller::class, 'closed'])->name('closed');
+Route::get('/candidate-detail/{id}', [CandidateController::class, 'showJson'])->name('candidate-detail');
 
 # ADMIN
 Route::prefix('login')->middleware('guest')->group(function () {
     Route::get('/admin', [LoginController::class, 'index'])->name('admin.login');
     Route::post('/admin', [LoginController::class, 'login'])->name('admin.post');
 });
-
-
-
-
-
 
 Route::group(['middleware' => ['loggedIn', 'web']], function () {
    

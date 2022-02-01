@@ -218,13 +218,15 @@ class CandidateController extends Controller
         $edit_slug = CandidateType::where('id', $request->edit_candidate_type_id)->first();
 
         $data = [
-            'candidate_type_id'  => $request->edit_candidate_type_id ? $edit_candidate_type_id : $candidate->candidate_type_id,
+            'candidate_type_id'     => $request->edit_candidate_type_id ? $edit_candidate_type_id : $candidate->candidate_type_id,
             'candidate_number'      => $request->edit_candidate_number ? $edit_candidate_number : $candidate->candidate_number,
             'chairman_name'         => $request->edit_chairman_name,
-            'faculty_id'               => $request->edit_faculty_id,
-            'study_program_id'         => $request->edit_study_program_id,
+            'faculty_id'            => $request->edit_faculty_id,
+            'study_program_id'      => $request->edit_study_program_id,
             'image'                 => $request->hasFile('edit_image') ? $edit_image : $candidate->image,
-            'program'                => $request->edit_program,
+            'program'               => $request->edit_program,
+            'vision'                => $request->edit_vision,
+            'mission'               => $request->edit_mission,
         ];
 
         $candidate->update($data)
@@ -282,18 +284,36 @@ class CandidateController extends Controller
             'voter_id'    => Auth::guard('voter')->id(),
         ];
 
-        if ($candidate->votings()->create($data)) {
-            Auth::guard('voter')->user()->update([
-                'voted' => 1
-            ]);
+        $update = strtolower($candidate->candidateTypes->name).'_voted';
 
-            Alert::success('Sukses', "Terima kasih telah menggunakan hak suara Anda.");
+        if (Auth::user()->$update != 1) {
+            if ($candidate->votings()->create($data)) {
 
-            return redirect(route('has_voted'));
+                Auth::guard('voter')->user()->update([
+                    strtolower($candidate->candidateTypes->name).'_voted' => 1
+                ]);
+    
+                return redirect('/');
+            }
         }
 
-        Alert::error('Error', "Kandidat gagal dipilih!");
+        return redirect('/');
+    }
 
-        return back();
+    public function showJson($id){
+
+        $detail = Candidate::find($id);
+
+        if ($detail) {
+            $detail->image = url(Storage::url($detail->image));
+            $detail->url   = route('elect_candidate', $detail);
+            return [
+                'status' => true,
+                'data' => $detail
+            ];
+        }else{
+            return ['status' => false];
+        }
+
     }
 }

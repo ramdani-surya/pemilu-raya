@@ -161,6 +161,42 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="vision">Visi<span class="text-danger">*</span></label>
+                                    <textarea class="ckeditor form-control" name="vision">{{ old('vision') }}</textarea>
+                                    @error('vision')
+                                        <style>
+                                            .cke_chrome {
+                                                border: 1px solid #F94687 !important;
+                                            }
+                                        </style>
+
+                                        <div class="mt-2">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="mision">Misi<span class="text-danger">*</span></label>
+                                    <textarea class="ckeditor form-control" name="mision">{{ old('mision') }}</textarea>
+                                    @error('mision')
+                                        <style>
+                                            .cke_chrome {
+                                                border: 1px solid #F94687 !important;
+                                            }
+                                        </style>
+
+                                        <div class="mt-2">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="program">Program<span class="text-danger">*</span></label>
                                     <textarea class="ckeditor form-control" name="program">{{ old('program') }}</textarea>
 

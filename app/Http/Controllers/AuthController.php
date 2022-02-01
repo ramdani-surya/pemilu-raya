@@ -6,6 +6,8 @@ use App\Models\Voter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
@@ -16,10 +18,18 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nim'   => 'required|string',
             'token' => 'required|string',
+        ],[
+            'nim.required' => 'NIM / NPM tidak boleh kosong',
+            'token.required' => 'Token tidak boleh kosong',
         ]);
+
+        if ($validator->fails())
+        {
+            return Redirect::route('login')->withErrors($validator)->withInput();
+        }
 
         $voter = Voter::where($request->only('nim', 'token'))->first();
 
@@ -27,9 +37,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended('/');
+        }else{
+            $validator->getMessageBag()->add('wrong', 'NIM/NPM dan Token yang anda masukan tidak cocok !');
+            return Redirect::route('login')->withErrors($validator)->withInput();
         }
-
-        return view('login_error');
     }
 
     public function logout(Request $request)

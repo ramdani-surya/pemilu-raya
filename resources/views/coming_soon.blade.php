@@ -11,7 +11,7 @@ Cooming Soon
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 <h1 class="text-besar text-center">
-                    Portal Permilu Raya <br>
+                    Portal Pemilu Raya <br>
                     Akan Dibuka Dalam Waktu
                 </h1>
                 <div class="row mt-4">
@@ -50,7 +50,7 @@ Cooming Soon
                 </div>
                 
                 <h5 class="mt-3 text-center text-kecil">
-                    Build with passion by <a href="http://instagram.com" style="all:unset;cursor:pointer"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
+                    Build with passion by <a href="http://instagram.com/tahungoding" style="all:unset;cursor:pointer"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
                 </h5>
             </div>
             <div class="col-md-4"></div>

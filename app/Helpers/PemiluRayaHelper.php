@@ -2,6 +2,7 @@
 
 use App\Models\Candidate;
 use App\Models\Election;
+use App\Models\Voting;
 use Illuminate\Support\Str;
 
 function emailStmik($nim)
@@ -36,6 +37,17 @@ function getRunningCandidates($election_id = '', $type = '')
     })->when($type, function ($q, $type) {
         return $q->where('candidate_type_id', $type);
     })->orderBy('candidate_number')->get();
+}
+
+function getVoted($election_id = '', $voter_id = '', $type = '')
+{
+    return Voting::when($election_id, function ($q, $election_id) {
+        return $q->where('election_id', $election_id);
+    })->when($voter_id, function ($q, $voter_id) {
+        return $q->where('voter_id', $voter_id);
+    })->whereHas('candidate', function ($query) use($type) {
+        return $query->where('candidate_type_id', '=', $type);
+    })->first();
 }
 
 function replaceEachChar($string, $replace)
