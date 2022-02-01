@@ -37,4 +37,9 @@ class Voter extends Authenticatable
     {
         return $this->hasOne(Voting::class);
     }
+
+    public function faculties()
+    {
+        return $this->belongsTo(Faculty::class);
+    }
 }
