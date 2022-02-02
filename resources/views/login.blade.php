@@ -52,9 +52,9 @@
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</button>
                         </div>
-                        <div id="emailHelp" class="form-text ps-4 mb-3">
+                        {{-- <div id="emailHelp" class="form-text ps-4 mb-3">
                             Tidak dapat token? 
-                        </div>
+                        </div> --}}
                         <h5 class="text-center text-kecil">
                             Build with passion by <a href="https://instagram.com/tahungoding" style="all:unset;cursor: pointer;"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
                         </h5>
