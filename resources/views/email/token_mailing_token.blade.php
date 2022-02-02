@@ -15,7 +15,7 @@
         <br>
         <br>
 
-        Kami dari panitia {{ $voter->election->name }} Universitas Sebelas April Sumedang memberitahukan NIM dan token
+        Kami dari panitia {{ $voter->election->name }} Universitas Sebelas April Sumedang memberitahukan NIM/NPM dan token
         yang akan digunakan pada saat pemilu raya nanti, datanya sebagai berikut :
 
         <br>
@@ -27,7 +27,7 @@
         <br>
         <br>
 
-        bisa di isi melalui website https://pemira.unsap.ac.id atau tinggal klik <a
+        Untuk mengakses aplikasi E-Voting silahkan klik <a
             href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">DISINI</a>
         pada saat
         waktu
