@@ -27,8 +27,8 @@
         <br>
         <br>
 
-        bisa di isi di link <a
-            href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">pemira.unsap.ac.id/</a>
+        bisa di isi melalui website https://pemira.unsap.ac.id atau tinggal klik <a
+            href="{{ route('login') }}?nim={{ $voter->nim }}&token={{ $voter->token }}">DISINI</a>
         pada saat
         waktu
         pemilihan berlangsung.

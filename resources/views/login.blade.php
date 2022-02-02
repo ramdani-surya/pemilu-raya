@@ -36,14 +36,14 @@
                             <small class="text-danger mr-2 mb-2 text-center">{{$message}}</small><br>
                         @enderror
                         <div class="mb-3 input-group">
-                            <input type="text" name="nim" class="form-control form-control-lg form-style" placeholder="Masukan NIM">
+                            <input type="text" name="nim" class="form-control form-control-lg form-style" value="{{old('nim', $nim)}}" placeholder="Masukan NIM">
                             <i class="bi bi-person input-group-text form-style"></i>
                         </div>
                         @error('nim')
                             <small class="text-danger mr-2 mb-2">{{$message}}</small><br>
                         @enderror
                         <div class="mb-3 input-group">
-                            <input type="password" name="token" class="form-control form-control-lg form-style" placeholder="Masukan Token">
+                            <input type="password" name="token" value="{{old('token', $token)}}" class="form-control form-control-lg form-style" placeholder="Masukan Token">
                             <i class="bi bi-eye-slash input-group-text form-style"></i>
                         </div>
                         @error('token')

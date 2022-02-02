@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
-        return view('login');
+        $nim = $request->get('nim') ?: null;
+        $token = $request->get('token') ?: null;
+
+        return view('login', compact('nim','token'));
     }
 
     public function authenticate(Request $request)
