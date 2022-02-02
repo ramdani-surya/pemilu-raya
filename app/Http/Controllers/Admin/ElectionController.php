@@ -224,15 +224,15 @@ class ElectionController extends Controller
             'total_candidates'    => count($election->candidates),
             'election_winner'     => $electedCandidate->candidate_number,
             'chairman'            => $electedCandidate->chairman_name,
-            'vice_chairman'       => $electedCandidate->vice_chairman_name,
+            // 'vice_chairman'       => $electedCandidate->vice_chairman_name,
             'chairman_photo'      => $electedCandidate->chairman_photo,
-            'vice_chairman_photo' => $electedCandidate->vice_chairman_photo,
+            // 'vice_chairman_photo' => $electedCandidate->vice_chairman_photo,
             'archived'            => 1,
         ];
 
-        $election->votings()->delete();
-        $election->voters()->delete();
-        $election->candidates()->delete();
+        // $election->votings()->delete();
+        // $election->voters()->delete();
+        // $election->candidates()->delete();
 
         $election->update($data)
             ? Alert::success('Sukses', 'Pemilu berhasil diarsipkan.')

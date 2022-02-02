@@ -56,7 +56,9 @@
                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                 <div class="button-list mt-3">
                     <a href="{{ route('candidates.editIn', ['id' => $candidates->id, 'candidateType' => $candidate_type2->slug]) }}" class="btn btn-sm btn-warning text-white mt-1"><i class="fa fa-edit mr-1"></i>Edit</a>
-                    <button class="btn btn-sm btn-secondary mt-1" data-toggle="modal" data-target="#program{{ $candidates->id }}"><i class="fa fa-info-circle mr-1"></i>Program</button>
+                    <button class="btn btn-sm btn-secondary mt-1" data-toggle="modal" data-target="#riwayat{{ $candidates->id }}"><i class="fa fa-info-circle mr-1"></i>Riwayat</button>
+                    <button class="btn btn-sm btn-info mt-1" data-toggle="modal" data-target="#visi{{ $candidates->id }}"><i class="fa fa-info-circle mr-1"></i>Visi</button>
+                    <button class="btn btn-sm btn-success mt-1" data-toggle="modal" data-target="#misi{{ $candidates->id }}"><i class="fa fa-info-circle mr-1"></i>Misi</button>
                     <form style="display: inline" action="{{ route('candidates.destroy', $candidates->id) }}" method="post">
                         @csrf
                         @method('delete')
@@ -71,16 +73,58 @@
 </div>
 
 @foreach($candidate as $candidates)
-<div class="modal fade" id="program{{ $candidates->id }}">
+<div class="modal fade" id="riwayat{{ $candidates->id }}">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Program</h5>
+                <h5 class="modal-title">Riwayat</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <p>{!! $candidates->program !!}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach($candidate as $candidates)
+<div class="modal fade" id="visi{{ $candidates->id }}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Visi</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{!! $candidates->vision !!}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach($candidate as $candidates)
+<div class="modal fade" id="misi{{ $candidates->id }}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Mision</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{!! $candidates->mission !!}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger light" data-dismiss="modal">Tutup</button>

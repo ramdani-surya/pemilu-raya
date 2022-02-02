@@ -131,7 +131,7 @@
                                         @if(!$election->running && !$election->archived && $election->status == 1)
                                         <button type="button" onclick="runElection(this)" data-url="{{ route('elections.running', $election) }}"
                                             class="btn btn-xs btn-primary"><i class="fa fa-play mr-1"></i> Jalankan</button>
-                                            <a target="_blank" href="{{url('admin/voters/send-email')}}" class="btn btn-xs btn-info"><i class="fa fa-share-square mr-1"></i> Kirim
+                                            <a onclick="sendToken(this)" data-url="{{ url('admin/voters/send-email') }}" href="javascript::void(0)" class="btn btn-xs btn-info"><i class="fa fa-share-square mr-1"></i> Kirim
                                                 Email Token</a>
                                         <button type="button" data-url="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-xs btn-secondary"
@@ -562,9 +562,7 @@
         function archiveAlert(e) {
             Swal.fire({
                 title: "Arsipkan pemilu?",
-                text: `Hasil pemilu akan disimpan.
-                    Data Kandidat dan DPT akan dibersihkan!
-                    Kandidat dengan voting terbesar akan menjadi kandidat terpilih!`,
+                text: `Hasil pemilu akan disimpan. Kandidat dengan voting terbesar akan menjadi kandidat terpilih!`,
                 type: "warning",
                 showCancelButton: !0,
                 confirmButtonColor: "#7A1F31",
