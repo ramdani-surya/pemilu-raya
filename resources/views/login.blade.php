@@ -43,7 +43,7 @@
                             <small class="text-danger mr-2 mb-2">{{$message}}</small><br>
                         @enderror
                         <div class="mb-3 input-group">
-                            <input type="text" name="password" value="{{old('password', $token)}}" class="form-control form-control-lg form-style" placeholder="Masukan Token">
+                            <input type="text" name="token" value="{{old('token', $token)}}" class="form-control form-control-lg form-style" placeholder="Masukan Token">
                             <i class="bi bi-eye-slash input-group-text form-style"></i>
                         </div>
                         @error('token')
