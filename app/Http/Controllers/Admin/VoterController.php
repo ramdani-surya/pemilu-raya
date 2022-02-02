@@ -192,7 +192,9 @@ class VoterController extends Controller
         // gunakan filter_var() untuk jika value parameter adalah string
         Mail::to($voter)->send(new TokenMail($voter));
 
-        $voter->update(['email_sent' => 1,'updator' => Auth::user()->id]);
+        $voter->update(['email_sent' => 1,'updator' => Auth::user()->id]) 
+        ? Alert::success('Sukses', "Token berhasil terkirim.")
+        : Alert::error('Error', "Token gagal terkirim!");
 
         return redirect(route('voters.index'));
     }
