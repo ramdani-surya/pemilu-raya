@@ -111,7 +111,6 @@
                                     <button type="button" class="btn btn-danger btn-xs">
                                         <i class="fa fa-close"></i>
                                     </button>
-
                                     @endif
                                 </td>
                                 <td>{{ tglIndo($election->running_date) }}</td>
@@ -121,6 +120,10 @@
                                         <i class="fa fa-check"></i>
                                     </button>
                                     <a href="{{url('result')}}" target="_blank">Hasil</a>
+                                    @else 
+                                    <button type="button" class="btn btn-danger btn-xs">
+                                        <i class="fa fa-close"></i>
+                                    </button>
                                     @endif
                                 </td>
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
