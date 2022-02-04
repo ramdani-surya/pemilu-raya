@@ -36,6 +36,16 @@
             border: 1px solid #F94687;
         }
 
+        @media screen and (max-width: 455px) {
+        .desktop-search {
+        display: none;
+        }
+
+        .mobile-search-card {
+        display: block !important;
+        }
+  }
+
     </style>
 @endsection
 

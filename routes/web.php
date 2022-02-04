@@ -40,6 +40,9 @@ Route::middleware(['auth:voter', 'comingSoon'])->group(function () {
 });
 
 Route::get('/coming-soon', [Controller::class, 'comingSoon'])->name('coming_soon');
+Route::get('/result', [Controller::class, 'result'])->name('result');
+Route::get('/result/{candidate_type}', [Controller::class, 'result_filter'])->name('result.filter');
+
 Route::get('/closed', [Controller::class, 'closed'])->name('closed');
 Route::get('/candidate-detail/{id}', [CandidateController::class, 'showJson'])->name('candidate-detail');
 

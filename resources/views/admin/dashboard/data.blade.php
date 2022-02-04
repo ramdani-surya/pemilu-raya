@@ -268,10 +268,10 @@ Dashboard
         datasets: [{
             label: 'PEROLEHAN SUARA',
             backgroundColor: [
-                "rgba(11, 42, 151, .9)",
-				"rgba(11, 42, 151, .7)",
- 			    "rgba(11, 42, 151, .5)",
-	 		    "rgba(0,0,0,0.07)"
+                "#27BC48",
+				"#A02CFA",
+ 			    "#FF3282",
+	 		    "#FFBC11"
             ],
            
             data: bpmChartArea.data('bpmvotings').split(',')
@@ -283,10 +283,10 @@ Dashboard
         datasets: [{
             label: 'PEROLEHAN SUARA',
             backgroundColor: [
-                "rgba(11, 42, 151, .9)",
-				"rgba(11, 42, 151, .7)",
- 			    "rgba(11, 42, 151, .5)",
-	 		    "rgba(0,0,0,0.07)"
+                "#27BC48",
+				"#A02CFA",
+ 			    "#FF3282",
+	 		    "#FFBC11"
             ],
            
             data: bemChartArea.data('bemvotings').split(',')
