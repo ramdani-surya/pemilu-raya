@@ -211,13 +211,22 @@
                             <div class="px-5 py-5 content-modal">
                                 <ol>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
+                                        Aplikasi E-Voting Pemira Unsap dibuat untuk memenuhi kegiatan pemilihan Badan Eksekutif Mahasiswa dan Badan Perwakilan Mahasiswa sebagai bentuk demokrasi di Universitas Sebelas April.
                                     </li><br>
                                     <li>
-                                       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
+                                        Aplikasi E-Voting memiliki tingkat keamanan yang tinggi sehingga kemungkinan terjadi tindak kecurangan sangat kecil
                                     </li><br>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
+                                        Aplikasi E-Voting dapat diakses dimana saja baik melalui desktop maupun mobile
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting memiliki beberapa fitur navigasi untuk anda pelajari agar dapat memudahkan anda dalam menggunakannya
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting dibuat senyaman mungkin dengan alur kerja sistem yang mudah dipahami
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting dapat digunakan untuk perluan pemilihan umum lainnya, seperti pemilihan Ketua Himpunan Mahasiswa di Universitas Sebelas April
                                     </li>
                                 </ol>
                             </div>
@@ -230,13 +239,22 @@
                             <div class="px-3 py-3 content-modal">
                                 <ol>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui quibusdam quam repellendus a porro est ex sapiente. Fugit quo sunt autem fugiat similique quibusdam dolores repellat natus voluptatibus blanditiis vero, incidunt eum eos odit consequuntur recusandae alias ducimus et laudantium, impedit corrupti nobis, officia dolorum iusto. Fuga dolore quia accusantium!
+                                        Aplikasi E-Voting Pemira Unsap dibuat untuk memenuhi kegiatan pemilihan Badan Eksekutif Mahasiswa dan Badan Perwakilan Mahasiswa sebagai bentuk demokrasi di Universitas Sebelas April.
                                     </li><br>
                                     <li>
-                                       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam provident consectetur eius eaque modi incidunt eum dolorem. Debitis harum natus explicabo a corporis magni velit nam unde eveniet quod, corrupti voluptatem rem neque esse sequi porro dolorum. Debitis nam dignissimos, eveniet reprehenderit at vero, molestiae, ipsum id vitae magnam maxime?
+                                        Aplikasi E-Voting memiliki tingkat keamanan yang tinggi sehingga kemungkinan terjadi tindak kecurangan sangat kecil
                                     </li><br>
                                     <li>
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus officiis, inventore rem quis accusamus quas fugit modi omnis necessitatibus! Iusto, facilis vitae voluptates eius tenetur, illo ratione cum eligendi amet cupiditate, assumenda corporis aperiam asperiores est quasi quam! Voluptate tenetur quis aut et dicta perspiciatis numquam eligendi iste non recusandae!
+                                        Aplikasi E-Voting dapat diakses dimana saja baik melalui desktop maupun mobile
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting memiliki beberapa fitur navigasi untuk anda pelajari agar dapat memudahkan anda dalam menggunakannya
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting dibuat senyaman mungkin dengan alur kerja sistem yang mudah dipahami
+                                    </li><br>
+                                    <li>
+                                        Aplikasi E-Voting dapat digunakan untuk perluan pemilihan umum lainnya, seperti pemilihan Ketua Himpunan Mahasiswa di Universitas Sebelas April
                                     </li>
                                 </ol>
                             </div>
