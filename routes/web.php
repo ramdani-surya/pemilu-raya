@@ -106,11 +106,13 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
             });
         
             Route::resource('voters', VoterController::class)->except('create', 'edit', 'show');
+            Route::get('/voters/json', [VoterController::class, 'data'])->name('voters.data');
             Route::post('voter/check-dpt-nim', [VoterController::class, 'checkDptNim'])->name('checkDptNim');
             Route::post('voter/check-dpt-email', [VoterController::class, 'checkDptEmail'])->name('checkDptEmail');
             Route::prefix('voters')->group(function () {
                 Route::prefix('api')->group(function() {
                     Route::get('list', [VoterController::class, 'indexApi'])->name('api-voters.list');
+                    Route::get('detail/{id}', [VoterController::class, 'detailApi'])->name('api-voters.detail');
                     Route::post('send-email', [VoterController::class, 'sendEmailApi'])->name('api-voters.send-email');
                 });
                 Route::get('email', [VoterController::class, 'email'])->name('voters.email');

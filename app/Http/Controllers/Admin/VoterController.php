@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Alert;
 use App\Models\Faculty;
-use Datatables;
+use DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class VoterController extends Controller
@@ -61,11 +61,71 @@ class VoterController extends Controller
         return view('admin.voter.data', $data);
     }
 
+    public function data()
+    {
+        $activeElectionId = $this->activeElection->id;
+        $facultyId = null;
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'saksi') {
+            $facultyId = Auth::user()->faculty_id;
+        }
+        $voters = Voter::when($facultyId, function($q,$facultyId){
+                                return $q->where('faculty_id',$facultyId);
+                            })->where('election_id',$activeElectionId)->orderBy('name')->get();
+
+        return DataTables::of($voters)
+                        ->addIndexColumn()
+                        ->addColumn('memilih_json', function($row){
+                            if($row->bem_voted == 1){
+                                $btn = '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Sudah Memilih BEM"> <i class="fa fa-check"></i></button>';
+                            }elseif ($row->bpm_voted == 1) {
+                                $btn = '<button type="button"class="btn btn-info btn-xs" data-toggle="tooltip" title="Sudah Memilih BPM"><i class="fa fa-check"></i></button>';
+                            }elseif ($row->bem_voted != 1 && $row->bpm_voted != 1){
+                                $btn = '<span class="badge badge-outline-warning">Belum Memilih</span>';
+                            }
+                            return $btn;
+                        })
+                        ->addColumn('email', function($row){
+                            if ($row->email_sent == 1) {
+                                $email = $row->email.' <i class="fa fa-check text-success" title="Token terkirim"></i>';
+                            }else{
+                                $email = $row->email;
+                            }
+                            return $email;
+                        })
+                        ->addColumn('aksi', function($row){
+                            $aksi = '<div class="button-list" style="display: flex">';
+                            if (!$row->voted) {
+                                $aksi .= '<button type="button" class="btn btn-primary shadow btn-xs sharp mr-1" data-toggle="modal" data-target="#editVoter" title="Edit Data" onclick="setEditData('.$row->id.')"> <i class="fa fa-pencil"></i></button>';
+                                if ($row->email_sent == 1){
+                                    $aksi .= '<button type="button" data-url="'.route('voters.reset_token', [$row, '']).'"';
+                                    $aksi .= 'class="btn btn-info shadow btn-xs sharp mr-1" title="Reset Token" onclick="resetTokenAlert(this)"><i class="fa fa-undo mr-1"></i></button>';
+                                }else {
+                                    $aksi .= '<button type="button" data-url="'.route('voters.send_token', [$row, '']).'"';
+                                    $aksi .= 'class="btn btn-info shadow btn-xs sharp mr-1" title="Kirim Token" onclick="sendTokenAlert(this)"><i class="fa fa-paper-plane mr-1"></i></button>';
+                                }
+                            }
+                            $aksi .= '<form action="'.route('voters.destroy', $row).'" method="post" style="display: inline" class="form-delete">'.csrf_field().'<input type="hidden" name="_method" value="delete" /><button type="button" title="Hapus Data" class="btn btn-danger shadow btn-xs sharp"';
+                            $aksi .= 'onclick="deleteAlert(this)"><i class="fa fa-trash"></i></button></form></div>';
+                            
+                            return $aksi;
+                        })
+                        ->rawColumns(['memilih_json','email','aksi'])
+                        ->make(true);
+    }
+
     public function indexApi()
     {
 
         $id = $this->activeElection->id ?: 0;
         $voters = Voter::where('election_id',$id)->where('email_sent',0)->get();
+
+        return response()->json($voters);
+    }
+
+    public function detailApi($id)
+    {
+
+        $voters = Voter::findOrFail($id);
 
         return response()->json($voters);
     }

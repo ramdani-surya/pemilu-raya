@@ -99,7 +99,7 @@ Daftar Pemilih Tetap
                     @endif
                 <div class="card-body">
                     {{-- <div class="table-responsive"> --}}
-                    <table id="example4" class="table dt-responsive" style="width:100%">
+                    <table id="voters-datatable" class="table dt-responsive" style="width:100%">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -112,7 +112,7 @@ Daftar Pemilih Tetap
                                 @endif
                             </tr>
                         </thead>
-                        <tbody>
+                        {{-- <tbody>
                             @php
                             $number = 1
                             @endphp
@@ -173,7 +173,7 @@ Daftar Pemilih Tetap
                                     @endif
                                 </tr>
                             @endforeach
-                        </tbody>
+                        </tbody> --}}
                     </table>
                 {{-- </div> --}}
                 </div>
@@ -330,17 +330,21 @@ Daftar Pemilih Tetap
         const checkDptNimId = $('#checkDptNim').attr('id');
         const checkDptEmailId = $('#checkDptEmail').attr('id');
 
-        function setEditData(voter) {
-            $('#voterEditForm').attr('action', `${idForm}/${voter.id}`);
-            $('#checkDptNim').attr('id', `${checkDptNimId}${voter.id}`);
-            $('#checkDptEmail').attr('id', `${checkDptEmailId}${voter.id}`);
-            $('#voterEditForm').attr('action', `${updateLink}/${voter.id}`);
-            $('#checkDptNim' + election.id).val(voter.nim);
-            $('#checkDptEmail' + election.id).val(voter.email);
-            $('[name="edit_nim"]').val(voter.nim);
-            $('[name="edit_name"]').val(voter.name);
-            $('[name="edit_email"]').val(voter.email);
-            editVoterValidate(voter);
+        function setEditData(voter_id) {
+            fetch("{{url('admin/voters/api/detail')}}/"+voter_id)
+            .then(response => response.json())
+            .then(data => {
+                $('#voterEditForm').attr('action', `${idForm}/${data.id}`);
+                $('#checkDptNim').attr('id', `${checkDptNimId}${data.id}`);
+                $('#checkDptEmail').attr('id', `${checkDptEmailId}${data.id}`);
+                $('#voterEditForm').attr('action', `${updateLink}/${data.id}`);
+                $('#checkDptNim' + election.id).val(data.nim);
+                $('#checkDptEmail' + election.id).val(data.email);
+                $('[name="edit_nim"]').val(data.nim);
+                $('[name="edit_name"]').val(data.name);
+                $('[name="edit_email"]').val(data.email);
+                editVoterValidate(data);
+            })
         }
     </script>
     <script>
@@ -587,5 +591,38 @@ Daftar Pemilih Tetap
 
             window.location.href = `${e.dataset.url}`
         }
+
+        $(function() {
+            $('#voters-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('voters.data') !!}', // memanggil route yang menampilkan data json
+                columns: [{ // mengambil & menampilkan kolom sesuai tabel database
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'nim',
+                        name: 'nim'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'memilih_json',
+                        name: 'memilih_json'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'aksi',
+                        name: 'aksi'
+                    }
+                ]
+            });
+        });
     </script>
 @endsection

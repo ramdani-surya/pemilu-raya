@@ -74,10 +74,10 @@
                                 <th>Nama Pemilu</th>
                                 <th>Periode</th>
                                 <th>Jumlah DPT</th>
-                                <th>DPT Memilih</th>
+                                {{-- <th>DPT Memilih</th> --}}
                                 {{-- <th>DPT Golput</th> --}}
                                 <th>Jumlah Kandidat</th>
-                                <th>Kandidat Terpilih</th>
+                                {{-- <th>Kandidat Terpilih</th> --}}
                                 <th>Berjalan</th>
                                 <th>Tanggal</th>
                                 <th>Diarsipkan</th>
@@ -96,17 +96,22 @@
                                 <td>{{ $election->name }}</td>
                                 <td>{{ $election->period }}</td>
                                 <td>{{ $election->total_voters ?? count($election->voters) }}</td>
-                                <td>{{ $election->voted_voters ?? count($election->allVoted) }}
-                                    ({{ voterAllPercentage($election, 1) }})</td>
+                                {{-- <td>{{ $election->voted_voters ?? count($election->allVoted) }}
+                                    ({{ voterAllPercentage($election, 1) }})</td> --}}
                                 {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
                                 ({{ votersPercentage($election, 0) }})</td> --}}
                                 <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                                <td>{{ $election->chairman }}</td>
+                                {{-- <td>{{ $election->chairman ?: 'Belum ada' }}</td> --}}
                                 <td>
                                     @if($election->running)
                                     <button type="button" class="btn btn-success btn-xs">
                                         <i class="fa fa-check"></i>
                                     </button>
+                                    @else 
+                                    <button type="button" class="btn btn-danger btn-xs">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+
                                     @endif
                                 </td>
                                 <td>{{ tglIndo($election->running_date) }}</td>
@@ -115,6 +120,7 @@
                                     <button type="button" class="btn btn-success btn-xs">
                                         <i class="fa fa-check"></i>
                                     </button>
+                                    <a href="{{url('result')}}" target="_blank">Hasil</a>
                                     @endif
                                 </td>
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
