@@ -318,7 +318,7 @@
                                     let keyId = key + 1;
                                     let studyProgramId = value.id;
                                     $('select[name="edit_study_program_id"]').append(
-                                        '<option value="' + keyId + '"'+ (studyProgramId ==  {{ $candidate->study_program_id }} ? 'selected': '') + '>' + value
+                                        '<option value="' + studyProgramId + '"'+ (studyProgramId ==  {{ $candidate->study_program_id }} ? 'selected': '') + '>' + value
                                         .name + '</option>');
                                 });
                             } else {

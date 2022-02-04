@@ -220,6 +220,8 @@ class CandidateController extends Controller
 
         $edit_slug = CandidateType::where('id', $request->edit_candidate_type_id)->first();
 
+        // print_r($request->all());die;
+
         $data = [
             'candidate_type_id'     => $request->edit_candidate_type_id ? $edit_candidate_type_id : $candidate->candidate_type_id,
             'candidate_number'      => $request->edit_candidate_number ? $edit_candidate_number : $candidate->candidate_number,
