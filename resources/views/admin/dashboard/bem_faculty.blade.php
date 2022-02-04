@@ -35,7 +35,7 @@
             <div class="col-xl-6 col-xxl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Faktultas Teknik Informasi</h4>
+                        <h4 class="card-title">Faktultas Teknologi Informasi</h4>
                     </div>
                     <div class="card-body">
                         <canvas id="fti_chart"
@@ -131,10 +131,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: ftiChartArea.data('bem-fti-votings').split(',')
@@ -158,10 +158,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: febChartArea.data('bem-feb-votings').split(',')
@@ -185,10 +185,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: fisipChartArea.data('bem-fisip-votings').split(',')
@@ -212,10 +212,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: fkipChartArea.data('bem-fkip-votings').split(',')
@@ -239,10 +239,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: fibChartArea.data('bem-fib-votings').split(',')
@@ -266,10 +266,10 @@
             datasets: [{
                 label: 'PEROLEHAN SUARA',
                 backgroundColor: [
-                    "rgba(11, 42, 151, .9)",
-                    "rgba(11, 42, 151, .7)",
-                    "rgba(11, 42, 151, .5)",
-                    "rgba(0,0,0,0.07)"
+                    "#27BC48",
+                    "#A02CFA",
+                    "#FF3282",
+                    "#FFBC11"
                 ],
             
                 data: fikChartArea.data('bem-fik-votings').split(',')
@@ -286,5 +286,63 @@
             });
 
 
+        function addFtiData(data) {
+            myFtiChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFtiChart.update();
+        }    
+
+        function addFebData(data) {
+            myFebChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFebChart.update();
+        }  
+
+        function addFisipData(data) {
+            myFisipChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFisipChart.update();
+        }    
+        function addFkipData(data) {
+            myFikipChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFikipChart.update();
+        }    
+        function addFibData(data) {
+            myFibChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFibChart.update();
+        }    
+        function addFikData(data) {
+            myFikChart.data.datasets.forEach((dataset) => {
+                dataset.data = data;
+            });
+
+            myFikChart.update();
+        }    
+        
+        setInterval(() => {
+        $.getJSON('{{ route('bem_filter_api') }}', null,
+            function (data, textStatus, jqXHR) {
+                // removeBpmData()
+                // removeBemData()
+                addFtiData(data.ftiCandidateVotingApi)
+                addFebData(data.febCandidateVotingApi)
+                addFisipData(data.fisipCandidateVotingApi)
+                addFkipData(data.fkipCandidateVotingApi)
+                addFibData(data.fibCandidateVotingApi)
+                addFikData(data.fikCandidateVotingApi)
+            });
+        }, 1000);
         </script>
     @endsection

@@ -219,14 +219,12 @@ class ElectionController extends Controller
 
         $data = [
             'total_voters'        => count($election->voters),
-            'voted_voters'        => count($election->votedVoters),
-            'unvoted_voters'      => count($election->unvotedVoters),
+            'voted_voters'        => count($election->allVoted),
+            'unvoted_voters'      => count($election->allUnvoted),
             'total_candidates'    => count($election->candidates),
             'election_winner'     => $electedCandidate->candidate_number,
             'chairman'            => $electedCandidate->chairman_name,
-            // 'vice_chairman'       => $electedCandidate->vice_chairman_name,
             'chairman_photo'      => $electedCandidate->chairman_photo,
-            // 'vice_chairman_photo' => $electedCandidate->vice_chairman_photo,
             'archived'            => 1,
         ];
 

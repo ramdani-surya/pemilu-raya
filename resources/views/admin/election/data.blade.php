@@ -101,7 +101,7 @@
                                 {{-- <td>{{ $election->unvoted_voters ?? count($election->unvotedVoters) }}
                                 ({{ votersPercentage($election, 0) }})</td> --}}
                                 <td>{{ $election->total_candidates ?? count($election->candidates) }}</td>
-                                <td>{{ "$election->chairman - $election->vice_chairman" }}</td>
+                                <td>{{ $election->chairman }}</td>
                                 <td>
                                     @if($election->running)
                                     <button type="button" class="btn btn-success btn-xs">
@@ -131,7 +131,7 @@
                                         @if(!$election->running && !$election->archived && $election->status == 1)
                                         <button type="button" onclick="runElection(this)" data-url="{{ route('elections.running', $election) }}"
                                             class="btn btn-xs btn-primary"><i class="fa fa-play mr-1"></i> Jalankan</button>
-                                            <a onclick="sendToken(this)" data-url="{{ url('admin/voters/send-email') }}" href="javascript::void(0)" class="btn btn-xs btn-info"><i class="fa fa-share-square mr-1"></i> Kirim
+                                            <a target="_blank" href="{{ url('admin/voters/email') }}" class="btn btn-xs btn-info"><i class="fa fa-share-square mr-1"></i> Kirim
                                                 Email Token</a>
                                         <button type="button" data-url="{{ route('elections.archive', [$election, 1]) }}"
                                             class="btn btn-xs btn-secondary"

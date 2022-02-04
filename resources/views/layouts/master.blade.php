@@ -29,7 +29,7 @@
     <!-- Navbar Mobile -->
     <nav class="navbar nav-style navbar-expand-lg navbar-light d-sm-block d-md-none">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{{ url('/') }}">
               <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@
     <!-- Navbar Desktop -->
     <nav class="navbar nav-style navbar-expand-lg navbar-light mt-3 d-none d-md-block">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{{ url('/') }}">
               <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

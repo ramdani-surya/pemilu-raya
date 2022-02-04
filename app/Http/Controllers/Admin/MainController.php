@@ -75,42 +75,6 @@ class MainController extends Controller
 
             return view('admin.dashboard.bem_faculty', $data);
         }
-
-        // if($data['ftiCandidateVotings'][0] == 0 && $data['ftiCandidateVotings'][1] == 0) {
-        //     $data['ftiCandidateVotings'];
-        // } else {
-        //     $data['ftiCandidateVotings']);
-        // }
-
-        // if($data['febCandidateVotings'][0] == 0 && $data['febCandidateVotings'][1] == 0) {
-        //     $data['febCandidateVotings'];
-        // } else {
-        //     $data['febCandidateVotings']);
-        // }
-
-        // if($data['fisipCandidateVotings'][0] == 0 && $data['fisipCandidateVotings'][1] == 0) {
-        //     $data['fisipCandidateVotings'];
-        // } else {
-        //     $data['fisipCandidateVotings'];
-        // }
-
-        // if($data['fkipCandidateVotings'][0] == 0 && $data['fkipCandidateVotings'][1] == 0) {
-        //     $data['fkipCandidateVotings'];
-        // } else {
-        //     array_pop($data['fkipCandidateVotings']);
-        // }
-
-        // if($data['fibCandidateVotings'][0] == 0 && $data['fibCandidateVotings'][1] == 0) {
-        //     $data['fibCandidateVotings'];
-        // } else {
-        //     array_pop($data['fibCandidateVotings']);
-        // }
-
-        // if($data['fikCandidateVotings'][0] == 0 && $data['fikCandidateVotings'][1] == 0) {
-        //     $data['fikCandidateVotings'];
-        // } else {
-        //     array_pop($data['fikCandidateVotings']);
-        // }
        
         
     }
@@ -144,6 +108,32 @@ class MainController extends Controller
 
         $data['bpmVotings'] = $this->getVotingData()['bpmCandidateVotings'];
         $data['bemVotings'] = $this->getVotingData()['bemCandidateVotings'];
+
+        return response()->json($data);
+    }
+
+    public function bpmFilterApi()
+    {
+
+        $data['ftiCandidateVotingApi'] = $this->getBpmFacultyVotingData()['ftiCandidateVotings'];
+        $data['febCandidateVotingApi'] = $this->getBpmFacultyVotingData()['febCandidateVotings'];
+        $data['fisipCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fisipCandidateVotings'];
+        $data['fkipCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fkipCandidateVotings'];
+        $data['fibCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fibCandidateVotings'];
+        $data['fikCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fikCandidateVotings'];
+
+        return response()->json($data);
+    }
+
+    public function bemFilterApi()
+    {
+
+        $data['ftiCandidateVotingApi'] = $this->getBemFacultyVotingData()['ftiCandidateVotings'];
+        $data['febCandidateVotingApi'] = $this->getBemFacultyVotingData()['febCandidateVotings'];
+        $data['fisipCandidateVotingApi'] = $this->getBemFacultyVotingData()['fisipCandidateVotings'];
+        $data['fkipCandidateVotingApi'] = $this->getBemFacultyVotingData()['fkipCandidateVotings'];
+        $data['fibCandidateVotingApi'] = $this->getBemFacultyVotingData()['fibCandidateVotings'];
+        $data['fikCandidateVotingApi'] = $this->getBemFacultyVotingData()['fikCandidateVotings'];
 
         return response()->json($data);
     }
