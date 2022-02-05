@@ -54,7 +54,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Kirim Email ?</h4>
-                        <button id="kirimEmail" onclick="sendEmail('announcement')" class="btn btn-outline-primary btn-sm">Kirim <i class="fa fa-paper-plane"></i></button>
+                        <button id="kirimEmail" onclick="sendEmail()" class="btn btn-outline-primary btn-sm">Kirim <i class="fa fa-paper-plane"></i></button>
                         <button id="processEmail" class="btn btn-outline-primary btn-sm">Memproses <i class="fa fa-spinner fa-spin"></i></button>
                     </div>
                     <div class="card-body">
@@ -106,7 +106,7 @@
     async function postData(url = '', data = {}) {
     // Default options are marked with *
         const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'same-origin', // include, *same-origin, omit
@@ -121,29 +121,22 @@
         return response.json(); // parses JSON response into native JavaScript objects
     }
 
-    function sendEmail(params) {
+    function sendEmail() {
         $('#kirimEmail').hide();
         $('#processEmail').show();
 
         fetch("{{route('api-voters.list')}}")
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 data.forEach((e,i) => {
-                    
                     var number = i + 1;
                     var date = "{{date('Y-m-d H:i:s')}}";
                     var row = '<tr id="list_'+e.id+'"><td><strong>'+number+'</strong></td><td>'+e.name+'</td><td>'+e.email+'</td>';
                     row += '<td id="status_'+e.id+'">Mengirim...</td><td id="date_'+e.id+'"></td></tr>';
                     $('#list').append(row);
 
-                    // console.log("{{route('api-voters.send-email')}}");
-
-                    postData("{{route('api-voters.send-email')}}", {
-                        id: e.id,
-                        type: params,
-                        _token: "{{csrf_token()}}"
-                    })
+                    fetch("{{url('admin/voters/api/send-email')}}/"+e.id)
+                    .then(response => response.json())
                     .then(data_email => {
                         if (data_email.status == true) {
                             var success_email = '<td><span class="badge light badge-success">Berhasil</span></td>';
@@ -153,7 +146,7 @@
                             $('#status_'+e.id).replaceWith(error_email);
                         }
                         $('#date_'+e.id).replaceWith(date);
-                    }).catch(err => console.error(err));
+                    }).catch(error => console.log(error));
 
                 });
                 $('#kirimEmail').show();

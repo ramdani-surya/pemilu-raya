@@ -77,7 +77,8 @@ class VoterController extends Controller
                         ->addColumn('memilih_json', function($row){
                             if($row->bem_voted == 1){
                                 $btn = '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Sudah Memilih BEM"> <i class="fa fa-check"></i></button>';
-                            }elseif ($row->bpm_voted == 1) {
+                            }
+                            if ($row->bpm_voted == 1) {
                                 $btn = '<button type="button"class="btn btn-info btn-xs" data-toggle="tooltip" title="Sudah Memilih BPM"><i class="fa fa-check"></i></button>';
                             }elseif ($row->bem_voted != 1 && $row->bpm_voted != 1){
                                 $btn = '<span class="badge badge-outline-warning">Belum Memilih</span>';
@@ -94,7 +95,7 @@ class VoterController extends Controller
                         })
                         ->addColumn('aksi', function($row){
                             $aksi = '<div class="button-list" style="display: flex">';
-                            if (!$row->voted) {
+                            if ($row->bem_voted == 0 && $row->bpm_voted == 0) {
                                 $aksi .= '<button type="button" class="btn btn-primary shadow btn-xs sharp mr-1" data-toggle="modal" data-target="#editVoter" title="Edit Data" onclick="setEditData('.$row->id.')"> <i class="fa fa-pencil"></i></button>';
                                 if ($row->email_sent == 1){
                                     $aksi .= '<button type="button" data-url="'.route('voters.reset_token', [$row, '']).'"';
@@ -356,33 +357,32 @@ class VoterController extends Controller
         return view('admin.voter.email');
     }
 
-    public function sendEmailApi(Request $request)
+    public function sendEmailApi(Voter $voter)
     {
 
-        $validation = Validator::make($request->all(), [
-            'id' => 'required',
-            'type' => 'required'
-        ]);
-
-        if ($validation->fails()) {
-            return [
-                'status' => false,
-                'data' => $validation->errors()
-            ];die;
-        }
-
-        $voter = Voter::find($request->id);
+        // $validation = Validator::make($request->all(), [
+        //     'id' => 'required',
+        //     'type' => 'required'
+        // ]);
+        
+        // if ($validation->fails()) {
+        //     return [
+        //         'status' => false,
+        //         'data' => $validation->errors()
+        //     ];die;
+        // }
 
         if ($voter->email_sent != 1) {
             try {
-                Mail::to($voter)->send(new TokenMail($voter));
+                Mail::to($voter)->send(new TahungodingMail($voter));
+                // print_r($voter);die;
                 $voter->update(['email_sent' => 1, 'updator' => Auth::user()->id]);
-    
+
                 return [
                     'status' => true,
                     'data' => $voter
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return [
                     'status' => false,
                     'data' => $e

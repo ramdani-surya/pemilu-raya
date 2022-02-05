@@ -113,7 +113,7 @@ Route::group(['middleware' => ['loggedIn', 'web']], function () {
                 Route::prefix('api')->group(function() {
                     Route::get('list', [VoterController::class, 'indexApi'])->name('api-voters.list');
                     Route::get('detail/{id}', [VoterController::class, 'detailApi'])->name('api-voters.detail');
-                    Route::post('send-email', [VoterController::class, 'sendEmailApi'])->name('api-voters.send-email');
+                    Route::get('send-email/{voter}', [VoterController::class, 'sendEmailApi'])->name('api-voters.send-email');
                 });
                 Route::get('email', [VoterController::class, 'email'])->name('voters.email');
                 Route::get('clear', [VoterController::class, 'clear'])->name('voters.clear');
