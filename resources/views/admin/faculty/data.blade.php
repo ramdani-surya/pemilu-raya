@@ -37,8 +37,9 @@
         }
 
         @media screen and (max-width: 455px) {
-        .desktop-search {
-        display: none;
+            #deleteButton {
+                margin-top: 7px;
+            }
         }
 
         .mobile-search-card {
@@ -122,7 +123,7 @@
                                                             @csrf
                                                             @method('delete')
                                                             <button type="button" class="btn btn-xs btn-danger"
-                                                                onclick="deleteFacultyAlert(this)"><i
+                                                                onclick="deleteFacultyAlert(this)" id="deleteButton"><i
                                                                     class="fa fa-trash mr-1"></i> Hapus</button>
                                                         </form>
                                                     </div>

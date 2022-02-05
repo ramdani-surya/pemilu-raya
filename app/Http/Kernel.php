@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\UserActivity::class,
         ],
 
         'api' => [
@@ -70,6 +71,6 @@ class Kernel extends HttpKernel
         'checkCandidate' => \App\Http\Middleware\CheckCandidate::class,
         'checkIfArchived' => \App\Http\Middleware\CheckIfArchived::class,
         'comingSoon' => \App\Http\Middleware\ComingSoon::class,
-        'hasVoted' => \App\Http\Middleware\HasVoted::class,
+        'hasVoted' => \App\Http\Middleware\HasVoted::class
     ];
 }

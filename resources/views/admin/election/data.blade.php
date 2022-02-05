@@ -39,6 +39,12 @@
         table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
             background-color: #7A1F31 !important;
         }
+
+        @media screen and (max-width: 455px) {
+            #clearAll {
+                margin-top: 7px;
+            }
+        }
     </style>
 @endsection
 

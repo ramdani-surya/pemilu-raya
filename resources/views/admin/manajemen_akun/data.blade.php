@@ -36,6 +36,31 @@ Daftar Manajemen Akun
             color: #F94687;
             border: 1px solid #F94687;
         }
+
+        .indicator.online {
+    background: #28B62C;
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    -webkit-animation: pulse-animation 2s infinite linear;
+}
+
+@-webkit-keyframes pulse-animation {
+	0% { -webkit-transform: scale(1); }
+	25% { -webkit-transform: scale(1); }
+    50% { -webkit-transform: scale(1.2) }
+    75% { -webkit-transform: scale(1); }
+    100% { -webkit-transform: scale(1); }
+}
+
+.indicator.offline {
+    background: #FF4136;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    
+}
     </style>
 @endsection
 
@@ -87,7 +112,12 @@ Daftar Manajemen Akun
                             @foreach($users as $user)
                             <tr>
                                 <td>{{ $increment++ }} </td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->name }}
+                                    @if(Cache::has('user-is-online-' . $user->id))
+                                        <span style="color: #28B62C;" class="ml-2">online</span>
+                                        <span class="indicator online"></span>
+                                    @endif
+                                </td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
