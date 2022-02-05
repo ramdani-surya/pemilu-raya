@@ -207,7 +207,7 @@
                             <div class="col-12">
                                 <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
                                         email)</span></label>
-                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021" name="name"
+                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2022" name="name"
                                     required>
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -217,7 +217,7 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Periode</label>
-                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022" name="period"
+                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2022 - 2023" name="period"
                                     required>
                                 @error('period')
                                 <span class="text-danger">{{ $message }}</span>
@@ -261,7 +261,7 @@
                             <div class="col-12">
                                 <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
                                         email)</span></label>
-                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021"
+                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2022"
                                     name="edit_name" required>
                                 @error('edit_name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -271,7 +271,7 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Periode</label>
-                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022"
+                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2022 - 2023"
                                     name="edit_period" required>
                                 @error('edit_period')
                                 <span class="text-danger">{{ $message }}</span>

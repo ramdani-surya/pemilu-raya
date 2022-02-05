@@ -30,7 +30,7 @@
     <nav class="navbar nav-style navbar-expand-lg navbar-light d-sm-block d-md-none">
         <div class="container">
           <a class="navbar-brand" href="{{ url('/') }}">
-              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="">
+              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="" style="object-fit: cover;">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
