@@ -382,7 +382,7 @@ class VoterController extends Controller
                     'status' => true,
                     'data' => $voter
                 ];
-            } catch (\Throwable $e) {
+            } catch (\Swift_TransportException $e) {
                 return [
                     'status' => false,
                     'data' => $e
