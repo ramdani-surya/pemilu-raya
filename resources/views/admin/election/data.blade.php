@@ -135,12 +135,16 @@
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <td>
                                     <div class="button-list mt-1">
-                                        @if($election->status == 1)
-                                        <button type="button" onclick="deactivation(this)" data-url="{{ route('elections.deactivation', $election) }}"
-                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Nonaktif</button>
-                                        @elseif($election->status == 0)
-                                            <button type="button" onclick="activation(this)" data-url="{{ route('elections.activation', $election) }}"
-                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Aktivasi</button>
+                                        @if($election->running && !$election->archived)
+                                            
+                                        @else 
+                                            @if($election->status == 1)
+                                            <button type="button" onclick="deactivation(this)" data-url="{{ route('elections.deactivation', $election) }}"
+                                                class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Nonaktif</button>
+                                            @elseif($election->status == 0)
+                                                <button type="button" onclick="activation(this)" data-url="{{ route('elections.activation', $election) }}"
+                                                class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Aktivasi</button>
+                                            @endif
                                         @endif
 
                                         @if(!$election->running && !$election->archived && $election->status == 1)

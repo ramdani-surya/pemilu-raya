@@ -9,6 +9,24 @@ Kandidat
         .login {
             background: #17a2b8 !important;
         }
+
+        @media screen and (max-width: 455px) {
+            .text-besar {
+                font-size: 25px !important;
+            }
+            
+            .text-trm {
+                font-size: 25px !important;
+            }
+            
+            .text-kecil {
+                font-size: 20px !important;
+            }
+    
+            .section-header {
+             margin-top: 40px !important;
+            }
+        }
     </style>
 @endsection
 
@@ -17,7 +35,7 @@ Kandidat
     <section class="section-header">
         <div class="container">
             <div class="row mb-5">
-                <div class="col-md-12 mb-5">
+                <div class="col-md-12 mb-5" id="up-distance">
                     Hi, <b>{{Auth::user()->name}}</b> Silahkan pakai hak suaramu !
                     <br>
                     <a href="{{route('logout')}}" style="all:unset;cursor:pointer"><small>Logout?</small></a>

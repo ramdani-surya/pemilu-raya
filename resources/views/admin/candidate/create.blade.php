@@ -87,7 +87,13 @@
                             <select name="candidate_type_id" id="candidateTypeId" onchange="selectValue()"
                                 class="form-control @error('candidate_type_id') is-invalid @enderror">
                                     <option value="">Pilih Tipe Kandidat</option>
-                                    <option value="{{ $candidate_type_selected->id }}">{{ $candidate_type_selected->name }}</option>
+                                    @if(isset($candidate_type_selected))
+                                        <option value="{{ $candidate_type_selected->id }}">{{ $candidate_type_selected->name }}</option>
+                                    @else
+                                        @foreach ($candidate_type as $candidate_types)
+                                            <option value="{{ $candidate_types->id }}">{{ $candidate_types->name }}</option>
+                                        @endforeach
+                                    @endif
                             </select>
                             @error('candidate_type_id')
                                 <div class="mt-1">
