@@ -9,6 +9,53 @@ Kandidat
         .login {
             background: #17a2b8 !important;
         }
+
+        @media screen and (max-width: 455px) {
+            .text-besar {
+                font-size: 25px !important;
+            }
+            
+            .text-trm {
+                font-size: 25px !important;
+            }
+            .text-kecil {
+                font-size: 15px !important;
+            }
+    
+            .section-header {
+             margin-top: 40px !important;
+            }
+
+            .img-candidate {
+                margin-top: 30px;
+            }
+            .nama {
+                margin-top: 30px;
+            }
+            #modal_misi {
+                padding: 30px !important;
+            }
+        }
+
+        @media screen and (min-width: 1280px) and (max-width: 1281px)
+              and (min-height: 800px) and (max-height: 801px) {
+                #resolutionTabletIpad {
+                    width: 90% !important;
+                }
+        }
+
+        @media screen and (min-width: 540px) and (max-width: 541px)
+              and (min-height: 720px) and (max-height: 721px) {
+                .img-candidate {
+                margin-top: 30px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px){
+            #resolutionTabletIpad {
+                    width: 90% !important;
+                }
+        }
     </style>
 @endsection
 
@@ -17,7 +64,7 @@ Kandidat
     <section class="section-header">
         <div class="container">
             <div class="row mb-5">
-                <div class="col-md-12 mb-5">
+                <div class="col-md-12 mb-5" id="up-distance">
                     Hi, <b>{{Auth::user()->name}}</b> Silahkan pakai hak suaramu !
                     <br>
                     <a href="{{route('logout')}}" style="all:unset;cursor:pointer"><small>Logout?</small></a>
@@ -31,7 +78,7 @@ Kandidat
                         Memilih sesuai hati, bebas tanpa intimidasi, golput bukan<br> solusi. 
                         Mari kita sukseskan Pemilu Raya 2022.
                     </p>
-                    <div class="d-grid gap-2 d-block">
+                    <div class="d-grid gap-2 d-block" id="button-scroll">
                         <a href="#BEM-DESKTOP" class="btn btn-biru text-decoration-none px-5 py-2 text-white d-none d-md-block">BEM</a>
                         <a href="#BPM-DESKTOP" class="btn btn-biru text-decoration-none px-5 py-2 text-white d-none d-md-block">BPM</a>
                         <a href="#BEM-MOBILE" class="btn btn-biru text-decoration-none px-5 py-2 text-white d-sm-block d-md-none">BEM</a>
@@ -149,7 +196,7 @@ Kandidat
                 @if (Auth::user()->bem_voted != 1)
                     <div class="row" >
                         @foreach ($bem as $item)
-                            <div class="col-md-5 mx-5 mt-5">
+                            <div class="col-md-5 mx-5 mt-5" id="resolutionTabletIpad">
                                 <div class="row card-calon d-flex justify-content-center py-5">
                                     <div class="col-md-3">  
                                         <div class="position-relative">
@@ -179,7 +226,7 @@ Kandidat
                                             {!!$item->program!!}
                                         </div>
                                     </div>
-                                    <button class="btn btn-biru col-4 mt-3" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
+                                    <button class="btn btn-biru col-4 mt-3" id="visiMisiMobile" type="button" onclick="visiMisi({{$item->id}})">Visi & Misi</button>
                                 </div>
                             </div>
                         @endforeach
@@ -257,7 +304,7 @@ Kandidat
                                     @endphp 
                                     <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
                                 </div>
-                                <div class="col-md-7 text-center">
+                                <div class="col-md-7">
                                     <label class="nama">
                                         {{$item->chairman_name}}
                                     </label><br>
@@ -295,7 +342,7 @@ Kandidat
                                         @endphp 
                                         <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
                                     </div>
-                                    <div class="col-md-7 text-center">
+                                    <div class="col-md-7">
                                         <label class="nama">
                                             {{$bem_voted->candidate->chairman_name}}
                                         </label><br>
@@ -334,7 +381,7 @@ Kandidat
                 @if (Auth::user()->bpm_voted != 1)
                     <div class="row">
                         @foreach ($bpm as $item)
-                            <div class="col-md-5 mx-5 mt-5">
+                            <div class="col-md-5 mx-5 mt-5" id="resolutionTabletIpad">
                                 <div class="row card-calon d-flex justify-content-center py-5">
                                     <div class="col-md-3">
                                         <div class="position-relative">
@@ -548,13 +595,13 @@ Kandidat
                                 <h5 class="fw-bold text-center mb-3">
                                     Visi
                                 </h5>
-                                <p class="visi mx-5 mb-5" id="modal_mobile_visi">
+                                <p class="visi mx-4 mb-4" id="modal_mobile_visi">
                                     ---
                                 </p>
                                 <h5 class="fw-bold text-center mt-5 mb-3">
                                     Misi
                                 </h5>
-                                <div id="modal_mobile_misi">
+                                <div class="p-4" id="modal_mobile_misi">
                                     ---
                                 </div>
                             </div>
@@ -652,5 +699,12 @@ Kandidat
         })
     }
 
+    $(document).on('click', 'a[href^="#"]', function (event) {
+        event.preventDefault();
+
+        $('html, body').animate({
+            scrollTop: $($.attr(this, 'href')).offset().top
+        }, 500);
+    });
 </script>
 @endsection

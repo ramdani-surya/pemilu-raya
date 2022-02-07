@@ -37,14 +37,15 @@
         }
 
         @media screen and (max-width: 455px) {
-        .desktop-search {
-        display: none;
+            #deleteButton {
+                margin-top: 7px;
+            }
         }
 
         .mobile-search-card {
-        display: block !important;
+            display: block !important;
         }
-  }
+        }
 
     </style>
 @endsection
@@ -65,12 +66,14 @@
                             <a href="#fakultas" class="nav-link active" data-toggle="tab" aria-expanded="false">Fakultas</a>
                         </li>
                         <li class="nav-item">
-                            @if($faculty->isEmpty())
-                            <a href="#studyProgram" class="nav-link" data-toggle="tab" aria-expanded="false" onclick="openStudyProgram(this)">Program
-                                Studi</a>
-                            @else 
-                            <a href="#studyProgram" class="nav-link" data-toggle="tab" aria-expanded="false">Program
-                                Studi</a>
+                            @if ($faculty->isEmpty())
+                                <a href="#studyProgram" class="nav-link" data-toggle="tab" aria-expanded="false"
+                                    onclick="openStudyProgram(this)">Program
+                                    Studi</a>
+                            @else
+                                <a href="#studyProgram" class="nav-link" data-toggle="tab"
+                                    aria-expanded="false">Program
+                                    Studi</a>
                             @endif
                         </li>
                     </ul>
@@ -89,107 +92,111 @@
                                 </div>
                             @endif
 
-                            <table id="facultyTable" class="table dt-responsive" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nama Fakultas</th>
-                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
-                                            <th>Aksi</th>
-                                        @endif
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @php
-                                        $number = 1;
-                                    @endphp
-                                    @foreach ($faculty as $faculties)
+                            <div class="table-responsive">
+                                <table id="facultyTable" class="display text-dark" width="100%;">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $number++ }}</td>
-                                            <td>{{ $faculties->name }}</td>
+                                            <th>#</th>
+                                            <th>Nama Fakultas</th>
                                             @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
-                                                <td>
-                                                    <div class="button-list">
-                                                        <button type="button" data-toggle="modal"
-                                                            data-target="#editFaculty{{ $faculties->id }}"
-                                                            class="btn btn-warning btn-xs text-white"
-                                                            onclick="editFacultyValidate({{ $faculties }})"><i
-                                                                class="fa fa-edit mr-1"></i>Edit</button>
-                                                        <form style="display: inline"
-                                                            action="{{ route('faculties.destroy', $faculties->id) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="button" class="btn btn-xs btn-danger"
-                                                                onclick="deleteFacultyAlert(this)"><i
-                                                                    class="fa fa-trash mr-1"></i> Hapus</button>
-                                                        </form>
-                                                    </div>
-                                                </td>
+                                                <th>Aksi</th>
                                             @endif
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+
+                                    <tbody>
+                                        @php
+                                            $number = 1;
+                                        @endphp
+                                        @foreach ($faculty as $faculties)
+                                            <tr>
+                                                <td style="color: #000000;">{{ $number++ }}</td>
+                                                <td style="color: #000000;">{{ $faculties->name }}</td>
+                                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
+                                                    <td>
+                                                        <div class="button-list">
+                                                            <button type="button" data-toggle="modal"
+                                                                data-target="#editFaculty{{ $faculties->id }}"
+                                                                class="btn btn-warning btn-xs text-white"
+                                                                onclick="editFacultyValidate({{ $faculties }})"><i
+                                                                    class="fa fa-edit mr-1"></i>Edit</button>
+                                                            <form style="display: inline"
+                                                                action="{{ route('faculties.destroy', $faculties->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="button" class="btn btn-xs btn-danger"
+                                                                    onclick="deleteFacultyAlert(this)" id="deleteButton"><i
+                                                                        class="fa fa-trash mr-1"></i> Hapus</button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div id="studyProgram" class="tab-pane">
                             @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
-                            <div class="button-list" style="margin-bottom: 28px;">
-                                <button type="button" data-toggle="modal" data-target="#addStudyProgram"
-                                    class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
-                                    data-overlaySpeed="200" data-overlayColor="#36404a"><i
-                                        class="fa fa-plus-circle mr-1"></i> Tambah</button>
-                                <button type="button" class="btn btn-danger btn-xs" id="clearAllStudyProgram"><i
-                                        class="fa fa-trash-o mr-1"></i> Bersihkan</button>
-                            </div>
+                                <div class="button-list" style="margin-bottom: 28px;">
+                                    <button type="button" data-toggle="modal" data-target="#addStudyProgram"
+                                        class="btn btn-primary btn-xs" data-animation="slide" data-plugin="custommodal"
+                                        data-overlaySpeed="200" data-overlayColor="#36404a"><i
+                                            class="fa fa-plus-circle mr-1"></i> Tambah</button>
+                                    <button type="button" class="btn btn-danger btn-xs" id="clearAllStudyProgram"><i
+                                            class="fa fa-trash-o mr-1"></i> Bersihkan</button>
+                                </div>
                             @endif
 
-                            <table id="studyProgramTable" class="table dt-responsive" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Program Studi</th>
-                                        <th>Fakultas</th>
-                                        @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
-                                            <th>Aksi</th>
-                                        @endif
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @php
-                                        $number = 1;
-                                    @endphp
-                                    @foreach ($study_program as $study_programs)
+                            <div class="table-responsive">
+                                <table id="studyProgramTable" class="display text-dark" width="100%;">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $number++ }}</td>
-                                            <td>{{ $study_programs->name }}</td>
-                                            <td>{{ $study_programs->faculties->name }}</td>
+                                            <th>#</th>
+                                            <th>Program Studi</th>
+                                            <th>Fakultas</th>
                                             @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
-                                                <td>
-                                                    <div class="button-list">
-                                                        <button type="button" data-toggle="modal"
-                                                            data-target="#editStudyProgram{{ $study_programs->id }}"
-                                                            class="btn btn-warning text-white btn-xs"
-                                                            onclick="editStudyProgramValidate({{ $study_program }})"><i
-                                                                class="fa fa-edit mr-1"></i>Edit</button>
-                                                        <form style="display: inline"
-                                                            action="{{ route('study-programs.destroy', $study_programs->id) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="button" class="btn btn-xs btn-danger"
-                                                                onclick="deleteStudyProgramAlert(this)"><i
-                                                                    class="fa fa-trash mr-1"></i> Hapus</button>
-                                                        </form>
-                                                    </div>
-                                                </td>
+                                                <th>Aksi</th>
                                             @endif
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+
+                                    <tbody>
+                                        @php
+                                            $number = 1;
+                                        @endphp
+                                        @foreach ($study_program as $study_programs)
+                                            <tr>
+                                                <td style="color: #000000;">{{ $number++ }}</td>
+                                                <td style="color: #000000;">{{ $study_programs->name }}</td>
+                                                <td style="color: #000000;">{{ $study_programs->faculties->name }}</td>
+                                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
+                                                    <td>
+                                                        <div class="button-list">
+                                                            <button type="button" data-toggle="modal"
+                                                                data-target="#editStudyProgram{{ $study_programs->id }}"
+                                                                class="btn btn-warning text-white btn-xs"
+                                                                onclick="editStudyProgramValidate({{ $study_program }})"><i
+                                                                    class="fa fa-edit mr-1"></i>Edit</button>
+                                                            <form style="display: inline"
+                                                                action="{{ route('study-programs.destroy', $study_programs->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="button" class="btn btn-xs btn-danger"
+                                                                    onclick="deleteStudyProgramAlert(this)"><i
+                                                                        class="fa fa-trash mr-1"></i> Hapus</button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,7 +216,7 @@
                         <form action="{{ route('faculties.store') }}" method="post" id="addFacultyForm">
                             @csrf
                             <input type="hidden" class="form-control" name="election_id"
-                            value="{{ getActiveElection()->id }}">
+                                value="{{ getActiveElection()->id }}">
                             <div class="form-group">
                                 <label for="faculty_name">Nama Fakultas</label>
                                 <input type="text" class="form-control" name="faculty_name"
@@ -249,7 +256,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-sm btn-primary" id="editFacultyButton">Simpan Perubahan</button>
+                            <button type="submit" class="btn btn-sm btn-primary" id="editFacultyButton">Simpan
+                                Perubahan</button>
                         </div>
                         </form>
                     </div>
@@ -270,7 +278,7 @@
                         <form action="{{ route('study-programs.store') }}" method="post" id="addStudyProgramForm">
                             @csrf
                             <input type="hidden" class="form-control" name="election_id_2"
-                            value="{{ getActiveElection()->id }}">
+                                value="{{ getActiveElection()->id }}">
                             <div class="form-group">
                                 <label for="faculty_id">Fakultas</label>
                                 <select name="faculty_id" class="form-control">
@@ -288,7 +296,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-danger light" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-sm btn-primary" id="tambahStudyProgramButton">Simpan Data</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="tambahStudyProgramButton">Simpan
+                            Data</button>
                     </div>
                     </form>
                 </div>
@@ -347,7 +356,7 @@
         <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
         <script src="{{ asset('js/custom.min.js') }}"></script>
         <script src="{{ asset('js/deznav-init.js') }}"></script>
-        
+
         <!-- Datatable -->
         <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/fixedheader/3.2.1/js/dataTables.fixedHeader.min.js"></script>
@@ -356,24 +365,16 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
         {{-- Navbar Pills Keep Active --}}
-        
+
         {{-- Data Table --}}
         <script>
             $(document).ready(function() {
-                var facultyTable = $('#facultyTable').DataTable( {
-                    responsive: true
-                } );
-            
-                new $.fn.dataTable.FixedHeader( facultyTable );
-            } );
+                var table = $('#facultyTable').DataTable();
+            });
 
             $(document).ready(function() {
-                var studyProgramTable = $('#studyProgramTable').DataTable( {
-                    responsive: true
-                } );
-            
-                new $.fn.dataTable.FixedHeader( studyProgramTable );
-            } );
+                var table = $('#studyProgramTable').DataTable();
+            });
         </script>
         {{-- Sweetalert --}}
         <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}"></script>
@@ -531,7 +532,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 }).then(function(t) {
-                        window.location.href = "{{ route('faculties.index') }}"
+                    window.location.href = "{{ route('faculties.index') }}"
                 })
             }
 

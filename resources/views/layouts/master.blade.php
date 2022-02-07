@@ -21,6 +21,53 @@
         {
             opacity:0.5 !important;
         }
+
+        .ham {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 400ms;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .hamRotate.active {
+            transform: rotate(45deg);
+        }
+        .hamRotate180.active {
+            transform: rotate(180deg);
+        }
+        .line {
+            fill:none;
+            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+            stroke:#000;
+            stroke-width:5.5;
+            stroke-linecap:round;
+        }
+        .ham1 .top {
+            stroke-dasharray: 40 139;
+        }
+        .ham1 .bottom {
+            stroke-dasharray: 40 180;
+        }
+        .ham1.active .top {
+            stroke-dashoffset: -98px;
+        }
+        .ham1.active .bottom {
+            stroke-dashoffset: -138px;
+        }
+
+        #navbar-toggler:focus {
+            outline:0px !important;
+            -webkit-appearance:none;
+            box-shadow: none !important;
+        }
+        #navbar-toggler:active {
+            outline:0px !important;
+            -webkit-appearance:none;
+            box-shadow: none !important;
+        }
+
     </style>
 
     <title>Pemilu Raya 2022 - UNSAP Sumedang</title>
@@ -30,10 +77,20 @@
     <nav class="navbar nav-style navbar-expand-lg navbar-light d-sm-block d-md-none">
         <div class="container">
           <a class="navbar-brand" href="{{ url('/') }}">
-              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="">
+              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="" style="object-fit: cover;">
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button class="navbar-toggler" id="navbar-toggler" style="border: none;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <svg class="ham hamRotate ham1" viewBox="0 0 100 100" width="65" onclick="this.classList.toggle('active')">
+                <path
+                      class="line top"
+                      d="m 30,33 h 40 c 0,0 9.044436,-0.654587 9.044436,-8.508902 0,-7.854315 -8.024349,-11.958003 -14.89975,-10.85914 -6.875401,1.098863 -13.637059,4.171617 -13.637059,16.368042 v 40" />
+                <path
+                      class="line middle"
+                      d="m 30,50 h 40" />
+                <path
+                      class="line bottom"
+                      d="m 30,67 h 40 c 12.796276,0 15.357889,-11.717785 15.357889,-26.851538 0,-15.133752 -4.786586,-27.274118 -16.667516,-27.274118 -11.88093,0 -18.499247,6.994427 -18.435284,17.125656 l 0.252538,40" />
+              </svg>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
@@ -57,10 +114,20 @@
     <nav class="navbar nav-style navbar-expand-lg navbar-light mt-3 d-none d-md-block">
         <div class="container">
           <a class="navbar-brand" href="{{ url('/') }}">
-              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="">
+              <img src="{{asset('front/assets/image/unsap1.png')}}" width="55" height="50" alt="" style="object-fit: cover;">
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button class="navbar-toggler" id="navbar-toggler" style="border: none;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <svg class="ham hamRotate ham1" viewBox="0 0 100 100" width="80" onclick="this.classList.toggle('active')">
+                <path
+                      class="line top"
+                      d="m 30,33 h 40 c 0,0 9.044436,-0.654587 9.044436,-8.508902 0,-7.854315 -8.024349,-11.958003 -14.89975,-10.85914 -6.875401,1.098863 -13.637059,4.171617 -13.637059,16.368042 v 40" />
+                <path
+                      class="line middle"
+                      d="m 30,50 h 40" />
+                <path
+                      class="line bottom"
+                      d="m 30,67 h 40 c 12.796276,0 15.357889,-11.717785 15.357889,-26.851538 0,-15.133752 -4.786586,-27.274118 -16.667516,-27.274118 -11.88093,0 -18.499247,6.994427 -18.435284,17.125656 l 0.252538,40" />
+              </svg>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
@@ -362,7 +429,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <!-- Main JS -->
 	@yield('js')
   </body>

@@ -54,6 +54,7 @@ class CandidateController extends Controller
         $data['slug'] = $slug;
         $data['candidate'] = Candidate::all();
         $data['candidate_type'] = CandidateType::all();
+        $data['candidate_type_selected'] = CandidateType::where('slug', $slug)->first();
         $data['faculty'] = Faculty::all();
         return view('admin.candidate.create', $data);
     }

@@ -4,10 +4,31 @@
 Cooming Soon
 @endsection
 
+@section('css')
+<style>
+    @media screen and (max-width: 455px) {
+        .text-besar {
+            font-size: 25px !important;
+        }
+
+        #padding {
+            padding: 40px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px){
+            .text-besar {
+                font-size: 21px !important;
+                margin-block: 40px !important;
+            }
+        }
+</style>
+@endsection
+
 @section('content')
 <main>
     <section class="section-countdown">
-        <div class="row">
+        <div class="d-flex justify-content-center" id="padding">
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 <h1 class="text-besar text-center">
@@ -15,7 +36,7 @@ Cooming Soon
                     Akan Dibuka Dalam Waktu
                 </h1>
                 <div class="row mt-4">
-                    <div class="col">
+                    <div class="col" style="width: 90px;">
                         <div class="countdown-hari">
                             <h1 class="text-center py-4 px-3 hari">04</h1>
                         </div>
@@ -23,7 +44,7 @@ Cooming Soon
                             Hari
                         </p>
                     </div>
-                    <div class="col">
+                    <div class="col" style="width: 90px;">
                         <div class="countdown-hari">
                             <h1 class="text-center py-4 px-3 jam">12</h1>
                         </div>
@@ -31,7 +52,7 @@ Cooming Soon
                             Jam
                         </p>
                     </div>
-                    <div class="col">
+                    <div class="col" style="width: 90px;">
                         <div class="countdown-hari">
                             <h1 class="text-center py-4 px-3 menit">38</h1>
                         </div>
@@ -39,7 +60,7 @@ Cooming Soon
                             Menit
                         </p>
                     </div>
-                    <div class="col">
+                    <div class="col" style="width: 90px;">
                         <div class="countdown-hari">
                             <h1 class="text-center py-4 px-3 detik">55</h1>
                         </div>
@@ -48,9 +69,12 @@ Cooming Soon
                         </p>
                     </div>
                 </div>
-                
+
                 <h5 class="mt-3 text-center text-kecil">
-                    Build with passion by <a href="http://instagram.com/tahungoding" style="all:unset;cursor:pointer"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
+                    Build with passion by <a href="http://instagram.com/tahungoding" style="all:unset;cursor:pointer">
+                        <font class="tahu">TAHU</font>
+                        <font class="ngoding">NGODING</font>
+                    </a>
                 </h5>
             </div>
             <div class="col-md-4"></div>
@@ -62,26 +86,26 @@ Cooming Soon
 @section('js')
 <script>
     const countdown = () => {
-    const countDate = new Date("Feb 8, 2022 09:00:00").getTime();
-    const now = new Date().getTime();
-    const gap = countDate - now;
+        const countDate = new Date("Feb 8, 2022 09:00:00").getTime();
+        const now = new Date().getTime();
+        const gap = countDate - now;
 
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
 
-    const textDay = Math.floor(gap / day);
-    const textHour = Math.floor((gap % day) / hour);
-    const textMinute = Math.floor((gap % hour) / minute);
-    const textSecond = Math.floor((gap % minute) / second);
+        const textDay = Math.floor(gap / day);
+        const textHour = Math.floor((gap % day) / hour);
+        const textMinute = Math.floor((gap % hour) / minute);
+        const textSecond = Math.floor((gap % minute) / second);
 
-    document.querySelector(".hari").innerText = textDay;
-    document.querySelector(".jam").innerText = textHour;
-    document.querySelector(".menit").innerText = textMinute;
-    document.querySelector(".detik").innerText = textSecond;
-};
+        document.querySelector(".hari").innerText = textDay;
+        document.querySelector(".jam").innerText = textHour;
+        document.querySelector(".menit").innerText = textMinute;
+        document.querySelector(".detik").innerText = textSecond;
+    };
 
-setInterval(countdown,1000);
+    setInterval(countdown, 1000);
 </script>
 @endsection
