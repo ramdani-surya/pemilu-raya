@@ -15,6 +15,13 @@ Cooming Soon
             padding: 40px;
         }
     }
+
+    @media (min-width: 768px) and (max-width: 1024px){
+            .text-besar {
+                font-size: 21px !important;
+                margin-block: 40px !important;
+            }
+        }
 </style>
 @endsection
 
