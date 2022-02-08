@@ -120,6 +120,7 @@
 
         <!-- Dashboard 1 -->
         <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
         <script>
 
         // FTI
@@ -146,6 +147,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
 
@@ -173,6 +181,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
 
@@ -200,6 +215,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
             
@@ -227,6 +249,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
 
@@ -254,6 +283,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
 
@@ -281,6 +317,13 @@
             options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        plugins: {
+                            labels: {
+                                render: 'percentage',
+                                fontColor: '#ffffff',
+                                precision: 2
+                            }
+                        }
                     }
             });
 
