@@ -102,7 +102,7 @@ function bpmVotersPercentage(Election $election, $voted=1, $label=true)
     $bpmVotedVoters   = $election->voted_voters ?? count($election->bpmVotedVoters);
     $bpmUnvotedVoters = $election->unvoted_voters ?? count($election->bpmUnvotedVoters);
 
-    $vote = $voted ? $bpmVotedVoters  : $bpmUnvotedVoters;
+    $vote = $voted ? $bpmVotedVoters : $bpmUnvotedVoters;
 
     try {
         $percentage = round(($vote / $totalVoters) * 100, 2);
