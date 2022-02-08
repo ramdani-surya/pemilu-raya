@@ -97,7 +97,7 @@ Daftar Manajemen Akun
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                @if(Auth::user()->role == 'admin')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <th>Aksi</th>
                                 @endif
                             </tr>
