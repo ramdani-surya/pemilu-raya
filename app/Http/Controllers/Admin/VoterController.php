@@ -75,13 +75,15 @@ class VoterController extends Controller
         return DataTables::of($voters)
                         ->addIndexColumn()
                         ->addColumn('memilih_json', function($row){
+                            $btn = null;
                             if($row->bem_voted == 1){
-                                $btn = '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Sudah Memilih BEM"> <i class="fa fa-check"></i></button>';
+                                $btn .= '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Sudah Memilih BEM"> <i class="fa fa-check"></i></button>';
                             }
                             if ($row->bpm_voted == 1) {
-                                $btn = '<button type="button"class="btn btn-info btn-xs" data-toggle="tooltip" title="Sudah Memilih BPM"><i class="fa fa-check"></i></button>';
-                            }elseif ($row->bem_voted != 1 && $row->bpm_voted != 1){
-                                $btn = '<span class="badge badge-outline-warning">Belum Memilih</span>';
+                                $btn .= '<button type="button"class="btn btn-info btn-xs" data-toggle="tooltip" title="Sudah Memilih BPM"><i class="fa fa-check"></i></button>';
+                            }
+                            if ($row->bem_voted != 1 && $row->bpm_voted != 1){
+                                $btn .= '<span class="badge badge-outline-warning">Belum Memilih</span>';
                             }
                             return $btn;
                         })
