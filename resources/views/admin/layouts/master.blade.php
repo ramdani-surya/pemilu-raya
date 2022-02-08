@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <ul class="navbar-nav header-right">
-							<li class="nav-item">
+							{{-- <li class="nav-item">
 								<div class="input-group search-area d-xl-inline-flex d-none">
 									<div class="input-group-append">
 										<span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
@@ -82,10 +82,16 @@
 									<input type="text" class="form-control" placeholder="Search here...">
 								</div>
 							</li>
-						
+						 --}}
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
+                                    @if(!empty(Auth::user()->image) && Storage::exists(Auth::user()->image))
+                                    
+                                    <img src="{{ Storage::url(Auth::user()->image) }}" width="20" style="object-fit: cover;" alt=""/>
+
+                                    @else 
                                     <img src="{{ asset('images/admin_component/user.png') }}" width="20" style="object-fit: cover;" alt=""/>
+                                    @endif
 									<div class="header-info">
 										<span class="text-black"><strong>{{ Auth::user()->username }}</strong></span>
 										<p class="fs-12 mb-0">{{ ucwords(str_replace('_', ' ', Auth::user()->role)) }}</p>

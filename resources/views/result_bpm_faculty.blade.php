@@ -35,7 +35,7 @@
             <h2 class="text-center mt-5 title-bpm">HASIL VOTING BPM PER FAKULTAS</h2>
             <div class="row mt-5">
                 <div class="col-md-6 pt-5">
-                    <h6 class="text-center">Faktultas Teknologi Informatika</h1>
+                    <h6 class="text-center">Faktultas Teknologi Informasi</h1>
                     <div class="card-body">
                         <canvas id="fti_chart" data-bpm-fti-candidates="{{ implode(',', $bpmCandidates) }}"
                             data-bpm-fti-votings="{{ implode(',', $ftiCandidateVotings) }}"></canvas>

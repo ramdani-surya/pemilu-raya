@@ -22,6 +22,16 @@ Tipe Kandidat
             }
         }
 
+        @media screen and (max-width: 455px) {
+            #clearAll {
+                margin-top: 7px;
+            }
+
+            #deleteButton {
+                margin-top: 7px;
+            }
+        }
+
         label.error {
             color: #F94687;
             font-size: 13px;
@@ -55,7 +65,7 @@ Tipe Kandidat
                     <h4 class="card-title">Data Tipe Kandidat</h4>
                     @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                     <div class="button-list">
-                        <button type="button" data-toggle="modal" data-target="#addCandidateTypeModal" class="btn btn-primary btn-xs"
+                        <button type="button" data-toggle="modal" data-target="#addCandidateTypeModal" id="tambahButton" class="btn btn-primary btn-xs"
                             data-animation="slide" data-plugin="custommodal" data-overlaySpeed="200"
                             data-overlayColor="#36404a"><i class="fa fa-plus-circle mr-1"></i> Tambah</button>
                         <button type="button" class="btn btn-danger btn-xs"
@@ -89,9 +99,9 @@ Tipe Kandidat
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <td>
                                     <div class="form-group">
-                                        <button type="button" data-toggle="modal"
+                                        <button type="button" data-toggle="modal" id="editButton"
                                             data-target="#editCandidateTypeModal{{ $candidate_types->id }}"
-                                            class="btn btn-warning btn-sm text-white"
+                                            class="btn btn-warning btn-xs text-white"
                                             onclick="editCandidateType({{ $candidate_types }})"><i
                                                 class="fa fa-edit mr-1"></i>Edit</button>
                                         <form style="display: inline"
@@ -99,7 +109,7 @@ Tipe Kandidat
                                             method="post">
                                             @csrf
                                             @method('delete')
-                                            <button type="button" class="btn btn-sm btn-danger"
+                                            <button type="button" class="btn btn-xs btn-danger" id="deleteButton"
                                                 onclick="deleteAlert(this)"><i class="fa fa-trash mr-1"></i> Hapus</button>
                                         </form>
                                     </div>

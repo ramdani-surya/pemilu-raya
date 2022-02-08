@@ -39,6 +39,12 @@
         table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
             background-color: #7A1F31 !important;
         }
+
+        @media screen and (max-width: 455px) {
+            #clearAll {
+                margin-top: 7px;
+            }
+        }
     </style>
 @endsection
 
@@ -129,12 +135,16 @@
                                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
                                 <td>
                                     <div class="button-list mt-1">
-                                        @if($election->status == 1)
-                                        <button type="button" onclick="deactivation(this)" data-url="{{ route('elections.deactivation', $election) }}"
-                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Nonaktif</button>
-                                        @elseif($election->status == 0)
-                                            <button type="button" onclick="activation(this)" data-url="{{ route('elections.activation', $election) }}"
-                                            class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Aktivasi</button>
+                                        @if($election->running && !$election->archived)
+                                            
+                                        @else 
+                                            @if($election->status == 1)
+                                            <button type="button" onclick="deactivation(this)" data-url="{{ route('elections.deactivation', $election) }}"
+                                                class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Nonaktif</button>
+                                            @elseif($election->status == 0)
+                                                <button type="button" onclick="activation(this)" data-url="{{ route('elections.activation', $election) }}"
+                                                class="btn btn-xs btn-light"><i class="fa fa-play mr-1"></i> Aktivasi</button>
+                                            @endif
                                         @endif
 
                                         @if(!$election->running && !$election->archived && $election->status == 1)
@@ -201,7 +211,7 @@
                             <div class="col-12">
                                 <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
                                         email)</span></label>
-                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021" name="name"
+                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2022" name="name"
                                     required>
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -211,7 +221,7 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Periode</label>
-                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022" name="period"
+                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2022 - 2023" name="period"
                                     required>
                                 @error('period')
                                 <span class="text-danger">{{ $message }}</span>
@@ -255,7 +265,7 @@
                             <div class="col-12">
                                 <label for="name">Nama Pemilu <span class="text-muted">(ini akan digunakan sebagai subjek
                                         email)</span></label>
-                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2021"
+                                <input class="form-control" type="text" id="name" placeholder="Contoh: Pemilu Raya 2022"
                                     name="edit_name" required>
                                 @error('edit_name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -265,7 +275,7 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <label for="period">Periode</label>
-                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2021 - 2022"
+                                <input class="form-control" type="text" id="period" placeholder="Contoh: 2022 - 2023"
                                     name="edit_period" required>
                                 @error('edit_period')
                                 <span class="text-danger">{{ $message }}</span>

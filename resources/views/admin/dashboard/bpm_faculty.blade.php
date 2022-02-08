@@ -20,10 +20,11 @@
         <div class="row">
             <div class="col-xl-12 col-xxl-12">
                 <div class="row">
-                    <div class="card" style="width: 100%;">
-                        <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <h4 class="text-black ">BPM</h4>
-
+                    <div class="col-sm-12">
+                        <div class="card" style="width: 100%;">
+                            <div class="card-body d-flex flex-column justify-content-center text-center">
+                                <h4 class="text-black ">BPM</h4>
+                            </div>
                         </div>
                     </div>
                 </div>

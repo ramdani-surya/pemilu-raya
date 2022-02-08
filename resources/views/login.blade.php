@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Login
+Login
 @endsection
 
 @section('css')
@@ -13,9 +13,21 @@
         float: left;
     }
 
+    @media screen and (max-width: 455px) {
+        .text-besar {
+            font-size: 25px !important;
+        }
+
+        .text-kecil {
+            margin-top: 55px !important;
+        }
+
+        .section-login {
+            margin-top: 40px !important;
+        }
+    }
 </style>
 @endsection
-
 @section('content')
 <main>
     <section class="section-login">
@@ -33,21 +45,21 @@
                     <form action="{{route('authenticate')}}" method="POST">
                         @csrf
                         @error('wrong')
-                            <small class="text-danger mr-2 mb-2 text-center">{{$message}}</small><br>
+                        <small class="text-danger mr-2 mb-2 text-center">{{$message}}</small><br>
                         @enderror
                         <div class="mb-3 input-group">
                             <input type="text" name="nim" class="form-control form-control-lg form-style" value="{{old('nim', $nim)}}" placeholder="Masukan NIM">
                             <i class="bi bi-person input-group-text form-style"></i>
                         </div>
                         @error('nim')
-                            <small class="text-danger mr-2 mb-2">{{$message}}</small><br>
+                        <small class="text-danger mr-2 mb-2">{{$message}}</small><br>
                         @enderror
                         <div class="mb-3 input-group">
                             <input type="text" name="token" value="{{old('token', $token)}}" class="form-control form-control-lg form-style" placeholder="Masukan Token">
                             <i class="bi bi-eye-slash input-group-text form-style"></i>
                         </div>
                         @error('token')
-                            <small class="text-danger">{{$message}}</small><br>
+                        <small class="text-danger">{{$message}}</small><br>
                         @enderror
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="text-decoration-none text-white btn btn-masuk btn-lg">Masuk</button>
@@ -56,7 +68,10 @@
                             Tidak dapat token? 
                         </div> --}}
                         <h5 class="text-center text-kecil">
-                            Build with passion by <a href="https://instagram.com/tahungoding" style="all:unset;cursor: pointer;"><font class="tahu">TAHU</font><font class="ngoding">NGODING</font></a> 
+                            Build with passion by <a href="https://instagram.com/tahungoding" style="all:unset;cursor: pointer;">
+                                <font class="tahu">TAHU</font>
+                                <font class="ngoding">NGODING</font>
+                            </a>
                         </h5>
                     </form>
                 </div>
