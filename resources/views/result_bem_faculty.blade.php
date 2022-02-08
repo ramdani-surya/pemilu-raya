@@ -31,7 +31,7 @@
             <h2 class="text-center mt-5 title-bem">HASIL VOTING BEM PER FAKULTAS</h2>
             <div class="row mt-5">
                 <div class="col-md-6 pt-5">
-                    <h6 class="text-center">Faktultas Teknologi Informatika</h6>
+                    <h6 class="text-center">Faktultas Teknologi Informasi</h6>
                         <div class="card-body">
                             <canvas id="fti_chart" data-bem-fti-candidates="{{ implode(',', $bemCandidates) }}"
                                 data-bem-fti-votings="{{ implode(',', $ftiCandidateVotings) }}"></canvas>

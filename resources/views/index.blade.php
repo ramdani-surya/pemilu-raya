@@ -196,7 +196,7 @@ Kandidat
                 @if (Auth::user()->bem_voted != 1)
                     <div class="row" >
                         @foreach ($bem as $item)
-                            <div class="col-md-5 mx-5 mt-5" id="resolutionTabletIpad">
+                            <div class="col-md-6 p-5" id="resolutionTabletIpad">
                                 <div class="row card-calon d-flex justify-content-center py-5">
                                     <div class="col-md-3">  
                                         <div class="position-relative">
@@ -304,7 +304,7 @@ Kandidat
                                     @endphp 
                                     <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-7" style="padding-left: 30px;">
                                     <label class="nama">
                                         {{$item->chairman_name}}
                                     </label><br>
@@ -381,7 +381,7 @@ Kandidat
                 @if (Auth::user()->bpm_voted != 1)
                     <div class="row">
                         @foreach ($bpm as $item)
-                            <div class="col-md-5 mx-5 mt-5" id="resolutionTabletIpad">
+                            <div class="col-md-6 p-5" id="resolutionTabletIpad">
                                 <div class="row card-calon d-flex justify-content-center py-5">
                                     <div class="col-md-3">
                                         <div class="position-relative">
@@ -489,7 +489,7 @@ Kandidat
                                         @endphp 
                                         <img src="{{$path}}" class="img-fluid mx-auto d-block img-candidate" alt="">
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-7" style="padding-left: 30px;">
                                         <label class="nama">
                                             {{$item->chairman_name}}
                                         </label><br>
@@ -574,7 +574,7 @@ Kandidat
                                 <h5 class="fw-bold text-center mb-3">
                                     Visi
                                 </h5>
-                                <p class="visi mx-5 mb-5" id="modal_visi">
+                                <p class="visi p-4" id="modal_visi">
                                     ---
                                 </p>
                                 <h5 class="fw-bold text-center mt-5 mb-3">
