@@ -35,7 +35,6 @@ class Controller extends BaseController
             Alert::info('Info', "Pemilu belum di arsipkan!");
             return redirect()->route('elections.index');
         } else {
-
             if (getActiveElection()) {
                 $data = $this->getVotingData();
             } else {
@@ -51,7 +50,9 @@ class Controller extends BaseController
 
             array_pop($data['bemCandidates']);
             array_pop($data['bemCandidateVotings']);
-            
+
+            $data['election'] = getActiveElection();
+
             return view('result', $data);
         }
     }
@@ -65,43 +66,49 @@ class Controller extends BaseController
             Alert::info('Info', "Pemilu belum di arsipkan!");
             return redirect()->route('elections.index');
         } else {
-              
-            if ($candidate_type == 'bpm') {
-                $data = $this->getBpmFacultyVotingData();
 
-                array_pop($data['bpmCandidates']);
             
+            if ($candidate_type == 'bpm') {
+                
+                $data = $this->getBpmFacultyVotingData();
+                
+                array_pop($data['bpmCandidates']);
+                
                 $data['ftiCandidateVotings'];
-
+                
                 $data['febCandidateVotings'];
-
+                
                 $data['fisipCandidateVotings'];
-
+                
                 $data['fkipCandidateVotings'];
-
+                
                 $data['fibCandidateVotings'];
-
+                
                 $data['fikCandidateVotings'];
+                
+                $data['election'] = getActiveElection();
 
                 return view('result_bpm_faculty', $data);
             }
 
             if ($candidate_type == 'bem') {
-
+                
                 $data = $this->getBemFacultyVotingData();
                 array_pop($data['bemCandidates']);
-            
+                
                 $data['ftiCandidateVotings'];
-
+                
                 $data['febCandidateVotings'];
-
+                
                 $data['fisipCandidateVotings'];
-
+                
                 $data['fkipCandidateVotings'];
-
+                
                 $data['fibCandidateVotings'];
-
+                
                 $data['fikCandidateVotings'];
+
+                $data['election'] = getActiveElection();
 
                 $data['candidate_type'] = $candidate_type;
 

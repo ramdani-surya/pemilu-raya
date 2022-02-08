@@ -7,6 +7,7 @@
 @section('css')
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
     <style>
         .btn-faculty {
             background-color: #7A1F31;
@@ -32,7 +33,7 @@
 @section('content')
     <section class="section-header" style="margin-top: 90px;">
         <div class="container">
-            <h2 class="text-center mt-5 title-bpm">HASIL VOTING BPM PER FAKULTAS</h2>
+            <h2 class="text-center mt-5 title-bpm">HASIL VOTING BPM PER FAKULTAS <br><small><b>{{$election->name}} {{$election->period}} </b></small></h2>
             <div class="row mt-5">
                 <div class="col-md-6 pt-5">
                     <h6 class="text-center">Faktultas Teknologi Informasi</h1>
@@ -93,6 +94,7 @@
 
     <!-- Dashboard 1 -->
     <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 
     <script>
         // FTI
@@ -119,6 +121,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -146,6 +155,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -173,6 +189,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -200,6 +223,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -227,6 +257,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -254,6 +291,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 

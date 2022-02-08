@@ -22,7 +22,7 @@
 @section('content')
     <section class="section-header" style="margin-top: 90px;">
         <div class="container">
-            <h2 class="text-center mt-5">HASIL VOTING</h2>
+            <h2 class="text-center mt-5">HASIL VOTING <br><small><b>{{$election->name}} {{$election->period}} </b></small>  </h2>
             <div class="row mt-5">
                 <div class="col-md-6 col-xxl-6 text-center">
                     <h2 style="letter-spacing: 8px;">BPM</h2>
@@ -42,7 +42,6 @@
                     <a href="{{ route('result.filter', 'bem') }}" class="btn btn-sm btn-faculty">Filter Fakultas</a>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection
@@ -59,6 +58,7 @@
 
     <!-- Dashboard 1 -->
     <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 
     <script>
         // BAR CHART
@@ -102,7 +102,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
-
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
@@ -112,7 +118,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
-
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#ffffff',
+                        precision: 2
+                    }
+                }
             }
         });
 
