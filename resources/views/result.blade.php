@@ -17,6 +17,26 @@
         background-color: #852d3f;
         color: white;
         }
+
+        @media screen and (max-width: 455px) {
+            #distanceMobile {
+                margin-top: 40px !important;
+            }
+
+            .width-100 {
+                    width: 100% !important;
+                }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px){
+                .width-100 {
+                    width: 100% !important;
+                }
+
+                #distanceMobile {
+                    margin-top: 40px !important;
+                }
+        }
     </style>
 @endsection
 @section('content')
@@ -24,7 +44,7 @@
         <div class="container">
             <h2 class="text-center mt-5">HASIL VOTING <br><small><b>{{$election->name}} {{$election->period}} </b></small>  </h2>
             <div class="row mt-5">
-                <div class="col-md-6 col-xxl-6 text-center">
+                <div class="col-md-6 col-xxl-6 text-center width-100">
                     <h2 style="letter-spacing: 8px;">BPM</h2>
                    
                         <div class="card-body">
@@ -33,7 +53,7 @@
                         </div>
                     <a href="{{ route('result.filter', 'bpm') }}" class="btn btn-sm btn-faculty">Filter Fakultas</a>
                 </div>
-                <div class="col-md-6 col-xxl-6 text-center">
+                <div class="col-md-6 col-xxl-6 text-center width-100" id="distanceMobile">
                     <h2 style="letter-spacing: 8px;">BEM</h2>
                         <div class="card-body">
                             <canvas id="bem_chart" data-bemcandidates="{{ implode(',', $bemCandidates) }}"
