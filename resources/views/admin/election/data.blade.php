@@ -87,7 +87,7 @@
                                 <th>Berjalan</th>
                                 <th>Tanggal</th>
                                 <th>Diarsipkan</th>
-                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
+                                @if (Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                     <th>Aksi</th>
                                 @endif
                             </tr>
@@ -125,13 +125,14 @@
                                     <button type="button" class="btn btn-success btn-xs">
                                         <i class="fa fa-check"></i>
                                     </button>
+                                    <a href="{{url('result')}}" target="_blank">Hasil</a>
                                     @else 
                                     <button type="button" class="btn btn-danger btn-xs">
                                         <i class="fa fa-close"></i>
                                     </button>
                                     @endif
                                 </td>
-                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'panitia')
+                                @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
                                 <td>
                                     <div class="button-list mt-1">
                                         @if($election->running && !$election->archived)

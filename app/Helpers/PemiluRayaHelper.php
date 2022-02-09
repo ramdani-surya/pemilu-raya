@@ -76,9 +76,13 @@ function tglIndo($date)
 
 function voterAllPercentage(Election $election, $voted=1, $label=true)
 {
-    $totalVoters   = $election->total_voters ?? count($election->voters);
-    $allVoted   = $election->voted_voters ?? count($election->allVoted);
-    $allUnvoted = $election->unvoted_voters ?? count($election->allUnvoted);
+    // $totalVoters   = $election->total_voters ?? count($election->voters);
+    // $allVoted   = $election->voted_voters ?? count($election->allVoted);
+    // $allUnvoted = $election->unvoted_voters ?? count($election->allUnvoted);
+
+    $totalVoters   = count($election->voters);
+    $allVoted   = count($election->allVoted);
+    $allUnvoted = count($election->allUnvoted);
 
     $vote = $voted ? $allVoted  : $allUnvoted;
 
@@ -98,9 +102,13 @@ function voterAllPercentage(Election $election, $voted=1, $label=true)
 function bpmVotersPercentage(Election $election, $voted=1, $label=true)
 {
     // remionder have to change voted_voter etc to bpm or bem. votedvoters = voter total when archived
-    $totalVoters   = $election->total_voters ?? count($election->voters);
-    $bpmVotedVoters   = $election->voted_voters ?? count($election->bpmVotedVoters);
-    $bpmUnvotedVoters = $election->unvoted_voters ?? count($election->bpmUnvotedVoters);
+    // $totalVoters   = $election->total_voters ?? count($election->voters);
+    // $bpmVotedVoters   = $election->voted_voters ?? count($election->bpmVotedVoters);
+    // $bpmUnvotedVoters = $election->unvoted_voters ?? count($election->bpmUnvotedVoters);
+
+    $totalVoters   = count($election->voters);
+    $bpmVotedVoters   = count($election->bpmVotedVoters);
+    $bpmUnvotedVoters = count($election->bpmUnvotedVoters);
 
     $vote = $voted ? $bpmVotedVoters : $bpmUnvotedVoters;
 
@@ -119,9 +127,13 @@ function bpmVotersPercentage(Election $election, $voted=1, $label=true)
 function bemVotersPercentage(Election $election, $voted=1, $label=true)
 {
     // remionder have to change voted_voter etc to bpm or bem. votedvoters = voter total when archived
-    $totalVoters   = $election->total_voters ?? count($election->voters);
-    $bemVotedVoters   = $election->voted_voters ?? count($election->bemVotedVoters);
-    $bemUnvotedVoters = $election->unvoted_voters ?? count($election->bemUnvotedVoters);
+    // $totalVoters   = $election->total_voters ?? count($election->voters);
+    // $bemVotedVoters   = $election->voted_voters ?? count($election->bemVotedVoters);
+    // $bemUnvotedVoters = $election->unvoted_voters ?? count($election->bemUnvotedVoters);
+
+    $totalVoters   = count($election->voters);
+    $bemVotedVoters   = count($election->bemVotedVoters);
+    $bemUnvotedVoters = count($election->bemUnvotedVoters);
 
     $vote = $voted ? $bemVotedVoters  : $bemUnvotedVoters;
 

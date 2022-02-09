@@ -26,7 +26,7 @@
     </style>
 @endsection
 @section('content')
-    <section class="section-header" style="margin-top: 90px;">
+    <section class="section-header" style="margin-top: 90px; padding-bottom: 50px;">
         <div class="container">
             <h2 class="text-center mt-5 title-bem">HASIL VOTING BEM PER FAKULTAS <br><small><b>{{$election->name}} {{$election->period}} </b></small></h2>
             <div class="row mt-5">
