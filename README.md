@@ -22,10 +22,16 @@
             <sub><b>ADNAN</b></sub>
         </a>
     </td>
+     <td align="center">
+        <a href="https://github.com/mvhamadiqbalriv">
+            <img src="https://avatars.githubusercontent.com/u/61414949?v=4" width="100px;"><br>
+            <sub><b>MUHAMAD IQBAL RIVALDI</b></sub>
+        </a>
+    </td>
     <td align="center">
         <a href="https://github.com/hippies67">
-            <img src="public/images/admin_component/tahu_ikbal.jpg" width="100px;"><br>
-            <sub><b>IKBAL MR</b></sub>
+            <img src="https://avatars.githubusercontent.com/u/53890080?v=4" width="100px;"><br>
+            <sub><b>IKBAL MALIK RAMADHAN</b></sub>
         </a>
     </td>
     <td align="center">
