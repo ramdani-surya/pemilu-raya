@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\UserActivity::class,
         ],
 
         'api' => [
@@ -62,9 +63,14 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' => \App\Http\Middleware\IsAdmin::class,
+        'loggedIn' => \App\Http\Middleware\LoggedIn::class,
         'checkActiveElection' => \App\Http\Middleware\CheckActiveElection::class,
+        'checkFaculty' => \App\Http\Middleware\CheckFaculty::class,
+        'checkStudyProgram' => \App\Http\Middleware\CheckStudyProgram::class,
+        'checkCandidateType' => \App\Http\Middleware\CheckCandidateType::class,
+        'checkCandidate' => \App\Http\Middleware\CheckCandidate::class,
+        'checkIfArchived' => \App\Http\Middleware\CheckIfArchived::class,
         'comingSoon' => \App\Http\Middleware\ComingSoon::class,
-        'hasVoted' => \App\Http\Middleware\HasVoted::class,
+        'hasVoted' => \App\Http\Middleware\HasVoted::class
     ];
 }

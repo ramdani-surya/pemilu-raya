@@ -16,11 +16,14 @@ class CreateVotersTable extends Migration
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->nullable();
-            $table->foreignId('election_id')->constrained();
+            $table->foreignId('election_id')->constrained()->onDelete('cascade');
             $table->string('nim');
             $table->string('name')->nullable();
             $table->string('token');
             $table->boolean('voted')->default(0);
+            $table->boolean('bpm_voted')->default(0);
+            $table->boolean('bem_voted')->default(0);
+            $table->string('email')->nullable();
             $table->boolean('email_sent')->default(0);
             $table->timestamps();
         });

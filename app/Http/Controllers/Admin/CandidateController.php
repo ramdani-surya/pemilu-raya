@@ -6,9 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Candidate;
+use App\Models\CandidateType;
 use App\Models\Election;
+use App\Models\StudyProgram;
+use App\Models\Faculty;
 use Alert;
+use App\Models\Voter;
 use File;
+use Storage;
+use Str;
+use Validator;
+use Illuminate\Validation\Rule;
 
 class CandidateController extends Controller
 {
@@ -19,8 +27,8 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $data['candidates'] = getActiveElection()->candidates;
-
+        $data['candidate_type'] = getActiveElection()->candidateTypes;
+        $data['election'] = Election::all();
         return view('admin.candidate.data', $data);
     }
 
@@ -31,7 +39,42 @@ class CandidateController extends Controller
      */
     public function create()
     {
-        return view('admin.candidate.create');
+        $data['candidate_type'] = CandidateType::all();
+        $data['faculty'] = Faculty::all();
+        return view('admin.candidate.create', $data);
+    }
+
+    public function filter($request)
+    {
+        
+    }
+
+    public function createIn($slug)
+    {
+        $data['slug'] = $slug;
+        $data['candidate'] = Candidate::all();
+        $data['candidate_type'] = CandidateType::all();
+        $data['candidate_type_selected'] = CandidateType::where('slug', $slug)->first();
+        $data['faculty'] = Faculty::all();
+        return view('admin.candidate.create', $data);
+    }
+
+    public function getStudyProgram($id)
+    {
+        $study_program = StudyProgram::where('faculty_id',$id)->get();
+        return response()->json($study_program);
+    }
+
+    public function getCandidateNumber($id)
+    {
+        $get_candidate_number = Candidate::where('candidate_type_id', $id)->orderBy('updated_at', 'desc')->first();
+        
+        if(isset($get_candidate_number)) {
+            $candidate_number = $get_candidate_number->candidate_number + 1;
+        } else {
+            $candidate_number = 1;
+        }
+        return response()->json($candidate_number);
     }
 
     /**
@@ -44,49 +87,50 @@ class CandidateController extends Controller
     {
         $this->validate($request, [
             'election' => 'required',
-            'candidate_number' => "required|numeric|unique:candidates",
+            'candidate_number' => ['required',Rule::unique('candidates')->where(function ($query) use ($request) {
+                return $query->where('candidate_type_id', '=', $request->candidate_type_id);
+            })],
+            'candidate_type_id' => "required",
+            'faculty_id' => "required",
+            'study_program_id' => "required",
             'chairman_name' => 'required|string|min:3|max:35',
-            'vice_chairman_name' => 'required|string|min:3|max:35',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'program' => 'required',
         ],
         [
             'election.required' => 'Election harus di isi.',
             'candidate_number.required' => 'Nomor Kandidat harus di isi.',
             'candidate_number.unique' => 'Nomor Kandidat sudah digunakan.',
+            
+            'candidate_type_id.required' => 'Tipe Kandidat harus di isi.',
+
+            'faculty_id.required' => 'Fakultas harus di isi.',
+            'study_program_id.required' => 'Program Studi harus di isi.',
 
             'chairman_name.required' => 'Nama Ketua harus di isi.',
             'chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
             'chairman_name.max' => 'Nama Ketua tidak boleh lebih dari 35 karakter.',
 
-            'vice_chairman_name.required' => 'Nama Wakil Ketua harus di isi.',
-            'vice_chairman_name.min' => 'Nama Wakil Ketua harus 3 karakter.',
-            'vice_chairman_name.max' => 'Nama Wakil Ketua tidak boleh lebih dari 35 karakter.',
-
+            'image.required' => 'Foto harus di isi.',
             'image.image' => 'Foto harus berupa gambar.',
+            'image.mimes' => 'Format foto harus jpeg,png,jpg,gif dan svg.',
             'image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
 
             'program.required' => 'Kolom Program harus di isi.',
         ]);
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-
-            $image = time() . "_" . $file->getClientOriginalName();
-
-            $tujuan_upload = public_path('images/uploaded');
-
-            $file->move($tujuan_upload, $image);
-        } else {
-            $image = null;
-        }
+        $slug = CandidateType::where('id', $request->candidate_type_id)->first();
 
         $data = [
             'election_id' => $request->election,
+            'candidate_type_id'  => $request->candidate_type_id,
             'candidate_number' => $request->candidate_number,
             'chairman_name' => $request->chairman_name,
-            'vice_chairman_name' => $request->vice_chairman_name,
-            'image' => $image,
+            'study_program_id' => $request->study_program_id,
+            'faculty_id' => $request->faculty_id,
+            'vision' => $request->vision,
+            'mission' => $request->mission,
+            'image' => $request->file('image')->store("/public/input/candidates"),
             'program' => $request->program,
         ];
 
@@ -94,7 +138,7 @@ class CandidateController extends Controller
             ? Alert::success('Sukses', "Kandidat berhasil ditambahkan.")
             : Alert::error('Error', "Kandidat gagal ditambahkan!");
 
-        return redirect()->back();
+        return redirect()->route('candidates.show', $request->candidateTypeUrl);
     }
 
     /**
@@ -103,9 +147,17 @@ class CandidateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $candidate_type = CandidateType::where('slug', $slug)->first();
+        $data['candidate_type2'] = CandidateType::where('slug', $slug)->first();
+        $data['candidate'] = Candidate::where('candidate_type_id', $candidate_type->id)->get();
+        // $data['candidate'] = getActiveEle;
+        $data['candidates'] = Candidate::with(['election' => function ($query) {
+            $query->select('id', 'status')->where('status',1);
+        }])->get();
+        
+        return view('admin.candidate.show', $data);
     }
 
     /**
@@ -114,9 +166,13 @@ class CandidateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Candidate $candidate)
+    public function edit($id,$candidateType)
     {
-        return view('admin.candidate.edit', compact('candidate'));
+        $data['candidate'] = Candidate::find($id);
+        $data['candidate_type'] = CandidateType::all();
+        $data['faculty'] = Faculty::all();
+        $data['candidateType'] = $candidateType;
+        return view('admin.candidate.edit', $data);
     }
 
     /**
@@ -128,25 +184,26 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-
         $request->validate([
-            'edit_candidate_number' => "required|unique:candidates,candidate_number,$candidate->id",
+          
+            'edit_faculty_id' => "required",
+            'edit_study_program_id' => "required",
             'edit_chairman_name'      => 'required|min:3|max:35',
-            'edit_vice_chairman_name'     => 'required|min:3|max:35',
-            'edit_image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'edit_image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'edit_program'     => 'required',
         ],
         [
             'edit_candidate_number.required' => 'Nomor Kandidat harus di isi.',
             'edit_candidate_number.unique' => 'Nomor Kandidat sudah digunakan.',
 
+            'edit_candidate_type_id.required' => 'Tipe Kandidat harus di isi.',
+
+            'edit_faculty_id.required' => 'Fakultas harus di isi.',
+            'edit_study_program_id.required' => 'Program Studi harus di isi.',
+
             'edit_chairman_name.required' => 'Nama Ketua harus di isi.',
             'edit_chairman_name.min' => 'Nama Ketua minimal harus 3 karakter.',
             'edit_chairman_name.max' => 'Nama Ketua tidak boleh lebih dari 35 karakter.',
-
-            'edit_vice_chairman_name.required' => 'Nama Wakil Ketua harus di isi.',
-            'edit_vice_chairman_name.min' => 'Nama Wakil Ketua harus 3 karakter.',
-            'edit_vice_chairman_name.max' => 'Nama Wakil Ketua tidak boleh lebih dari 35 karakter.',
 
             'edit_image.image' => 'Foto harus berupa gambar.',
             'edit_image.max' => 'Ukuran dari Foto tidak boleh lebih dari 2048 KB.',
@@ -154,29 +211,30 @@ class CandidateController extends Controller
             'edit_program.required' => 'Kolom Program harus di isi.',
         ]);
 
-        if ($request->hasFile('edit_image')) {
-
-            $StoredImage = public_path("images/{$candidate->image}");
-            if (File::exists($StoredImage) && !empty($candidate->image)) {
-                unlink($StoredImage);
+        if($request->hasFile('edit_image')) {
+            if(Storage::exists($candidate->image) && !empty($candidate->image)) {
+                Storage::delete($candidate->image);
             }
 
-            $file = $request->file('edit_image');
+            $edit_image = $request->file("edit_image")->store("/public/input/candidates");
+        }   
 
-            $edit_image = time() . "_" . $file->getClientOriginalName();
+        $edit_slug = CandidateType::where('id', $request->edit_candidate_type_id)->first();
 
-            $tujuan_upload = public_path('images/uploaded');
-
-            $file->move($tujuan_upload, $edit_image);
-        }
+        // print_r($request->all());die;
 
         $data = [
-            'candidate_number'      => $request->edit_candidate_number,
+            'candidate_type_id'     => $request->edit_candidate_type_id ? $edit_candidate_type_id : $candidate->candidate_type_id,
+            'candidate_number'      => $request->edit_candidate_number ? $edit_candidate_number : $candidate->candidate_number,
             'chairman_name'         => $request->edit_chairman_name,
-            'vice_chairman_name'    => $request->edit_vice_chairman_name,
+            'faculty_id'            => $request->edit_faculty_id,
+            'study_program_id'      => $request->edit_study_program_id,
             'image'                 => $request->hasFile('edit_image') ? $edit_image : $candidate->image,
-            'program'                => $request->edit_program,
+            'program'               => $request->edit_program,
+            'vision'                => $request->edit_vision,
+            'mission'               => $request->edit_mission,
         ];
+
         $candidate->update($data)
             ? Alert::success('Sukses', "Kandidat berhasil diubah.")
             : Alert::error('Error', "Kandidat gagal diubah!");
@@ -229,21 +287,42 @@ class CandidateController extends Controller
     {
         $data = [
             'election_id' => $candidate->election_id,
-            'voter_id'    => Auth::guard('voter')->id(),
+            'voter_id'    => Auth::guard('voter')->id()
         ];
 
-        if ($candidate->votings()->create($data)) {
-            Auth::guard('voter')->user()->update([
-                'voted' => 1
-            ]);
+        $voter = Voter::find(Auth::guard('voter')->id());
+        $data['faculty_id'] = $voter->faculties->id;
 
-            Alert::success('Sukses', "Terima kasih telah menggunakan hak suara Anda.");
+        $update = strtolower($candidate->candidateTypes->name).'_voted';
 
-            return redirect(route('has_voted'));
+        if (Auth::user()->$update != 1) {
+            if ($candidate->votings()->create($data)) {
+
+                Auth::guard('voter')->user()->update([
+                    strtolower($candidate->candidateTypes->name).'_voted' => 1
+                ]);
+    
+                return redirect('/');
+            }
         }
 
-        Alert::error('Error', "Kandidat gagal dipilih!");
+        return redirect('/');
+    }
 
-        return back();
+    public function showJson($id){
+
+        $detail = Candidate::find($id);
+
+        if ($detail) {
+            $detail->image = url(Storage::url($detail->image));
+            $detail->url   = route('elect_candidate', $detail);
+            return [
+                'status' => true,
+                'data' => $detail
+            ];
+        }else{
+            return ['status' => false];
+        }
+
     }
 }

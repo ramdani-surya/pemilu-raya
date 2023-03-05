@@ -17,9 +17,9 @@ class HasVoted
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->voted) {
-            return redirect(route('has_voted'));
-        }
+        // if (Auth::user()->voted) {
+        //     return redirect(route('has_voted'));
+        // }
 
         return $next($request);
     }

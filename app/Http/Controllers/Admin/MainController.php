@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Voter;
+use App\Models\Faculty;
 
 class MainController extends Controller
 {
@@ -14,14 +15,68 @@ class MainController extends Controller
         if (getActiveElection()) {
             $data = $this->getVotingData();
         } else {
-            $data['candidates'] = [];
-            $data['candidateVotings'] = [];
+            $data['bpmCandidates'] = [];
+            $data['bpmCandidateVotings'] = [];
+
+            $data['bemCandidates'] = [];
+            $data['bemCandidateVotings'] = [];
         }
 
-        array_pop($data['candidates']);
-        array_pop($data['candidateVotings']);
+        array_pop($data['bpmCandidates']);
+        array_pop($data['bpmCandidateVotings']);
 
+        array_pop($data['bemCandidates']);
+        array_pop($data['bemCandidateVotings']);
+        
+        $data['votergang'] = Voter::with(['election.candidateTypes'])->get();
         return view('admin.dashboard.data', $data);
+    }
+
+    public function show($candidate_type) {
+       
+        if ($candidate_type == 'bpm') {
+            $data = $this->getBpmFacultyVotingData();
+
+            array_pop($data['bpmCandidates']);
+        
+            $data['ftiCandidateVotings'];
+
+            $data['febCandidateVotings'];
+
+            $data['fisipCandidateVotings'];
+
+            $data['fkipCandidateVotings'];
+
+            $data['fibCandidateVotings'];
+
+            $data['fikCandidateVotings'];
+
+            return view('admin.dashboard.bpm_faculty', $data);
+        }
+
+        if ($candidate_type == 'bem') {
+
+            $data = $this->getBemFacultyVotingData();
+            array_pop($data['bemCandidates']);
+        
+            $data['ftiCandidateVotings'];
+
+            $data['febCandidateVotings'];
+
+            $data['fisipCandidateVotings'];
+
+            $data['fkipCandidateVotings'];
+
+            $data['fibCandidateVotings'];
+
+            $data['fikCandidateVotings'];
+
+            $data['candidate_type'] = $candidate_type;
+
+            return view('admin.dashboard.bem_faculty', $data);
+        }
+       
+        
     }
 
     public function dashboardApi()
@@ -29,18 +84,56 @@ class MainController extends Controller
         // set data buat widget
         $data = [
             'total_voter' => count(getActiveElection()->voters),
-            'has_voted'   => [
-                'total'      => count(getActiveElection()->votedVoters),
-                'percentage' => votersPercentage(getActiveElection()),
+            'bpm_has_voted'   => [
+                'total'      => count(getActiveElection()->bpmVotedVoters),
+                'percentage' => bpmVotersPercentage(getActiveElection()),
             ],
-            'unvoted' => [
-                'total'      => count(getActiveElection()->unvotedVoters),
-                'percentage' => votersPercentage(getActiveElection(), 0),
+            'bpm_unvoted' => [
+                'total'      => count(getActiveElection()->bpmUnvotedVoters),
+                'percentage' => bpmVotersPercentage(getActiveElection(), 0),
             ],
-            'total_candidate' => count(getActiveElection()->candidates),
+            'bem_has_voted'   => [
+                'total'      => count(getActiveElection()->bemVotedVoters),
+                'percentage' => bemVotersPercentage(getActiveElection()),
+            ],
+            'bem_unvoted' => [
+                'total'      => count(getActiveElection()->bemUnvotedVoters),
+                'percentage' => bemVotersPercentage(getActiveElection(), 0),
+            ],
+            'total_candidate' => [
+                'bem' => count(getActiveElection()->bemCandidates),
+                'bpm' => count(getActiveElection()->bpmCandidates),
+            ]
         ];
 
-        $data['votings'] = $this->getVotingData()['candidateVotings'];
+        $data['bpmVotings'] = $this->getVotingData()['bpmCandidateVotings'];
+        $data['bemVotings'] = $this->getVotingData()['bemCandidateVotings'];
+
+        return response()->json($data);
+    }
+
+    public function bpmFilterApi()
+    {
+
+        $data['ftiCandidateVotingApi'] = $this->getBpmFacultyVotingData()['ftiCandidateVotings'];
+        $data['febCandidateVotingApi'] = $this->getBpmFacultyVotingData()['febCandidateVotings'];
+        $data['fisipCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fisipCandidateVotings'];
+        $data['fkipCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fkipCandidateVotings'];
+        $data['fibCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fibCandidateVotings'];
+        $data['fikCandidateVotingApi'] = $this->getBpmFacultyVotingData()['fikCandidateVotings'];
+
+        return response()->json($data);
+    }
+
+    public function bemFilterApi()
+    {
+
+        $data['ftiCandidateVotingApi'] = $this->getBemFacultyVotingData()['ftiCandidateVotings'];
+        $data['febCandidateVotingApi'] = $this->getBemFacultyVotingData()['febCandidateVotings'];
+        $data['fisipCandidateVotingApi'] = $this->getBemFacultyVotingData()['fisipCandidateVotings'];
+        $data['fkipCandidateVotingApi'] = $this->getBemFacultyVotingData()['fkipCandidateVotings'];
+        $data['fibCandidateVotingApi'] = $this->getBemFacultyVotingData()['fibCandidateVotings'];
+        $data['fikCandidateVotingApi'] = $this->getBemFacultyVotingData()['fikCandidateVotings'];
 
         return response()->json($data);
     }
@@ -48,22 +141,114 @@ class MainController extends Controller
     // set data buat chart
     private function getVotingData()
     {
-        $candidates = [];
-        $candidateVotings = [];
+        $bpmCandidates = [];
+        $bpmCandidateVotings = [];
+
+        $bemCandidates = [];
+        $bemCandidateVotings = [];
 
         if (getActiveElection()) {
-            foreach (getActiveElection()->candidates as $candidate) {
-                $candidates[] = "$candidate->chairman_name - $candidate->vice_chairman_name";
-                $candidateVotings[] = count($candidate->votings);
+            foreach (getActiveElection()->bpm as $candidate) {
+                $bpmCandidates[] = "$candidate->chairman_name";
+                $bpmCandidateVotings[] = count($candidate->votings);
             }
 
-            $candidates[] = 'Belum Memilih';
-            $candidateVotings[] = count(getActiveElection()->unvotedVoters);
+             foreach (getActiveElection()->bem as $candidate) {
+                $bemCandidates[] = "$candidate->chairman_name";
+                $bemCandidateVotings[] = count($candidate->votings);
+            }
+
+            $bpmCandidates[] = 'Belum Memilih';
+            $bpmCandidateVotings[] = count(getActiveElection()->bpmUnvotedVoters);
+
+            $bemCandidates[] = 'Belum Memilih';
+            $bemCandidateVotings[] = count(getActiveElection()->bemUnvotedVoters);
         }
 
-        $votingData['candidates'] = $candidates;
-        $votingData['candidateVotings'] = $candidateVotings;
+        $votingData['bpmCandidates'] = $bpmCandidates;
+        $votingData['bpmCandidateVotings'] = $bpmCandidateVotings;
 
+        $votingData['bemCandidates'] = $bemCandidates;
+        $votingData['bemCandidateVotings'] = $bemCandidateVotings;
+        return $votingData;
+    }
+
+    private function getBpmFacultyVotingData()
+    {
+        
+        $bpmCandidates = [];
+
+        $ftiCandidateVotings = [];
+        $febCandidateVotings = [];
+        $fisipCandidateVotings = [];
+        $fkipCandidateVotings = [];
+        $fibCandidateVotings = [];
+        $fikCandidateVotings = [];
+
+        if (getActiveElection()) {
+
+             foreach (getActiveElection()->bpm as $candidate) {
+                $bpmCandidates[] = "$candidate->chairman_name";
+                $ftiCandidateVotings[] = count($candidate->ftiVotings);
+                $febCandidateVotings[] = count($candidate->febVotings);
+                $fisipCandidateVotings[] = count($candidate->fisipVotings);
+                $fkipCandidateVotings[] = count($candidate->fkipVotings);
+                $fibCandidateVotings[] = count($candidate->fibVotings);
+                $fikCandidateVotings[] = count($candidate->fikVotings);
+            }
+
+            $bpmCandidates[] = 'Belum Memilih';
+            $bpmCandidateVotings[] = count(getActiveElection()->bpmUnvotedVoters);
+
+        }
+
+        $votingData['bpmCandidates'] = $bpmCandidates;
+        $votingData['ftiCandidateVotings'] = $ftiCandidateVotings;
+        $votingData['febCandidateVotings'] = $febCandidateVotings;
+        $votingData['fisipCandidateVotings'] = $fisipCandidateVotings;
+        $votingData['fkipCandidateVotings'] = $fkipCandidateVotings;
+        $votingData['fibCandidateVotings'] = $fibCandidateVotings;
+        $votingData['fikCandidateVotings'] = $fikCandidateVotings;
+        return $votingData;
+    }
+    
+    private function getBemFacultyVotingData()
+    {
+        
+        $bemCandidates = [];
+
+        $ftiCandidateVotings = [];
+        $febCandidateVotings = [];
+        $fisipCandidateVotings = [];
+        $fkipCandidateVotings = [];
+        $fibCandidateVotings = [];
+        $fikCandidateVotings = [];
+
+        if (getActiveElection()) {
+
+            
+            foreach (getActiveElection()->bem as $candidate) {
+                $bemCandidates[] = "$candidate->chairman_name";
+                $ftiCandidateVotings[] = count($candidate->ftiVotings);
+                $febCandidateVotings[] = count($candidate->febVotings);
+                $fisipCandidateVotings[] = count($candidate->fisipVotings);
+                $fkipCandidateVotings[] = count($candidate->fkipVotings);
+                $fibCandidateVotings[] = count($candidate->fibVotings);
+                $fikCandidateVotings[] = count($candidate->fikVotings);
+            }
+            
+            $bemCandidates[] = 'Belum Memilih';
+            $bemCandidateVotings[] = count(getActiveElection()->bemUnvotedVoters);
+            
+        }
+        
+        $votingData['bemCandidates'] = $bemCandidates;
+        $votingData['ftiCandidateVotings'] = $ftiCandidateVotings;
+        $votingData['febCandidateVotings'] = $febCandidateVotings;
+        $votingData['fisipCandidateVotings'] = $fisipCandidateVotings;
+        $votingData['fkipCandidateVotings'] = $fkipCandidateVotings;
+        $votingData['fibCandidateVotings'] = $fibCandidateVotings;
+        $votingData['fikCandidateVotings'] = $fikCandidateVotings;
         return $votingData;
     }
 }

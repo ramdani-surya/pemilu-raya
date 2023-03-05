@@ -52,6 +52,48 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function checkElectionName(Request $request) 
+    {
+        if($request->Input('name')){
+            $name = Election::where('name',$request->Input('name'))->first();
+            if($name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_name')){
+            $edit_name = Election::where('name',$request->Input('edit_name'))->first();
+            if($edit_name){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
+    public function checkElectionPeriod(Request $request) 
+    {
+        if($request->Input('period')){
+            $period = Election::where('period',$request->Input('period'))->first();
+            if($period){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+
+        if($request->Input('edit_period')){
+            $edit_period = Election::where('period',$request->Input('edit_period'))->first();
+            if($edit_period){
+                return 'false';
+            }else{
+                return  'true';
+            }
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -81,12 +123,42 @@ class ElectionController extends Controller
         $data = [
             'name'         => $request->edit_name,
             'period'       => $request->edit_period,
-            'running_date' => $request->date,
+            'running_date' => $request->edit_date,
         ];
 
         $election->update($data)
             ? Alert::success('Sukses', 'Data pemilu berhasil diubah.')
             : Alert::error('Error', 'Data pemilu gagal diubah!');
+
+        return redirect(route('elections.index'));
+    }
+
+    public function activation(Election $election)
+    {
+        $allElection = Election::all();
+
+        foreach($allElection as $allElectionLoop) {
+            $allElectionLoop->update(['status' => '3']);
+        }
+
+        $election->update(['status' => 1])
+        ? Alert::success('Sukses', 'Pemilu telah berhasil di aktifkan.')
+        : Alert::error('Error', 'Pemilu gagal di aktfikan.');
+
+        return redirect(route('elections.index'));
+    }
+
+    public function deactivation(Election $election)
+    {
+        $allElection = Election::all();
+
+        foreach($allElection as $allElectionLoop) {
+            $allElectionLoop->update(['status' => '0']);
+        }
+
+        $election->update(['status' => 0])
+        ? Alert::success('Sukses', 'Pemilu telah berhasil di nonaktfikan.')
+        : Alert::error('Error', 'Pemilu gagal di nonaktfikan.');
 
         return redirect(route('elections.index'));
     }
@@ -123,6 +195,11 @@ class ElectionController extends Controller
         return redirect(route('elections.index'));
     }
 
+    public function status()
+    {
+        
+    }
+
     /**
      * Arsipkan Pemilu (Pemilu selesai).
      *
@@ -142,20 +219,18 @@ class ElectionController extends Controller
 
         $data = [
             'total_voters'        => count($election->voters),
-            'voted_voters'        => count($election->votedVoters),
-            'unvoted_voters'      => count($election->unvotedVoters),
+            'voted_voters'        => count($election->allVoted),
+            'unvoted_voters'      => count($election->allUnvoted),
             'total_candidates'    => count($election->candidates),
             'election_winner'     => $electedCandidate->candidate_number,
             'chairman'            => $electedCandidate->chairman_name,
-            'vice_chairman'       => $electedCandidate->vice_chairman_name,
             'chairman_photo'      => $electedCandidate->chairman_photo,
-            'vice_chairman_photo' => $electedCandidate->vice_chairman_photo,
             'archived'            => 1,
         ];
 
-        $election->votings()->delete();
-        $election->voters()->delete();
-        $election->candidates()->delete();
+        // $election->votings()->delete();
+        // $election->voters()->delete();
+        // $election->candidates()->delete();
 
         $election->update($data)
             ? Alert::success('Sukses', 'Pemilu berhasil diarsipkan.')

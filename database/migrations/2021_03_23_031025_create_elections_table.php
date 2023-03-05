@@ -15,6 +15,7 @@ class CreateElectionsTable extends Migration
     {
         Schema::create('elections', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('period');
             $table->integer('total_voters')->nullable();
             $table->integer('voted_voters')->nullable();
@@ -25,7 +26,10 @@ class CreateElectionsTable extends Migration
             $table->string('vice_chairman')->nullable();
             $table->string('chairman_photo')->nullable();
             $table->string('vice_chairman_photo')->nullable();
+            $table->date('running_date')->nullable();
+            $table->boolean('running')->default(0);
             $table->boolean('archived')->default(0);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

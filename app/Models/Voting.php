@@ -12,6 +12,7 @@ class Voting extends Model
     protected $fillable = [
         'election_id',
         'voter_id',
+        'faculty_id',
         'candidate_id',
     ];
 
@@ -28,5 +29,10 @@ class Voting extends Model
     public function voter()
     {
         return $this->belongsTo(Voter::class);
+    }
+
+    public function faculties()
+    {
+        return $this->belongsTo(Faculty::class);
     }
 }

@@ -17,8 +17,14 @@ class Voter extends Authenticatable
         'name',
         'token',
         'voted',
+        'bpm_voted',
+        'bem_voted',
         'email',
+        'faculty_id',
+        'study_program_id',
         'email_sent',
+        'creator',
+        'updator'
     ];
 
     public function election()
@@ -34,5 +40,10 @@ class Voter extends Authenticatable
     public function voting()
     {
         return $this->hasOne(Voting::class);
+    }
+
+    public function faculties()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 }

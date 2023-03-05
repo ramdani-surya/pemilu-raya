@@ -1,184 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <title>Pemilu Raya | @yield('subtitle')</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- App favicon -->
-    {{-- <link rel="shortcut icon" href="{{ asset('highdmin/images/favicon.ico') }}">
-    --}}
-    {{-- additional css --}}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Pemilu Raya - @yield('title')</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('front/assets/image/unsap1.png')}}">
+	<link rel="manifest" href="{{ asset('images/site.webmanifest') }}">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     @yield('css')
-
-    <link href="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- App css -->
-    <link href="{{ asset('highdmin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
-    <!-- Begin page -->
-    <div id="wrapper">
-        <!-- ========== Left Sidebar Start ========== -->
-        <div class="left-side-menu">
-            <div class="slimscroll-menu">
-                <!-- LOGO -->
-                <div class="logo-box">
-                    <a href="#" class="logo">
-                        <span class="logo-lg p-1">
-                            <img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="52">
-                            <!-- <span class="logo-lg-text-light">Highdmin</span> -->
-                        </span>
-                        <span class="logo-sm">
-                            <!-- <span class="logo-sm-text-dark">H</span> -->
-                            <img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="24">
-                        </span>
-                    </a>
-                </div>
 
-                <!-- User box -->
-                <div class="user-box">
-                    <div class="dropdown">
-                        <a href="#" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
-                            data-toggle="dropdown">{{ Auth::user()->name }}</a>
-                    </div>
-                    <p class="text-muted text-capitalize">{{ Auth::user()->role }}</p>
-                </div>
-
-                <!--- Sidemenu -->
-                <div id="sidebar-menu">
-                    <ul class="metismenu" id="side-menu">
-                        <li>
-                            <a href="{{ route('admin.dashboard') }}">
-                                <i class="fe-airplay"></i>
-                                <span> Dashboard </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('elections.index') }}">
-                                <i class="fe-edit"></i>
-                                <span> Pemilu </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('candidates.index') }}">
-                                <i class="fe-users"></i>
-                                <span> Kandidat </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('voters.index') }}">
-                                <i class="fe-user"></i>
-                                <span> Daftar Pemilih Tetap </span>
-                            </a>
-                        </li>
-                        <li class="menu-title">Lainnya</li>
-
-                        <li>
-                            <a href="{{ route('users.index') }}">
-                                <i class="fe-settings"></i>
-                                <span> Manajemen Akun </span>
-                            </a>
-                        </li>
-                        {{-- Grafik hasil pemilu dari tiap penyelenggaraan tahun ke tahun --}}
-                        {{-- <li>
-                            <a href="widgets.html">
-                                <i class="fe-trending-up"></i>
-                                <span> Laporan </span>
-                            </a>
-                        </li> --}}
-                    </ul>
-                </div>
-                <!-- End Sidebar -->
-                <div class="clearfix"></div>
-            </div>
-            <!-- Sidebar -left -->
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
         </div>
-        <!-- Left Sidebar End -->
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-        <div class="content-page">
-            <!-- Topbar Start -->
-            <div class="navbar-custom">
-                <ul class="list-unstyled topnav-menu float-right mb-0">
-
-                    <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
-                            <span class="pro-user-name ml-1">
-                                {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                            <!-- item-->
-                            <a href="{{ route('admin.logout') }}" class="dropdown-item notify-item">
-                                <i class="fe-log-out"></i> <span>Logout</span>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-
-                <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
-                    <li>
-                        <button class="button-menu-mobile disable-btn">
-                            <i class="fe-menu"></i>
-                        </button>
-                    </li>
-
-                    <li>
-                        <h4 class="page-title-main">Pemilu Raya</h4>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Pemilu Raya</a></li>
-                            <li class="breadcrumb-item"><a href="#">@yield('subtitle')</a></li>
-                            @yield('subtitle-in')
-                        </ol>
-                    </li>
-
-                </ul>
-            </div>
-            <!-- end Topbar -->
-
-            <div class="content">
-                <!-- Start Content-->
-                <div class="container-fluid">
-                    @yield('content')
-                </div> <!-- end container-fluid -->
-            </div> <!-- end content -->
-
-            <!-- Footer Start -->
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            2021 &copy; Made by <a href="#" style="color:#f9bc0b;">TAHUNGODING STMIK Sumedang</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- end Footer -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
     </div>
-    <!-- END  wrapper -->
+    <!--*******************
+        Preloader end
+    ********************-->
 
-    <!-- Vendor js -->
-    <script src="{{ asset('highdmin/js/vendor.min.js') }}"></script>
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
 
-    {{-- additional js --}}
-    @yield('js')
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="{{ route('admin.dashboard') }}" class="brand-logo">
+                <img class="logo-abbr" src="{{ asset('images/admin_component/logo_pemira.png') }}" alt="">
+                <img class="logo-compact" src="{{ asset('images/logo-text.png') }}" alt="">
+                <span class="brand-title" style="font-weight: bold; color: rgb(150, 155, 160);">Pemilu Raya</span>
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box start
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box End
+        ***********************************-->
+		
+		<!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="dashboard_bar">
+								@yield('title_menu')
+                            </div>
+                        </div>
+                        <ul class="navbar-nav header-right">
+							{{-- <li class="nav-item">
+								<div class="input-group search-area d-xl-inline-flex d-none">
+									<div class="input-group-append">
+										<span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+									</div>
+									<input type="text" class="form-control" placeholder="Search here...">
+								</div>
+							</li>
+						 --}}
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
+                                    @if(!empty(Auth::user()->image) && Storage::exists(Auth::user()->image))
+                                    
+                                    <img src="{{ Storage::url(Auth::user()->image) }}" width="20" style="object-fit: cover;" alt=""/>
+
+                                    @else 
+                                    <img src="{{ asset('images/admin_component/user.png') }}" width="20" style="object-fit: cover;" alt=""/>
+                                    @endif
+									<div class="header-info">
+										<span class="text-black"><strong>{{ Auth::user()->username }}</strong></span>
+										<p class="fs-12 mb-0">{{ ucwords(str_replace('_', ' ', Auth::user()->role)) }}</p>
+									</div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="{{ route('admin.setting') }}" class="dropdown-item ai-icon">
+                                        <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="ml-2">Profile </span>
+                                    </a>
+                                    <a href="{{ route('admin.logout') }}" class="dropdown-item ai-icon">
+                                        <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="deznav">
+            <div class="deznav-scroll mm-active">
+				<ul class="metismenu mm-show" id="menu">
+                    <li class="
+								@if(request()->routeIs('dashboard.index') || request()->routeIs('dashboard.create'))
+								'mm-active'
+								@else
+								''
+								@endif
+						"><a class="ai-icon" href="{{ route('admin.dashboard') }}" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Dashboard</span>
+						</a>
+                    </li>
+                    <li class="{{ request()->routeIs('elections.index') ? 'mm-active' : '' }}"><a class="ai-icon" href="{{ route('elections.index') }}" aria-expanded="false">
+							<i class="flaticon-381-television"></i>
+							<span class="nav-text">Pemilu</span>
+						</a>
+                    </li>
+                    <li class="{{ request()->routeIs('faculties.index') ? 'mm-active' : '' }}"><a class="ai-icon" href="{{ route('faculties.index') }}" aria-expanded="false">
+							<i class="flaticon-381-home-2"></i>
+							<span class="nav-text">Fakultas</span>
+						</a>
+                    </li>
+                    <li class="{{ request()->routeIs('candidate-types.index') ? 'mm-active' : '' }}"><a class="ai-icon" href="{{ route('candidate-types.index') }}" aria-expanded="false">
+							<i class="flaticon-381-id-card"></i>
+							<span class="nav-text">Tipe Kandidat</span>
+						</a>
+                    </li>
+                    <li class="{{ request()->routeIs('candidates.index') ? 'mm-active' : ''}} 
+							   {{  request()->routeIs('candidates.create') ? 'mm-active' : ''}}
+							   @isset($slug)
+							   {{  request()->routeIs('candidates.createIn', $slug) ? 'mm-active' : ''}}
+							   @endisset
+							   @isset($slug)
+							   {{  request()->routeIs('candidates.show', $slug) ? 'mm-active' : ''}}
+							   @endisset
+								"><a class="ai-icon" href="{{ route('candidates.index') }}" aria-expanded="false">
+							<i class="flaticon-381-user-7"></i>
+							<span class="nav-text">Kandidat</span>
+						</a>
+                    </li>
+                    <li class="{{ request()->routeIs('voters.index') ? 'mm-active' : '' }}"><a class="ai-icon" href="{{ route('voters.index') }}" aria-expanded="false">
+							<i class="flaticon-381-id-card-2"></i>
+							<span class="nav-text">Daftar Pemilih Tetap</span>
+						</a>
+                    </li>
+                    @if (Auth::user()->role == 'super_admin')
+                        <li class="{{ request()->routeIs('users.index') ? 'mm-active' : '' }}"><a href="{{ route('users.index') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Manajemen Akun</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+			</div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+		
+		<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+			<div class="container-fluid">
+				@yield('content')
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="https://instagram.com/tahungoding" target="_blank"><i><b>TAHU</b>NGODING</i></a> 2022</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+		<!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
     @include('sweetalert::alert')
 
-    <script src="{{ asset('highdmin/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-
-    <!-- App js -->
-    <script src="{{ asset('highdmin/js/app.min.js') }}"></script>
+    @yield('js')
 </body>
-
 </html>

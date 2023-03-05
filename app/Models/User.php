@@ -21,7 +21,12 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'image',
+        'faculty_id',
         'role',
+        'craetor',
+        'updator',
+        'last_seen'
     ];
 
     /**
@@ -46,5 +51,10 @@ class User extends Authenticatable
     public function storedVoters()
     {
         return $this->hasMany(Voter::class, 'user_id', 'id');
+    }
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class);
     }
 }

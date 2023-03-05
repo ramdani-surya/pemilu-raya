@@ -14,7 +14,7 @@
     <!-- App css -->
     <link href="{{ asset('highdmin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('highdmin/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('highdmin/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('highdmin/css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

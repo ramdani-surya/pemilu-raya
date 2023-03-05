@@ -1,113 +1,72 @@
-@extends('admin.layouts.login_system')
+<!DOCTYPE html>
+<html lang="en" class="h-100">
 
-@section('subtitle')
-Login User
-@endsection
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pemilu Raya - Login</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('front/assets/image/unsap1.png')}}">
+    <link rel="manifest" href="{{ asset('images/site.webmanifest') }}">    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
 
-@section('content')
-
-<!-- Begin page -->
-
-<body class="account-pages">
-
-    <!-- Begin page -->
-    <div class="accountbg">
-        <img src="{{ asset('images/admin_component/login_bg.jpg') }}"
-        style="width: 67%; height: 100vh; object-fit:cover;" class="thumb-img img-fluid"
-        alt="Default Image">
-    </div>
-
-    <div class="wrapper-page account-page-full">
-
-        <div class="card shadow-none">
-            <div class="card-block">
-
-                <div class="account-box">
-
-                    <div class="card-box shadow-none p-4 mt-2">
-                        <h2 class="text-uppercase text-center pb-3">
-                            <a href="index.html" class="text-success">
-                                <span><img src="{{ asset('images/admin_component/tahu.png') }}" alt="" height="82"></span>
-                            </a>
-                        </h2>
-
-                        @if(session()->has('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                        @endif
-
-                        <form action="{{ route('admin.login') }}" method="POST">
-                            @csrf
-                            <div class="form-group row">
-                                <div class="col-12">
-                                    <label for="username">Username</label>
-                                    <input class="form-control" type="text" name="username" id="username"
-                                        placeholder="Masukan username anda" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-12">
-                                    <label for="password">Password</label>
-                                    <div class="input-group">
-                                        <input class="form-control" type="password" name="password" id="passwordId"
-                                            placeholder="Masukan Password Anda">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-secondary fas fa-eye toggle-password"
-                                                type="button"></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-12">
-
-                                    <div class="checkbox checkbox-warning">
-                                        <input id="remember" type="checkbox" name="remember" checked="">
-                                        <label for="remember">
-                                            Remember me
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row text-center">
-                                <div class="col-12">
-                                    <button class="btn btn-block btn-warning waves-effect waves-light"
-                                        type="submit">Sign In</button>
-                                </div>
-                            </div>
-
-                        </form>
-
+<body class="h-100">
+  <section class="h-100 gradient-form" style="background-color: rgb(248, 248, 248);">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-6">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="col-lg-12">
+                <div class="card-body p-md-5 mx-md-4">
+  
+                  <div class="text-center">
+                    <img src="{{asset('front/assets/image/unsap1.png')}}" style="width: 100px;" alt="logo">
+                    <br><br>
+                    <h5 class="login-heading mt-3">LOGIN ADMIN</h5>
+                  </div>
+  
+                  <form action="{{ route('admin.post') }}" method="POST" class="mt-5">
+                    @csrf
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="username">Username</label>
+                      <input type="text" name="username" class="form-control" placeholder="Username"/>
                     </div>
+  
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form2Example22">Password</label>
+                      <input type="password" name="password" class="form-control" placeholder="Password" />
+                    </div>
+  
+                    <div class="d-grid">
+                      <button class="btn btn-primary" type="submit">Log in</button>
+                    </div>
+                  </form>
+  
                 </div>
-
+              </div>
+              
             </div>
+          </div>
         </div>
-
-        <div class="text-center">
-            <p class="account-copyright">2021 &copy; Made by <a href="#" style="color:#f9bc0b;">TAHUNGODING STMIK Sumedang</a></p>
-        </div>
-
+      </div>
     </div>
+  </section>
+  @include('sweetalert::alert')
 
-    @endsection
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="{{ asset('vendor/global/global.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/custom.min.js') }}"></script>
+    <script src="{{ asset('js/deznav-init.js') }}"></script>
 
-    @section('js')
-    <script>
-        $(".toggle-password").click(function() {
-            $(this).toggleClass("far fa-eye-slash");
-            var password = document.getElementById("passwordId");
+</body>
 
-            if (password.type === "password") {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
-
-        });
-    </script>
-    @endsection
+</html>
