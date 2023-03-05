@@ -241,6 +241,7 @@ class Controller extends BaseController
             return redirect('/');
         }
         elseif (!getRunningElection() && !getActiveElection()) {
+            dd('TEST');
             return redirect(route('closed'));
         }
 
